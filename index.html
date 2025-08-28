@@ -63,6 +63,25 @@
         .form-dropdown:hover .form-dropdown-content {
             display: block;
         }
+        .link-dropdown {
+            position: relative;
+        }
+        .link-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+            z-index: 30; /* Ensure link dropdown is above cards */
+            top: 100%;
+            left: 0;
+            padding-top: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .link-dropdown:hover .link-dropdown-content {
+            display: block;
+        }
         .modern-button {
             display: inline-block;
             padding: 8px 16px;
@@ -234,27 +253,44 @@
             { title: "Relatório - Volume de pedidos por horário", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1wvno8nwxcBemciobKlNJL4wgJeD4LsptBIN-uoI90wE/edit?gid=825914528#gid=825914528", forms: [] },
             { title: "Dados - Documentos e Notas Fiscais", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1fhaAWoXz2ebQTK0vhlzZYMMlDEx1iF9QWaFZYttWgrc/edit?gid=2051075321#gid=2051075321", forms: [{ title: "", link: "https://forms.gle/15M5Xe32icGLYQJH8" }] },
             { title: "Dados - Solicitação de insumos do Almoxarifado", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1zsK0nw73_muEHA7MXDVN5hSy6SbGh9wtx55z68vzq3s/edit?gid=1401504443#gid=1401504443", forms: [{ title: "", link: "https://forms.gle/4VP3kfnRMztAh1Nz7" }] },
-            { title: "Gestão - Almoxarifado Geral", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/11oRTb6e0Ekq2ti7liEjif2XWvHRSIpp_fwfPkD9Q-JA/edit#gid=814613652", forms: [] },
-            { title: "Gestão - Estoque - 01 - Unidade NTO", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1bmOo_Y57TpyC24qbPJXcEumABN9zOpIljs2vb6T2f2c/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 03 - Unidade Crato", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/11vJU7svPWmq72SwRyXNntZqWFmI0AirpGuRhOklLFAE/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 05 - Unidade Novo Juazeiro", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1dAwzxk2M3Af2Ijz8Jdnz5C_0noCTL3RjGWMxxGw4Q2Q/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 06 - Unidade Milagres", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/10SD88BH1pAUoX1Iu9oiVUxWuqaUK2AiXzfVAj2eYQ9E/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 09 - Unidade Barro", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/14ZrSFMDDXCnyQx5h2S3LIoiXnvhkgLK8ujsTLOuVsDQ/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 10 - Unidade Office Cariri", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1DR-B4MV5bQ8eNANECC-36PI12DDQxI7O9Li2L48uhig/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 12 - Unidade Caririaçu", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/10BrlDJutwNEy5gmAXutf3Dstx6JRkv2pSgRR8987e90/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 13 - Unidade Campos Sales", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1ZdSLLJp_d5oUlP3v4TySNjKLnk0vYrjrav3ZAQh2Ndo/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 14 - Unidade Nova Olinda", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/15WxKpSmmcaUcc53XDwD2QT2oa-02OINkB7cGwBg-W9I/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 16 - Unidade Araripe", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/19loLlqBSWCb8tOW5saZNQlFJ-paIQPpDzXzuOMnqIP4/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 23 - Unidade Salesianos", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1d7UV1zqDxM0gazFS06hqWBfCxz8X1XJzr_KHWbIe3rM/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 62 - Unidade Clemir Arrais", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1a0LLKkOV4eOykISH0pDpPQzjv3vcoABcxBw1W_xpWZk/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 88 - Unidade Unicardio", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1pz66wZwtkn0Zwz6IQNSkvlQP3jN5LAPLlY757gERnG8/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - 97 - Unidade Endoclinic", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1tMlBgzmEBr8lphBw86Y2ncOVmJDaoLjlRQYP5grBfVk/edit?usp=drive_link", forms: [] },
-            { title: "Gestão - Estoque - Coleta Domiciliar", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1mHi65SBo8monTloEKk1TKG3R80pWVDDqOWlGQ7CubQw/edit?usp=drive_link", forms: [] },
+            { title: "Almoxarifado - Estoque", sector: "Almoxarifado", links: [
+                { title: "Almoxarifado Geral", link: "https://docs.google.com/spreadsheets/d/11oRTb6e0Ekq2ti7liEjif2XWvHRSIpp_fwfPkD9Q-JA/edit#gid=814613652" },
+                { title: "Estoque - 01 - Unidade NTO", link: "https://docs.google.com/spreadsheets/d/1bmOo_Y57TpyC24qbPJXcEumABN9zOpIljs2vb6T2f2c/edit?usp=drive_link" },
+                { title: "Estoque - 03 - Unidade Crato", link: "https://docs.google.com/spreadsheets/d/11vJU7svPWmq72SwRyXNntZqWFmI0AirpGuRhOklLFAE/edit?usp=drive_link" },
+                { title: "Estoque - 05 - Unidade Novo Juazeiro", link: "https://docs.google.com/spreadsheets/d/1dAwzxk2M3Af2Ijz8Jdnz5C_0noCTL3RjGWMxxGw4Q2Q/edit?usp=drive_link" },
+                { title: "Estoque - 06 - Unidade Milagres", link: "https://docs.google.com/spreadsheets/d/10SD88BH1pAUoX1Iu9oiVUxWuqaUK2AiXzfVAj2eYQ9E/edit?usp=drive_link" },
+                { title: "Estoque - 09 - Unidade Barro", link: "https://docs.google.com/spreadsheets/d/14ZrSFMDDXCnyQx5h2S3LIoiXnvhkgLK8ujsTLOuVsDQ/edit?usp=drive_link" },
+                { title: "Estoque - 10 - Unidade Office Cariri", link: "https://docs.google.com/spreadsheets/d/1DR-B4MV5bQ8eNANECC-36PI12DDQxI7O9Li2L48uhig/edit?usp=drive_link" },
+                { title: "Estoque - 12 - Unidade Caririaçu", link: "https://docs.google.com/spreadsheets/d/10BrlDJutwNEy5gmAXutf3Dstx6JRkv2pSgRR8987e90/edit?usp=drive_link" },
+                { title: "Estoque - 13 - Unidade Campos Sales", link: "https://docs.google.com/spreadsheets/d/1ZdSLLJp_d5oUlP3v4TySNjKLnk0vYrjrav3ZAQh2Ndo/edit?usp=drive_link" },
+                { title: "Estoque - 14 - Unidade Nova Olinda", link: "https://docs.google.com/spreadsheets/d/15WxKpSmmcaUcc53XDwD2QT2oa-02OINkB7cGwBg-W9I/edit?usp=drive_link" },
+                { title: "Estoque - 16 - Unidade Araripe", link: "https://docs.google.com/spreadsheets/d/19loLlqBSWCb8tOW5saZNQlFJ-paIQPpDzXzuOMnqIP4/edit?usp=drive_link" },
+                { title: "Estoque - 23 - Unidade Salesianos", link: "https://docs.google.com/spreadsheets/d/1d7UV1zqDxM0gazFS06hqWBfCxz8X1XJzr_KHWbIe3rM/edit?usp=drive_link" },
+                { title: "Estoque - 62 - Unidade Clemir Arrais", link: "https://docs.google.com/spreadsheets/d/1a0LLKkOV4eOykISH0pDpPQzjv3vcoABcxBw1W_xpWZk/edit?usp=drive_link" },
+                { title: "Estoque - 88 - Unidade Unicardio", link: "https://docs.google.com/spreadsheets/d/1pz66wZwtkn0Zwz6IQNSkvlQP3jN5LAPLlY757gERnG8/edit?usp=drive_link" },
+                { title: "Estoque - 97 - Unidade Endoclinic", link: "https://docs.google.com/spreadsheets/d/1tMlBgzmEBr8lphBw86Y2ncOVmJDaoLjlRQYP5grBfVk/edit?usp=drive_link" },
+                { title: "Estoque - Coleta Domiciliar", link: "https://docs.google.com/spreadsheets/d/1mHi65SBo8monTloEKk1TKG3R80pWVDDqOWlGQ7CubQw/edit?usp=drive_link" }
+            ], forms: [] },
             { title: "Dados - Acreditação, Normas e RDC's", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/18d5tNwqoMaR-ogMIH6jzlqzl_sCc2x-IMimX4ann-eI/edit?gid=0#gid=0", forms: [] },
             { title: "Dados - Checklist de Limpeza - Urianálise/Parasito", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1z8VOJr4c08I3bN-IbFTTrtYWHG8teOCMHgwJ19kXu0U/edit?gid=1737538825#gid=1737538825", forms: [] },
             { title: "Dados - Checklist Manutenção - Imuno-Hormônios", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1WGTpxvNGZYU8DJLPyaPje7UXGfL6_QITQKMbG57-wPU/edit#gid=1737538825", forms: [] },
             { title: "Dados - Controle de Qualidade - Imuno-Hormônios", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1qphC62x9hv3lAItWonJT7sINC7sBiUUPSpLESMICns8/edit?gid=1737538825#gid=1737538825", forms: [] },
-            { title: "Dados - Controle de Temperatura", sector: "Pré-Analítico", link: "https://drive.google.com/drive/folders/1NucEAGX4vV3S09Q2fRKUMsJJXOSFMpUe", forms: [] },
+            { title: "Dados - Controle de Temperatura", sector: "Pré-Analítico", links: [
+                { title: "📂Acessar o Drive", link: "https://drive.google.com/drive/folders/1NucEAGX4vV3S09Q2fRKUMsJJXOSFMpUe" },
+                { title: "Unidade 01 - NTO", link: "https://docs.google.com/spreadsheets/d/166alUaAYFxVBJwrydD9X93SmLcFtpIaVC7Vh1Oi6Lk0/edit?usp=drive_link" },
+                { title: "Unidade 03 - Crato", link: "https://docs.google.com/spreadsheets/d/1R77y-Nbzaqh4hId_SLZ108morK7tBlygnkLH4MphS9I/edit?usp=drive_link" },
+                { title: "Unidade 05 - Novo Juazeiro", link: "https://docs.google.com/spreadsheets/d/1p2xQMPP6A-CcOTdpDz4ESXUrtyYpww6aB9b_H3IGyow/edit?usp=drive_link" },
+                { title: "Unidade 06 - Milagres", link: "https://docs.google.com/spreadsheets/d/138scPlWUMtnAysFto6UxjWhQLyL1_CPgvh0D01Y7Dw4/edit?usp=drive_link" },
+                { title: "Unidade 09 - Barro", link: "https://docs.google.com/spreadsheets/d/1ioCF9oE3D_SD7BQb3WqUtxpYwfaSE7eBDr-QOW7z7nI/edit?usp=drive_link" },
+                { title: "Unidade 10 - Office Cariri", link: "https://docs.google.com/spreadsheets/d/18NxQdcofQr6dA_jUJE6eXlVXcnk5cN2GmX5ASJS7hbw/edit?usp=drive_link" },
+                { title: "Unidade 12 - Caririaçu", link: "https://docs.google.com/spreadsheets/d/1NdNE9EkXkr5E0_Vnx7Rec7w9wi8UpYBztaf5skVN6vY/edit?usp=drive_link" },
+                { title: "Unidade 13 - Campos Sales", link: "https://docs.google.com/spreadsheets/d/1WmOP_1KjxCU_nkgfGeHytmgQ1RGDWskqcsoksjh7QB4/edit?usp=drive_link" },
+                { title: "Unidade 16 - Araripe", link: "https://docs.google.com/spreadsheets/d/13tHQAOnaPH5XKkcwpQXfs7eSZSqQtSzN3tgkbAYOLis/edit?usp=drive_link" },
+                { title: "Unidade 23 - Salesianos", link: "https://docs.google.com/spreadsheets/d/1FdFDDWNcTDf0of73Q566u-MbGc8FlVpdmeBBtkelNWI/edit?usp=drive_link" },
+                { title: "Unidade 62 - Clemir arrais", link: "https://docs.google.com/spreadsheets/d/1UsI9PxonCGCyf1DoQL988rOHHsndXzszDbvVUj0V-3Y/edit?usp=drive_link" },
+                { title: "Unidade 88 - Unicardio", link: "https://docs.google.com/spreadsheets/d/1gFjOMg_uKeENmZHEULMOVuIt9Amp6XPEcRrmdz-eWho/edit?usp=drive_link" },
+                { title: "Caixa de Transporte - Vacinas", link: "https://docs.google.com/spreadsheets/d/1tLSXyJ0ZFjtGtUTSjf29IAqvP0h_kONvvqIfP4S5AOk/edit?usp=drive_link" }
+            ], forms: [] },
             { title: "Dados - Protocolo de Manutenção", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1qTmqBp6W4l4Uvbb9JpmeHKHL93CuEXIow52QfpuPPZA/edit", forms: [] },
             { title: "Estatística - Exames Atrasados", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1sBe0p-jpPrzs8n7MWgg19mti1HVGVqYi6d2NizEiEyI/edit#gid=2061615513", forms: [] },
             { title: "Estatística - Produtividade dos Reagentes/Equipamentos", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1bnAxgE4KzIHP6MgIBoZwJsfp6od39k9WQ2TueHE_XHo/edit?gid=1969031502#gid=1969031502", forms: [] },
@@ -270,7 +306,7 @@
             { title: "Relatório - Ocorrências dos Colaboradores (Convênios)", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/1OUQYZBOjtnffeKwgqtHw-Ybn-UI-G5JogVqySr_NDdE/edit?gid=1064389815#gid=1064389815", forms: [] },
             { title: "Relatório - Proeficiência dos Atendentes", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/1hqIoKnYIpkAkkE0Ki27gPzeujwooC3vEcTwRMxLUAfI/edit?gid=1913731350#gid=1913731350", forms: [] },
             { title: "Relatório - Produtividade do CAC", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/19uAqg3f8YWWC0lXMLMn4wLQBkSR0b4I6H_0tQKQ0s54/edit?gid=34344753#gid=34344753", forms: [] },
-            { title: "Dados - Compras do Laboratório", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1uj9rk-5A1U5MhtNUXCpRO5X_q5ML1htJfKLEblYuiWE/edit?gid=1969031502#gid=1969031502", forms: [] },
+            { title: "Dados - Compras do Laboratório", sector: "Compras", link: "https://docs.google.com/spreadsheets/d/1uj9rk-5A1U5MhtNUXCpRO5X_q5ML1htJfKLEblYuiWE/edit?gid=1969031502#gid=1969031502", forms: [] },
             { title: "Gestão - LAMIC VIVA MAIS (LCE)", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1cjErHBw_P-FZTRMp4ZUdWw5NxYIprPr7A3OP0sIocWs/edit?gid=175422876#gid=175422876", forms: [] },
             { title: "Relatório - Campanhas Promocionais", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1DHdKMF-LY2C9e7b6Pmn-ldoCMqpKgRdrrq4L-2FmcGs/edit?gid=441841903#gid=441841903", forms: [] },
             { title: "Relatório - Curva ABC das Citologias", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1Zh-J6O-fjWb6xV_P4hcKP0rQNgHRmMOQ_Emk1TB-yAQ/edit?gid=1680206567#gid=1680206567", forms: [] },
@@ -308,11 +344,18 @@
             { title: "Dados - Registro de Ponto (Estagiários)", sector: "RH", link: "https://docs.google.com/spreadsheets/d/18KE2POQXNN2DnRsuyzYx5JVoLteIqeOon_6QO_JRq8s/edit?resourcekey=&gid=817033391#gid=817033391", forms: [{ title: "", link: "https://docs.google.com/forms/d/e/1FAIpQLSesVzrk416wfgqXD47r4znD0kS_QB0m9olq3ndv814_QbYNoQ/viewform" }] },
             { title: "Dados - Registro de Ponto (Externo)", sector: "RH", link: "https://docs.google.com/spreadsheets/d/17dNVutUQmpNKQDo-3J6ZUu1yKJXqYV4TlWrEHautmPo/edit?gid=817033391#gid=817033391", forms: [{ title: "", link: "https://forms.gle/LfgBAhFN4kuqeG3u9" }] },
             { title: "Relatório - Banco de Horas - Ponto Digital", sector: "RH", link: "https://docs.google.com/spreadsheets/d/1SQa3BaoMcV8d0KgzPlMfKLAGoD5BMkiJsGgIj-4BN0M/edit?gid=441841903#gid=441841903", forms: [] },
-            { title: "Dados - Controle de Compras do T.I", sector: "Tecnologia da Informação", link: "https://docs.google.com/spreadsheets/d/1SdgmZnuNL45Sym1K_QPLHRsKC3YP8J2o-XoG0x8XIRg/edit?gid=1923083969#gid=1923083969", forms: [] },
-            { title: "Dados - Solicitação de Compras ao T.I", sector: "Tecnologia da Informação", link: "https://docs.google.com/spreadsheets/d/1FtFX3o0_ua37P2TmuJFNK7NNHgRa6rFfY5DaLxLYADo/edit?gid=2000886603#gid=2000886603", forms: [{ title: "", link: "https://forms.gle/JFr1Kt3BmAG7Dgn37" }] },
+            { title: "Dados - Controle de Compras do T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1SdgmZnuNL45Sym1K_QPLHRsKC3YP8J2o-XoG0x8XIRg/edit?gid=1923083969#gid=1923083969", forms: [] },
+            { title: "Dados - Solicitação de Compras ao T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1FtFX3o0_ua37P2TmuJFNK7NNHgRa6rFfY5DaLxLYADo/edit?gid=2000886603#gid=2000886603", forms: [{ title: "", link: "https://forms.gle/JFr1Kt3BmAG7Dgn37" }] },
             { title: "Gestão - Rotina de Vacinas", sector: "Vacinas", link: "https://docs.google.com/spreadsheets/d/1n1DIWxLz-gPATm8gdO0mZEzuwOVDgykTkn2iKJ8TWfg/edit", forms: [] },
             { title: "Relatório - Faturamento das Vacinas", sector: "Vacinas", link: "https://docs.google.com/spreadsheets/d/1HaunPIYM_AN0ZIZCUT1QD52FKuObXXotOWCvPDzCLZ8/edit?gid=441841903#gid=441841903", forms: [] },
-            { title: "Dados - Manutenção dos Arcondicionados", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1HaunPIYM_AN0ZIZCUT1QD52FKuObXXotOWCvPDzCLZ8/edit?gid=441841903#gid=441841903", forms: [{ title: "", link: "https://forms.gle/HvT8rFk4mvacrx1v9" }] }
+            { title: "Dados - Manutenção dos Arcondicionados", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1HaunPIYM_AN0ZIZCUT1QD52FKuObXXotOWCvPDzCLZ8/edit?gid=441841903#gid=441841903", forms: [{ title: "", link: "https://forms.gle/HvT8rFk4mvacrx1v9" }] },
+            { title: "Dados - Demandas de Sistemas", sector: "Sistemas", link: "https://docs.google.com/spreadsheets/d/1baLtm2Toh_HDx-BUAodxG5yY15KBiITagor_fJ8nI8U/edit?pli=1&gid=0#gid=0", forms: [] },
+<<<<<<< HEAD
+            { title: "Dados - Demandas T.I", sector: "Tecnologia da Informação", link: "https://docs.google.com/spreadsheets/d/1OnjE0XD-oBBxzFykeEOtI009o0uaUEMu9F9p9czzIS4/edit?gid=0#gid=0", forms: [] },
+=======
+            { title: "Dados - Demandas T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1OnjE0XD-oBBxzFykeEOtI009o0uaUEMu9F9p9czzIS4/edit?gid=0#gid=0", forms: [] },
+>>>>>>> b056dc00777737c66f691a316c147a635290bf3f
+            { title: "Auditoria - Médicos repetidos", sector: "Coordenação", link: "https://docs.google.com/spreadsheets/d/1JxyBaPgo_8Qkn39xfQYKVktcl1-cnQukVfcOc2tmcbA/edit?gid=0#gid=0", forms: [] }
         ];
 
         // Initialize favorites from localStorage
@@ -351,6 +394,21 @@
             card.dataset.index = index;
             const isFavorited = favorites.includes(index);
             let formHtml = '';
+            let planilhaHtml = '';
+            if (sheet.links && sheet.links.length > 0) {
+                if (sheet.links.length === 1) {
+                    planilhaHtml = `<a href="${sheet.links[0].link}" target="_blank" class="mt-4 modern-button">Acessar Planilha</a>`;
+                } else {
+                    planilhaHtml = `<div class="link-dropdown inline-block">
+                        <a href="#" class="mt-4 modern-button">Acessar Planilhas</a>
+                        <div class="link-dropdown-content rounded-lg">
+                            ${sheet.links.map(l => `<a href="${l.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100">${l.title}</a>`).join('')}
+                        </div>
+                    </div>`;
+                }
+            } else {
+                planilhaHtml = `<a href="${sheet.link}" target="_blank" class="mt-4 modern-button">Acessar Planilha</a>`;
+            }
             if (sheet.forms && sheet.forms.length > 0) {
                 if (sheet.forms.length === 1) {
                     formHtml = `<a href="${sheet.forms[0].link}" target="_blank" class="mt-4 form-button ml-4">Acessar Formulário</a>`;
@@ -367,7 +425,7 @@
                 <span class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite(${index})">&#9733;</span>
                 <h2 class="text-lg font-semibold text-blue-900">${sheet.title}</h2>
                 <p class="text-gray-600">Setor: ${sheet.sector}</p>
-                <a href="${sheet.link}" target="_blank" class="mt-4 modern-button">Acessar Planilha</a>
+                ${planilhaHtml}
                 ${formHtml}
             `;
             spreadsheetList.appendChild(card);
