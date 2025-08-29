@@ -360,8 +360,14 @@
             ], forms: [] }
         ];
 
-        // Initialize favorites from localStorage
-        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        // Initialize favorites from localStorage with site-specific key to avoid collisions across similar sites
+        const FAVORITES_KEY = `favorites:${location.host}${location.pathname}`;
+        const LEGACY_FAVORITES_KEY = 'favorites';
+        let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || 'null');
+        if (!favorites) {
+            favorites = JSON.parse(localStorage.getItem(LEGACY_FAVORITES_KEY) || '[]');
+            localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+        }
         let selectedSector = '';
         let showFavorites = false;
 
@@ -440,7 +446,7 @@
             } else {
                 favorites.push(index);
             }
-            localStorage.setItem('favorites', JSON.stringify(favorites));
+            localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
             updateCards();
         }
 
