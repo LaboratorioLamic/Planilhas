@@ -263,64 +263,237 @@
             top: 0;
             left: 0;
             right: 0;
-            background-color: #1e3a8a;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
             z-index: 100;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 12px 10px;
+            box-shadow: 0 4px 20px rgba(30, 58, 138, 0.3);
             display: flex;
             align-items: flex-start;
             overflow-x: hidden;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
         #tabs {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 8px;
             width: 90%;
+            transition: all 0.3s ease;
         }
         .tab {
             display: flex;
             align-items: center;
-            background-color: #2b6cb0;
+            background: linear-gradient(135deg, #2b6cb0 0%, #3b82f6 100%);
             color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            max-width: 200px;
-            min-width: 100px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: grab;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 220px;
+            min-width: 120px;
             overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(43, 108, 176, 0.3);
+            border: 2px solid transparent;
+            transform: translateY(0);
         }
+        
+        .tab:active {
+            cursor: grabbing;
+        }
+        
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 10px;
+            z-index: -1;
+        }
+        
+        .tab:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(43, 108, 176, 0.4);
+            border-color: #60a5fa;
+        }
+        
+        .tab:hover::before {
+            opacity: 1;
+        }
+        
         .tab span.tab-title {
             flex-grow: 1;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            font-weight: 500;
+            transition: transform 0.2s ease;
         }
+        
+        .tab:hover span.tab-title {
+            transform: translateX(2px);
+        }
+        
+        .tab.dragging {
+            opacity: 0.8;
+            transform: rotate(3deg) scale(1.05);
+            z-index: 1000;
+            box-shadow: 0 12px 35px rgba(43, 108, 176, 0.5);
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+        }
+        
+        .tab.drag-over {
+            border-left: 4px solid #60a5fa;
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            transform: translateX(3px);
+            box-shadow: 0 6px 20px rgba(96, 165, 250, 0.4);
+        }
+        
+        /* Animações para abertura e fechamento das abas */
+        .tab {
+            animation: tabSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes tabSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .tab.closing {
+            animation: tabSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        @keyframes tabSlideOut {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.8);
+            }
+        }
+        
+        /* Efeito de destaque para aba ativa */
+        .tab.active {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            border-color: #2563eb;
+            box-shadow: 0 6px 20px rgba(30, 64, 175, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: #a9c4ff;
+            border-radius: 2px;
+            animation: activeIndicator 0.3s ease;
+        }
+        
+        @keyframes activeIndicator {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+            to {
+                width: 20px;
+                opacity: 1;
+            }
+        }
+        
+        /* Animações adicionais para drag and drop */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes dropConfirm {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Efeito de hover mais suave para as abas */
         .tab:hover {
-            background-color: #3b82f6;
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(43, 108, 176, 0.5);
         }
+        
         .tab-close {
-            margin-left: 8px;
+            margin-left: 10px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.1rem;
             flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab-close:hover {
+            opacity: 1;
+            background: rgba(239, 68, 68, 0.8);
+            transform: scale(1.1);
         }
         .tab-back {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
             color: white;
             padding: 8px;
-            border-radius: 6px;
-            margin-right: 10px;
-            width: 36px;
-            height: 36px;
-            transition: background-color 0.3s ease;
+            border-radius: 10px;
+            margin-right: 12px;
+            width: 40px;
+            height: 40px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            border: 2px solid transparent;
+            transform: translateY(0);
         }
+        
         .tab-back:hover {
-            background-color: #2563eb;
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+            border-color: #93c5fd;
+        }
+        
+        .tab-back:active {
+            transform: translateY(0) scale(0.95);
         }
         .content-frame {
             display: none;
@@ -514,7 +687,7 @@
             { title: "Dados - Solicitação de Compras ao T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1FtFX3o0_ua37P2TmuJFNK7NNHgRa6rFfY5DaLxLYADo/edit?gid=2000886603#gid=2000886603", forms: [{ title: "", link: "https://forms.gle/JFr1Kt3BmAG7Dgn37" }] },
             { title: "Gestão - Rotina de Vacinas", sector: "Vacinas", link: "https://docs.google.com/spreadsheets/d/1n1DIWxLz-gPATm8gdO0mZEzuwOVDgykTkn2iKJ8TWfg/edit", forms: [] },
             { title: "Relatório - Faturamento das Vacinas", sector: "Vacinas", link: "https://docs.google.com/spreadsheets/d/1HaunPIYM_AN0ZIZCUT1QD52FKuObXXotOWCvPDzCLZ8/edit?gid=441841903#gid=441841903", forms: [] },
-            { title: "Dados - Manutenção dos Arcondicionados", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1HaunPIYM_AN0ZIZCUT1QD52FKuObXXotOWCvPDzCLZ8/edit?gid=441841903#gid=441841903", forms: [{ title: "", link: "https://forms.gle/HvT8rFk4mvacrx1v9" }] },
+            { title: "Dados - Manutenção dos Arcondicionados", sector: "Adminstrativo", link: "", forms: [{ title: "https://docs.google.com/spreadsheets/d/1JCisM4o7OVZbZByzC41jrdnsCp3l7xZRAKwFeX6HBqQ/edit?gid=1737538825#gid=1737538825", link: "https://forms.gle/HvT8rFk4mvacrx1v9" }] },
             { title: "Dados - Demandas de Sistemas", sector: "Sistemas", link: "https://docs.google.com/spreadsheets/d/1baLtm2Toh_HDx-BUAodxG5yY15KBiITagor_fJ8nI8U/edit?pli=1&gid=0#gid=0", forms: [] },
             { title: "Dados - Demandas T.I", sector: "Tecnologia da Informação", link: "https://docs.google.com/spreadsheets/d/1OnjE0XD-oBBxzFykeEOtI009o0uaUEMu9F9p9czzIS4/edit?gid=0#gid=0", forms: [] },
             { title: "Dados - Demandas T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1OnjE0XD-oBBxzFykeEOtI009o0uaUEMu9F9p9czzIS4/edit?gid=0#gid=0", forms: [] },
@@ -531,6 +704,10 @@
         let selectedSector = '';
         let showFavorites = false;
         let openTabs = [];
+        
+        // Variáveis para drag and drop das abas
+        let draggedTab = null;
+        let draggedTabIndex = -1;
 
         // Sort spreadsheets
         spreadsheets.sort((a, b) => {
@@ -677,14 +854,25 @@
                 const tab = document.createElement('div');
                 tab.className = 'tab';
                 tab.dataset.url = url;
+                tab.draggable = true;
                 tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
                 tab.onclick = (e) => {
                     if (e.target.className !== 'tab-close') {
                         switchTab(url);
                     }
                 };
+                
+                // Adicionar eventos de drag and drop
+                tab.addEventListener('dragstart', handleDragStart);
+                tab.addEventListener('dragover', handleDragOver);
+                tab.addEventListener('drop', handleDrop);
+                tab.addEventListener('dragend', handleDragEnd);
+                
                 tabsContainer.appendChild(tab);
             }
+
+            // Atualizar indicador de aba ativa
+            updateActiveTab(url);
 
             // Show content
             mainContent.style.display = 'none';
@@ -693,15 +881,25 @@
         }
 
         function closeTab(url) {
-            openTabs = openTabs.filter(tab => tab.url !== url);
             const tabsContainer = document.getElementById('tabs');
             const tab = tabsContainer.querySelector(`[data-url="${url}"]`);
-            if (tab) tab.remove();
-            if (openTabs.length === 0) {
-                document.getElementById('contentFrame').classList.remove('active');
-                document.getElementById('mainContent').style.display = 'block';
-            } else {
-                switchTab(openTabs[openTabs.length - 1].url);
+            
+            if (tab) {
+                // Adicionar classe para animação de fechamento
+                tab.classList.add('closing');
+                
+                // Aguardar a animação terminar antes de remover
+                setTimeout(() => {
+                    tab.remove();
+                    openTabs = openTabs.filter(tab => tab.url !== url);
+                    
+                    if (openTabs.length === 0) {
+                        document.getElementById('contentFrame').classList.remove('active');
+                        document.getElementById('mainContent').style.display = 'block';
+                    } else {
+                        switchTab(openTabs[openTabs.length - 1].url);
+                    }
+                }, 300); // Tempo da animação
             }
         }
 
@@ -710,6 +908,22 @@
             contentFrame.classList.add('active');
             document.getElementById('mainContent').style.display = 'none';
             contentFrame.src = url;
+            
+            // Atualizar indicador de aba ativa
+            updateActiveTab(url);
+        }
+        
+        function updateActiveTab(url) {
+            // Remover classe active de todas as abas
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Adicionar classe active na aba atual
+            const activeTab = document.querySelector(`[data-url="${url}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
         }
 
         // Back button behavior
@@ -736,6 +950,93 @@
                         content.classList.remove('upward');
                     }
                 }
+            });
+        }
+        
+        // Funções para drag and drop das abas
+        function handleDragStart(e) {
+            draggedTab = e.target;
+            draggedTabIndex = Array.from(draggedTab.parentNode.children).indexOf(draggedTab);
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', e.target.outerHTML);
+            
+            // Adicionar efeito de elevação
+            e.target.style.zIndex = '1000';
+        }
+        
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            
+            // Adicionar feedback visual
+            const targetTab = e.target.closest('.tab');
+            if (targetTab && targetTab !== draggedTab) {
+                // Remover classe de todos os tabs
+                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('drag-over'));
+                // Adicionar classe ao tab de destino
+                targetTab.classList.add('drag-over');
+                
+                // Efeito de pulsação no tab de destino
+                targetTab.style.animation = 'pulse 0.6s ease-in-out';
+            }
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            if (draggedTab === null) return;
+            
+            // Remover todas as classes de drag
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('drag-over');
+                tab.classList.remove('dragging');
+                tab.style.animation = '';
+                tab.style.zIndex = '';
+            });
+            
+            const targetTab = e.target.closest('.tab');
+            if (!targetTab || targetTab === draggedTab) return;
+            
+            const targetIndex = Array.from(targetTab.parentNode.children).indexOf(targetTab);
+            
+            // Reorganizar o array openTabs
+            const [movedTab] = openTabs.splice(draggedTabIndex, 1);
+            openTabs.splice(targetIndex, 0, movedTab);
+            
+            // Reorganizar os elementos DOM com animação
+            if (draggedTabIndex < targetIndex) {
+                targetTab.parentNode.insertBefore(draggedTab, targetTab.nextSibling);
+            } else {
+                targetTab.parentNode.insertBefore(draggedTab, targetTab);
+            }
+            
+            // Atualizar índices
+            updateTabIndices();
+            
+            // Efeito de confirmação
+            draggedTab.style.animation = 'dropConfirm 0.4s ease-out';
+            setTimeout(() => {
+                draggedTab.style.animation = '';
+            }, 400);
+        }
+        
+        function handleDragEnd(e) {
+            // Remover todas as classes de drag
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('drag-over');
+                tab.classList.remove('dragging');
+                tab.style.animation = '';
+                tab.style.zIndex = '';
+            });
+            
+            draggedTab = null;
+            draggedTabIndex = -1;
+        }
+        
+        function updateTabIndices() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach((tab, index) => {
+                tab.dataset.index = index;
             });
         }
 
