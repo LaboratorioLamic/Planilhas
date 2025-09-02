@@ -11,7 +11,6 @@
             background-color: #f9fafb;
             margin: 0;
             overflow-x: hidden;
-            overflow-y: hidden;
         }
         .navy-blue {
             background-color: #1e3a8a;
@@ -23,7 +22,6 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             z-index: 1;
-            max-height: calc(100vh - 200px);
         }
         .card:hover {
             transform: translateY(-5px) scale(1.02);
@@ -46,6 +44,8 @@
             top: 100%;
             left: 0;
             border-radius: 6px;
+            max-height: 200px;
+            overflow-y: auto;
         }
         .dropdown:hover .dropdown-content {
             display: block;
@@ -65,6 +65,15 @@
             left: 0;
             padding-top: 4px;
             border-radius: 6px;
+            max-height: 220px;
+            overflow-y: scroll;
+            scrollbar-width: thin;
+            scrollbar-color: #c1c1c1 #f1f1f1;
+        }
+        .form-dropdown-content.upward {
+            top: auto;
+            bottom: 100%;
+            margin-bottom: 4px;
         }
         .form-dropdown:hover .form-dropdown-content {
             display: block;
@@ -74,9 +83,32 @@
             padding: 8px 16px;
             color: #1f2937;
             text-decoration: none;
+            white-space: nowrap;
+        }
+        .form-dropdown-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .form-dropdown-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .form-dropdown-content::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        .form-dropdown-content::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
         }
         .form-dropdown-content a:hover {
             background-color: #f3f4f6;
+        }
+        /* Garantir que a barra de rolagem seja visível */
+        .form-dropdown-content::-webkit-scrollbar {
+            -webkit-appearance: none;
+            width: 8px;
+        }
+        .form-dropdown-content::-webkit-scrollbar:vertical {
+            width: 8px;
         }
         .link-dropdown {
             position: relative;
@@ -93,6 +125,15 @@
             left: 0;
             padding-top: 4px;
             border-radius: 6px;
+            max-height: 220px;
+            overflow-y: scroll;
+            scrollbar-width: thin;
+            scrollbar-color: #c1c1c1 #f1f1f1;
+        }
+        .link-dropdown-content.upward {
+            top: auto;
+            bottom: 100%;
+            margin-bottom: 4px;
         }
         .link-dropdown:hover .link-dropdown-content {
             display: block;
@@ -102,9 +143,32 @@
             padding: 8px 16px;
             color: #1f2937;
             text-decoration: none;
+            white-space: nowrap;
+        }
+        .link-dropdown-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .link-dropdown-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .link-dropdown-content::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        .link-dropdown-content::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
         }
         .link-dropdown-content a:hover {
             background-color: #f3f4f6;
+        }
+        /* Garantir que a barra de rolagem seja visível */
+        .link-dropdown-content::-webkit-scrollbar {
+            -webkit-appearance: none;
+            width: 8px;
+        }
+        .link-dropdown-content::-webkit-scrollbar:vertical {
+            width: 8px;
         }
         .modern-button {
             display: inline-block;
@@ -274,15 +338,39 @@
         }
         main {
             margin-top: 60px;
-            max-height: calc(100vh - 50px);
-            overflow-y: hidden;
+            height: calc(100vh - 60px);
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
         #spreadsheetList {
-            max-height: calc(100vh - 170px);
+            flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
             padding-bottom: 20px;
+            min-height: 0;
+            max-height: calc(100vh - 200px);
+        }
+        /* Estilização da barra de rolagem para os cards */
+        #spreadsheetList::-webkit-scrollbar {
+            width: 12px;
+        }
+        #spreadsheetList::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 6px;
+        }
+        #spreadsheetList::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 6px;
+        }
+        #spreadsheetList::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        /* Para Firefox */
+        #spreadsheetList {
+            scrollbar-width: thin;
+            scrollbar-color: #c1c1c1 #f1f1f1;
         }
     </style>
 </head>
@@ -486,7 +574,14 @@
                     planilhaHtml = `<div class="link-dropdown inline-block">
                         <a href="#" class="mt-4 modern-button">Acessar Planilha</a>
                         <div class="link-dropdown-content rounded-lg">
-                            ${sheet.links.map(link => `<a href="#" onclick="openTab('${link.link}', ${index}, 'spreadsheet'); event.preventDefault();" class="block px-4 py-2 hover:bg-gray-100">${link.title}</a>`).join('')}
+                            ${sheet.links.map(link => {
+                                // Verifica se é um link do Google Drive (contém 'drive.google.com')
+                                if (link.link.includes('drive.google.com')) {
+                                    return `<a href="${link.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100">${link.title}</a>`;
+                                } else {
+                                    return `<a href="#" onclick="openTab('${link.link}', ${index}, 'spreadsheet'); event.preventDefault();" class="block px-4 py-2 hover:bg-gray-100">${link.title}</a>`;
+                                }
+                            }).join('')}
                         </div>
                     </div>`;
                 }
@@ -622,8 +717,33 @@
             document.getElementById('mainContent').style.display = 'block';
         };
 
+        // Function to adjust dropdown positioning
+        function adjustDropdownPosition() {
+            const dropdowns = document.querySelectorAll('.form-dropdown, .link-dropdown');
+            dropdowns.forEach(dropdown => {
+                const content = dropdown.querySelector('.form-dropdown-content, .link-dropdown-content');
+                if (content) {
+                    const rect = dropdown.getBoundingClientRect();
+                    const viewportHeight = window.innerHeight;
+                    const spaceBelow = viewportHeight - rect.bottom;
+                    const contentHeight = Math.min(content.scrollHeight, 220); // max 220px (5 items)
+                    
+                    // If not enough space below, show above
+                    if (spaceBelow < contentHeight && rect.top > contentHeight) {
+                        content.classList.add('upward');
+                    } else {
+                        content.classList.remove('upward');
+                    }
+                }
+            });
+        }
+
         // Initialize
         renderCards();
+        
+        // Adjust dropdown positions on scroll and resize
+        window.addEventListener('scroll', adjustDropdownPosition);
+        window.addEventListener('resize', adjustDropdownPosition);
     </script>
 </body>
 </html>
