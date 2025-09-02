@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +9,9 @@
     <style>
         body {
             background-color: #f9fafb;
+            margin: 0;
+            overflow-x: hidden;
+            overflow-y: hidden;
         }
         .navy-blue {
             background-color: #1e3a8a;
@@ -18,12 +22,13 @@
         .card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
-            z-index: 1; /* Lower z-index for cards */
+            z-index: 1;
+            max-height: calc(100vh - 200px);
         }
         .card:hover {
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
-            z-index: 2; /* Slightly higher on hover, but still below dropdowns */
+            z-index: 2;
         }
         .search-bar {
             max-width: 600px;
@@ -37,15 +42,17 @@
             background-color: #ffffff;
             min-width: 160px;
             box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-            z-index: 10; /* Sector dropdown above cards */
-            max-height: 200px; /* Approximate height for 5 items */
-            overflow-y: auto; /* Enable scrollbar for overflow */
+            z-index: 50;
+            top: 100%;
+            left: 0;
+            border-radius: 6px;
         }
         .dropdown:hover .dropdown-content {
             display: block;
         }
         .form-dropdown {
             position: relative;
+            display: inline-block;
         }
         .form-dropdown-content {
             display: none;
@@ -53,18 +60,27 @@
             background-color: #ffffff;
             min-width: 200px;
             box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-            z-index: 30; /* Higher z-index to ensure form dropdown is above all cards */
-            top: 100%; /* Position below the button */
+            z-index: 50;
+            top: 100%;
             left: 0;
-            padding-top: 4px; /* Small padding to prevent clipping */
-            max-height: 200px; /* Approximate height for 5 items */
-            overflow-y: auto; /* Enable scrollbar for overflow */
+            padding-top: 4px;
+            border-radius: 6px;
         }
         .form-dropdown:hover .form-dropdown-content {
             display: block;
         }
+        .form-dropdown-content a {
+            display: block;
+            padding: 8px 16px;
+            color: #1f2937;
+            text-decoration: none;
+        }
+        .form-dropdown-content a:hover {
+            background-color: #f3f4f6;
+        }
         .link-dropdown {
             position: relative;
+            display: inline-block;
         }
         .link-dropdown-content {
             display: none;
@@ -72,15 +88,23 @@
             background-color: #ffffff;
             min-width: 200px;
             box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-            z-index: 30; /* Ensure link dropdown is above cards */
+            z-index: 50;
             top: 100%;
             left: 0;
             padding-top: 4px;
-            max-height: 200px;
-            overflow-y: auto;
+            border-radius: 6px;
         }
         .link-dropdown:hover .link-dropdown-content {
             display: block;
+        }
+        .link-dropdown-content a {
+            display: block;
+            padding: 8px 16px;
+            color: #1f2937;
+            text-decoration: none;
+        }
+        .link-dropdown-content a:hover {
+            background-color: #f3f4f6;
         }
         .modern-button {
             display: inline-block;
@@ -134,6 +158,7 @@
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: width 0.4s ease, height 0.4s ease;
+            z-index: 0;
         }
         .favorite-button:hover::before {
             width: 200px;
@@ -169,19 +194,111 @@
         .star:not(.favorited) {
             color: #d1d5db;
         }
+        .tab-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #1e3a8a;
+            z-index: 100;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: flex-start;
+            overflow-x: hidden;
+        }
+        #tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            width: 90%;
+        }
+        .tab {
+            display: flex;
+            align-items: center;
+            background-color: #2b6cb0;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            max-width: 200px;
+            min-width: 100px;
+            overflow: hidden;
+        }
+        .tab span.tab-title {
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .tab:hover {
+            background-color: #3b82f6;
+        }
+        .tab-close {
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .tab-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #3b82f6;
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            margin-right: 10px;
+            width: 36px;
+            height: 36px;
+            transition: background-color 0.3s ease;
+            flex-shrink: 0;
+        }
+        .tab-back:hover {
+            background-color: #2563eb;
+        }
+        .content-frame {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 60px);
+            z-index: 50;
+            border: none;
+            overflow-y: auto;
+        }
+        .content-frame.active {
+            display: block;
+        }
+        main {
+            margin-top: 60px;
+            max-height: calc(100vh - 120px);
+            overflow-y: hidden;
+            overflow-x: hidden;
+        }
+        #spreadsheetList {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: 20px;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <header class="navy-blue text-white py-4">
-        <div class="container mx-auto flex items-center justify-between px-4">
-            <div class="flex items-center space-x-4">
-                <img src="https://i.imgur.com/P13sT7A.png" alt="LAMIC Logo" class="h-12 w-auto object-contain">
-                <h1 class="text-3xl font-bold title-font"></h1>
-             </div>
-             </div>
-    </header>
+    <div id="tabBar" class="tab-bar">
+        <div id="backButton" class="tab-back" title="Voltar ao Início">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+        </div>
+        <div id="tabs" class="flex"></div>
+    </div>
 
-    <main class="container mx-auto py-8 flex-grow">
+    <iframe id="contentFrame" class="content-frame"></iframe>
+
+    <main id="mainContent" class="container mx-auto py-8 flex-grow">
         <div class="mb-8 flex flex-col md:flex-row gap-4 items-center justify-center">
             <input type="text" id="searchInput" placeholder="Buscar por título..." class="search-bar p-3 border rounded-lg w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-900">
             <div class="dropdown">
@@ -190,57 +307,17 @@
                 </button>
                 <div id="sectorDropdown" class="dropdown-content rounded-lg">
                     <a href="#" class="block px-4 py-2 bg-blue-100 hover:bg-blue-200" onclick="filterBySector('')">Todos</a>
-                    <!-- Setores serão adicionados dinamicamente aqui -->
                 </div>
             </div>
             <button id="favoriteFilter" class="p-3 favorite-button" onclick="filterByFavorites()">Favoritos</button>
         </div>
 
-        <div id="spreadsheetList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Cards serão adicionados dinamicamente aqui -->
-        </div>
+        <div id="spreadsheetList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </main>
 
-    <footer class="navy-blue text-white py-4">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2025 Acervo de Planilhas LAMIC. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
     <script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-            return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-                try {
-                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                    var firstSheetName = workbook.SheetNames[0];
-                    var worksheet = workbook.Sheets[firstSheetName];
-                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                    var filteredData = jsonData.filter(row => row.some(filledCell));
-                    var headerRowIndex = filteredData.findIndex((row, index) =>
-                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                    );
-                    if (headerRowIndex === -1 || headerRowIndex > 25) {
-                        headerRowIndex = 0;
-                    }
-                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
-                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                    return csv;
-                } catch (e) {
-                    console.error(e);
-                    return "";
-                }
-            }
-            return gk_fileData[filename] || "";
-        }
-
         let spreadsheets = [
-            { title: "Dados - Filtro de Pacientes recorrentes", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1I7BFJSkW_ybeEO-_vr-PXQrBycjn1RolRzy3aayUz-o/edit?gid=0#gid=0", forms: [] },
+        { title: "Dados - Filtro de Pacientes recorrentes", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1I7BFJSkW_ybeEO-_vr-PXQrBycjn1RolRzy3aayUz-o/edit?gid=0#gid=0", forms: [] },
             { title: "Dados - Lista de Pacientes recorrentes", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1oRzVVCQjem6ToaA-McCjO9RqG50kpoFjh2a7Dy9JfAY/edit?gid=596538824#gid=596538824", forms: [] },
             { title: "Dados - Protocolo de Anexos e Evidências", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1v7dSyxAMNHdCmk7mb1Q_CzI_rYRKdc-F4uV7VTsDluA/edit?usp=drive_link", forms: [{ title: "", link: "https://forms.gle/r2cy7S5Rry2cWvZG6" }] },
             { title: "Dados - Protocolo de ATA's", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/140PEhKMHFFTr5lvICTP2-zAiH-A18SCQHxtiz3KAuXU/edit?resourcekey=&gid=1333293977#gid=1333293977", forms: [
@@ -360,18 +437,13 @@
             ], forms: [] }
         ];
 
-        // Initialize favorites from localStorage with site-specific key to avoid collisions across similar sites
         const FAVORITES_KEY = `favorites:${location.host}${location.pathname}`;
-        const LEGACY_FAVORITES_KEY = 'favorites';
-        let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || 'null');
-        if (!favorites) {
-            favorites = JSON.parse(localStorage.getItem(LEGACY_FAVORITES_KEY) || '[]');
-            localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
-        }
+        let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
         let selectedSector = '';
         let showFavorites = false;
+        let openTabs = [];
 
-        // Sort spreadsheets by sector then by title
+        // Sort spreadsheets
         spreadsheets.sort((a, b) => {
             if (a.sector < b.sector) return -1;
             if (a.sector > b.sector) return 1;
@@ -383,61 +455,64 @@
         // Populate sector dropdown
         const uniqueSectors = [...new Set(spreadsheets.map(sheet => sheet.sector))].sort();
         const sectorDropdown = document.getElementById('sectorDropdown');
-        sectorDropdown.innerHTML = `<a href="#" class="block px-4 py-2 bg-blue-100 hover:bg-blue-200" onclick="filterBySector('')">Todos</a>`;
+        sectorDropdown.innerHTML = `<a href="#" class="block px-4 py-2 bg-blue-100 hover:bg-blue-200" onclick="filterBySector(''); event.preventDefault();">Todos</a>`;
         uniqueSectors.forEach(sector => {
             const a = document.createElement('a');
             a.href = '#';
             a.className = 'block px-4 py-2 hover:bg-gray-100';
             a.textContent = sector;
-            a.onclick = () => filterBySector(sector);
+            a.onclick = (e) => {
+                e.preventDefault();
+                filterBySector(sector);
+            };
             sectorDropdown.appendChild(a);
         });
 
         // Render cards
         const spreadsheetList = document.getElementById('spreadsheetList');
-        spreadsheets.forEach((sheet, index) => {
-            const card = document.createElement('div');
-            card.className = 'card bg-white p-6 rounded-lg shadow-md';
-            card.dataset.sector = sheet.sector;
-            card.dataset.index = index;
-            const isFavorited = favorites.includes(index);
-            let formHtml = '';
-            let planilhaHtml = '';
-            if (sheet.links && sheet.links.length > 0) {
-                if (sheet.links.length === 1) {
-                    planilhaHtml = `<a href="${sheet.links[0].link}" target="_blank" class="mt-4 modern-button">Acessar Planilha</a>`;
-                } else {
+        function renderCards() {
+            spreadsheetList.innerHTML = '';
+            spreadsheets.forEach((sheet, index) => {
+                const card = document.createElement('div');
+                card.className = 'card bg-white p-6 rounded-lg shadow-md';
+                card.dataset.sector = sheet.sector;
+                card.dataset.index = index;
+                const isFavorited = favorites.includes(index);
+                let formHtml = '';
+                let planilhaHtml = '';
+                if (sheet.link) {
+                    planilhaHtml = `<a href="#" onclick="openTab('${sheet.link}', ${index}, 'spreadsheet'); event.preventDefault();" class="mt-4 modern-button">Acessar Planilha</a>`;
+                } else if (sheet.links && sheet.links.length > 0) {
                     planilhaHtml = `<div class="link-dropdown inline-block">
-                        <a href="#" class="mt-4 modern-button">Acessar Planilhas</a>
+                        <a href="#" class="mt-4 modern-button">Acessar Planilha</a>
                         <div class="link-dropdown-content rounded-lg">
-                            ${sheet.links.map(l => `<a href="${l.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100">${l.title}</a>`).join('')}
+                            ${sheet.links.map(link => `<a href="#" onclick="openTab('${link.link}', ${index}, 'spreadsheet'); event.preventDefault();" class="block px-4 py-2 hover:bg-gray-100">${link.title}</a>`).join('')}
                         </div>
                     </div>`;
                 }
-            } else {
-                planilhaHtml = `<a href="${sheet.link}" target="_blank" class="mt-4 modern-button">Acessar Planilha</a>`;
-            }
-            if (sheet.forms && sheet.forms.length > 0) {
-                if (sheet.forms.length === 1) {
-                    formHtml = `<a href="${sheet.forms[0].link}" target="_blank" class="mt-4 form-button ml-4">Acessar Formulário</a>`;
-                } else {
-                    formHtml = `<div class="form-dropdown inline-block ml-4">
-                        <a href="#" class="mt-4 form-button">Acessar Formulário</a>
-                        <div class="form-dropdown-content rounded-lg">
-                            ${sheet.forms.map(form => `<a href="${form.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100">${form.title}</a>`).join('')}
-                        </div>
-                    </div>`;
+                if (sheet.forms && sheet.forms.length > 0) {
+                    if (sheet.forms.length === 1) {
+                        formHtml = `<a href="${sheet.forms[0].link}" target="_blank" class="mt-4 form-button ml-4">Acessar Formulário</a>`;
+                    } else {
+                        formHtml = `<div class="form-dropdown inline-block ml-4">
+                            <a href="#" class="mt-4 form-button">Acessar Formulário</a>
+                            <div class="form-dropdown-content rounded-lg">
+                                ${sheet.forms.map(form => `<a href="${form.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100">${form.title || 'Formulário'}</a>`).join('')}
+                            </div>
+                        </div>`;
+                    }
                 }
-            }
-            card.innerHTML = `
-                <span class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite(${index})">&#9733;</span>
-                <h2 class="text-lg font-semibold text-blue-900">${sheet.title}</h2>
-                <p class="text-gray-600">Setor: ${sheet.sector}</p>
-                ${planilhaHtml}
-                ${formHtml}
-            `;
-            spreadsheetList.appendChild(card);
-        });
+                card.innerHTML = `
+                    <span class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite(${index})">&#9733;</span>
+                    <h2 class="text-lg font-semibold text-blue-900">${sheet.title}</h2>
+                    <p class="text-gray-600">Setor: ${sheet.sector}</p>
+                    ${planilhaHtml}
+                    ${formHtml}
+                `;
+                spreadsheetList.appendChild(card);
+            });
+            updateCards();
+        }
 
         // Toggle favorite status
         function toggleFavorite(index) {
@@ -447,7 +522,7 @@
                 favorites.push(index);
             }
             localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
-            updateCards();
+            renderCards();
         }
 
         // Update card display based on filters
@@ -462,16 +537,11 @@
                 const matchesSector = selectedSector === '' || cardSector === selectedSector;
                 const matchesFavorites = !showFavorites || favorites.includes(cardIndex);
                 card.style.display = matchesSearch && matchesSector && matchesFavorites ? '' : 'none';
-                const star = card.querySelector('.star');
-                if (star) {
-                    star.classList.toggle('favorited', favorites.includes(cardIndex));
-                }
             });
         }
 
         // Search input handler
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', updateCards);
+        document.getElementById('searchInput').addEventListener('input', updateCards);
 
         // Sector filter handler
         function filterBySector(sector) {
@@ -492,8 +562,68 @@
             updateCards();
         }
 
+        // Tab management
+        function openTab(url, index, type) {
+            // Extract tab title: text after " - " or full title if no " - " exists
+            let title = spreadsheets[index].title;
+            const titleParts = title.split(' - ');
+            if (titleParts.length > 1) {
+                title = titleParts[1].trim();
+            }
+            const tabsContainer = document.getElementById('tabs');
+            const contentFrame = document.getElementById('contentFrame');
+            const mainContent = document.getElementById('mainContent');
+
+            // Check if tab already exists
+            const existingTab = openTabs.find(tab => tab.url === url);
+            if (!existingTab) {
+                openTabs.push({ url, title, index, type });
+                const tab = document.createElement('div');
+                tab.className = 'tab';
+                tab.dataset.url = url;
+                tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
+                tab.onclick = (e) => {
+                    if (e.target.className !== 'tab-close') {
+                        switchTab(url);
+                    }
+                };
+                tabsContainer.appendChild(tab);
+            }
+
+            // Show content
+            mainContent.style.display = 'none';
+            contentFrame.classList.add('active');
+            contentFrame.src = url;
+        }
+
+        function closeTab(url) {
+            openTabs = openTabs.filter(tab => tab.url !== url);
+            const tabsContainer = document.getElementById('tabs');
+            const tab = tabsContainer.querySelector(`[data-url="${url}"]`);
+            if (tab) tab.remove();
+            if (openTabs.length === 0) {
+                document.getElementById('contentFrame').classList.remove('active');
+                document.getElementById('mainContent').style.display = 'block';
+            } else {
+                switchTab(openTabs[openTabs.length - 1].url);
+            }
+        }
+
+        function switchTab(url) {
+            const contentFrame = document.getElementById('contentFrame');
+            contentFrame.classList.add('active');
+            document.getElementById('mainContent').style.display = 'none';
+            contentFrame.src = url;
+        }
+
+        // Back button behavior
+        document.getElementById('backButton').onclick = () => {
+            document.getElementById('contentFrame').classList.remove('active');
+            document.getElementById('mainContent').style.display = 'block';
+        };
+
         // Initialize
-        updateCards();
+        renderCards();
     </script>
 </body>
 </html>
