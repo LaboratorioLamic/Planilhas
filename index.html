@@ -889,7 +889,7 @@
     contentFrame.classList.add('active');
 }
  
-        function closeTab(url) {
+function closeTab(url) {
     const tabsContainer = document.getElementById('tabs');
     const tab = tabsContainer.querySelector(`[data-url="${url}"]`);
     
@@ -901,14 +901,21 @@
             localStorage.setItem(TABS_KEY, JSON.stringify(openTabs));
             
             if (openTabs.length === 0) {
-                document.getElementById('contentFrame').classList.remove('active');
-                document.getElementById('mainContent').style.display = 'block';
+                const contentFrame = document.getElementById('contentFrame');
+                const mainContent = document.getElementById('mainContent');
+                
+                contentFrame.classList.remove('active');
+                
+                // Exibição flex ocupando a tela
+                mainContent.style.display = 'flex';
+                mainContent.style.height = 'calc(100vh - 60px)';
             } else {
                 switchTab(openTabs[openTabs.length - 1].url);
             }
         }, 300);
     }
 }
+
 
         function switchTab(url) {
     const contentFrame = document.getElementById('contentFrame');
