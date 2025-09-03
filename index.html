@@ -22,6 +22,8 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             z-index: 1;
+            width: 100%;
+            box-sizing: border-box;
         }
         .card:hover {
             transform: translateY(-5px) scale(1.02);
@@ -519,12 +521,14 @@
             position: relative;
         }
         #spreadsheetList {
-            flex: 1;
+            flex: 1 1 auto;
             overflow-y: auto;
             overflow-x: hidden;
             padding-bottom: 20px;
             min-height: 0;
-            max-height: calc(100vh - 200px);
+            box-sizing: border-box;
+            width: 100%;
+            display: grid; /* Adicionado para manter o layout de grid consistente */
         }
         /* Estilização da barra de rolagem para os cards */
         #spreadsheetList::-webkit-scrollbar {
@@ -687,7 +691,7 @@
             { title: "Dados - Solicitação de Compras ao T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1FtFX3o0_ua37P2TmuJFNK7NNHgRa6rFfY5DaLxLYADo/edit?gid=2000886603#gid=2000886603", forms: [{ title: "", link: "https://forms.gle/JFr1Kt3BmAG7Dgn37" }] },
             { title: "Gestão - Rotina de Vacinas", sector: "Vacinas", link: "https://docs.google.com/spreadsheets/d/1n1DIWxLz-gPATm8gdO0mZEzuwOVDgykTkn2iKJ8TWfg/edit", forms: [] },
             { title: "Relatório - Faturamento das Vacinas", sector: "Vacinas", link: "https://docs.google.com/spreadsheets/d/1HaunPIYM_AN0ZIZCUT1QD52FKuObXXotOWCvPDzCLZ8/edit?gid=441841903#gid=441841903", forms: [] },
-            { title: "Dados - Manutenção dos Arcondicionados", sector: "Adminstrativo", link: "", forms: [{ title: "https://docs.google.com/spreadsheets/d/1JCisM4o7OVZbZByzC41jrdnsCp3l7xZRAKwFeX6HBqQ/edit?gid=1737538825#gid=1737538825", link: "https://forms.gle/HvT8rFk4mvacrx1v9" }] },
+            { title: "Dados - Manutenção dos Arcondicionados", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1JCisM4o7OVZbZByzC41jrdnsCp3l7xZRAKwFeX6HBqQ/edit?gid=1737538825#gid=1737538825", forms: [{ title: "", link: "https://forms.gle/HvT8rFk4mvacrx1v9" }] },
             { title: "Dados - Demandas de Sistemas", sector: "Sistemas", link: "https://docs.google.com/spreadsheets/d/1baLtm2Toh_HDx-BUAodxG5yY15KBiITagor_fJ8nI8U/edit?pli=1&gid=0#gid=0", forms: [] },
             { title: "Dados - Demandas T.I", sector: "Tecnologia da Informação", link: "https://docs.google.com/spreadsheets/d/1OnjE0XD-oBBxzFykeEOtI009o0uaUEMu9F9p9czzIS4/edit?gid=0#gid=0", forms: [] },
             { title: "Dados - Demandas T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1OnjE0XD-oBBxzFykeEOtI009o0uaUEMu9F9p9czzIS4/edit?gid=0#gid=0", forms: [] },
@@ -704,7 +708,7 @@
         let selectedSector = '';
         let showFavorites = false;
         let openTabs = [];
-        
+        const TABS_KEY = `openTabs:${location.host}${location.pathname}`;
         // Variáveis para drag and drop das abas
         let draggedTab = null;
         let draggedTabIndex = -1;
@@ -836,82 +840,91 @@
         }
 
         // Tab management
+
         function openTab(url, index, type) {
-            // Extract tab title: text after " - " or full title if no " - " exists
-            let title = spreadsheets[index].title;
-            const titleParts = title.split(' - ');
-            if (titleParts.length > 1) {
-                title = titleParts[1].trim();
+    let title = spreadsheets[index].title;
+    const titleParts = title.split(' - ');
+    if (titleParts.length > 1) {
+        title = titleParts[1].trim();
+    }
+    const tabsContainer = document.getElementById('tabs');
+    const contentFrame = document.getElementById('contentFrame');
+    const mainContent = document.getElementById('mainContent');
+
+    // Check if tab already exists
+    const existingTab = openTabs.find(tab => tab.url === url);
+    if (!existingTab) {
+        openTabs.push({ url, title, index, type });
+        const tab = document.createElement('div');
+        tab.className = 'tab';
+        tab.dataset.url = url;
+        tab.draggable = true;
+        tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
+        tab.onclick = (e) => {
+            if (e.target.className !== 'tab-close') {
+                switchTab(url);
             }
-            const tabsContainer = document.getElementById('tabs');
-            const contentFrame = document.getElementById('contentFrame');
-            const mainContent = document.getElementById('mainContent');
+        };
+        
+        tab.addEventListener('dragstart', handleDragStart);
+        tab.addEventListener('dragover', handleDragOver);
+        tab.addEventListener('drop', handleDrop);
+        tab.addEventListener('dragend', handleDragEnd);
+        
+        tabsContainer.appendChild(tab);
 
-            // Check if tab already exists
-            const existingTab = openTabs.find(tab => tab.url === url);
-            if (!existingTab) {
-                openTabs.push({ url, title, index, type });
-                const tab = document.createElement('div');
-                tab.className = 'tab';
-                tab.dataset.url = url;
-                tab.draggable = true;
-                tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
-                tab.onclick = (e) => {
-                    if (e.target.className !== 'tab-close') {
-                        switchTab(url);
-                    }
-                };
-                
-                // Adicionar eventos de drag and drop
-                tab.addEventListener('dragstart', handleDragStart);
-                tab.addEventListener('dragover', handleDragOver);
-                tab.addEventListener('drop', handleDrop);
-                tab.addEventListener('dragend', handleDragEnd);
-                
-                tabsContainer.appendChild(tab);
-            }
+        // Salvar abas no localStorage
+        localStorage.setItem(TABS_KEY, JSON.stringify(openTabs));
 
-            // Atualizar indicador de aba ativa
-            updateActiveTab(url);
-
-            // Show content
-            mainContent.style.display = 'none';
-            contentFrame.classList.add('active');
+        // Only set src if the iframe doesn't already have this URL
+        if (contentFrame.src !== url) {
             contentFrame.src = url;
         }
+    }
 
+    // Switch to the tab (new or existing) without forcing reload
+    switchTab(url);
+
+    mainContent.style.display = 'none';
+    contentFrame.classList.add('active');
+}
+ 
         function closeTab(url) {
-            const tabsContainer = document.getElementById('tabs');
-            const tab = tabsContainer.querySelector(`[data-url="${url}"]`);
+    const tabsContainer = document.getElementById('tabs');
+    const tab = tabsContainer.querySelector(`[data-url="${url}"]`);
+    
+    if (tab) {
+        tab.classList.add('closing');
+        setTimeout(() => {
+            tab.remove();
+            openTabs = openTabs.filter(tab => tab.url !== url);
+            localStorage.setItem(TABS_KEY, JSON.stringify(openTabs));
             
-            if (tab) {
-                // Adicionar classe para animação de fechamento
-                tab.classList.add('closing');
-                
-                // Aguardar a animação terminar antes de remover
-                setTimeout(() => {
-                    tab.remove();
-                    openTabs = openTabs.filter(tab => tab.url !== url);
-                    
-                    if (openTabs.length === 0) {
-                        document.getElementById('contentFrame').classList.remove('active');
-                        document.getElementById('mainContent').style.display = 'block';
-                    } else {
-                        switchTab(openTabs[openTabs.length - 1].url);
-                    }
-                }, 300); // Tempo da animação
+            if (openTabs.length === 0) {
+                document.getElementById('contentFrame').classList.remove('active');
+                document.getElementById('mainContent').style.display = 'block';
+            } else {
+                switchTab(openTabs[openTabs.length - 1].url);
             }
-        }
+        }, 300);
+    }
+}
 
         function switchTab(url) {
-            const contentFrame = document.getElementById('contentFrame');
-            contentFrame.classList.add('active');
-            document.getElementById('mainContent').style.display = 'none';
-            contentFrame.src = url;
-            
-            // Atualizar indicador de aba ativa
-            updateActiveTab(url);
-        }
+    const contentFrame = document.getElementById('contentFrame');
+    const mainContent = document.getElementById('mainContent');
+
+    // Only update src if the iframe's current URL is different
+    if (contentFrame.src !== url) {
+        contentFrame.src = url;
+    }
+
+    contentFrame.classList.add('active');
+    mainContent.style.display = 'none';
+    
+    // Update active tab indicator
+    updateActiveTab(url);
+}       
         
         function updateActiveTab(url) {
             // Remover classe active de todas as abas
@@ -929,7 +942,8 @@
         // Back button behavior
         document.getElementById('backButton').onclick = () => {
             document.getElementById('contentFrame').classList.remove('active');
-            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'flex'; // Alterado para flex
+            document.getElementById('mainContent').style.height = 'calc(100vh - 60px)';
         };
 
         // Function to adjust dropdown positioning
@@ -1039,9 +1053,55 @@
                 tab.dataset.index = index;
             });
         }
+        
+        function restoreTabs() {
+    const savedTabs = JSON.parse(localStorage.getItem(TABS_KEY) || '[]');
+    const tabsContainer = document.getElementById('tabs');
+    const contentFrame = document.getElementById('contentFrame');
+    const mainContent = document.getElementById('mainContent');
 
-        // Initialize
+    // Criar um contêiner para iframes ocultos
+    const hiddenFramesContainer = document.createElement('div');
+    hiddenFramesContainer.style.display = 'none';
+    document.body.appendChild(hiddenFramesContainer);
+
+    savedTabs.forEach(tab => {
+        if (spreadsheets[tab.index]) { // Verificar se o índice ainda é válido
+            // Criar a aba visível
+            openTab(tab.url, tab.index, tab.type);
+
+            // Criar iframe oculto para pré-carregamento
+            const hiddenFrame = document.createElement('iframe');
+            hiddenFrame.src = tab.url;
+            hiddenFrame.dataset.url = tab.url;
+            hiddenFrame.style.display = 'none';
+            hiddenFramesContainer.appendChild(hiddenFrame);
+        }
+    });
+
+    // Modificar switchTab para usar iframes pré-carregados
+    window.switchTab = function(url) {
+        const existingFrame = hiddenFramesContainer.querySelector(`iframe[data-url="${url}"]`);
+        if (existingFrame) {
+            // Substituir o conteúdo do iframe principal pelo pré-carregado
+            contentFrame.src = existingFrame.src;
+        } else {
+            // Caso o iframe não esteja pré-carregado, carregar normalmente
+            if (contentFrame.src !== url) {
+                contentFrame.src = url;
+            }
+        }
+
+        contentFrame.classList.add('active');
+        mainContent.style.display = 'none';
+        
+        // Atualizar indicador de aba ativa
+        updateActiveTab(url);
+    };
+}
+
         renderCards();
+        restoreTabs();
         
         // Adjust dropdown positions on scroll and resize
         window.addEventListener('scroll', adjustDropdownPosition);
