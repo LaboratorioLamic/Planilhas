@@ -273,6 +273,7 @@
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
         #tabs {
             display: flex;
             flex-wrap: wrap;
@@ -297,9 +298,11 @@
             border: 2px solid transparent;
             transform: translateY(0);
         }
+        
         .tab:active {
             cursor: grabbing;
         }
+        
         .tab::before {
             content: '';
             position: absolute;
@@ -313,14 +316,17 @@
             border-radius: 10px;
             z-index: -1;
         }
+        
         .tab:hover {
             transform: translateY(-2px) scale(1.02);
             box-shadow: 0 8px 25px rgba(43, 108, 176, 0.4);
             border-color: #60a5fa;
         }
+        
         .tab:hover::before {
             opacity: 1;
         }
+        
         .tab span.tab-title {
             flex-grow: 1;
             overflow: hidden;
@@ -329,9 +335,11 @@
             font-weight: 500;
             transition: transform 0.2s ease;
         }
+        
         .tab:hover span.tab-title {
             transform: translateX(2px);
         }
+        
         .tab.dragging {
             opacity: 0.8;
             transform: rotate(3deg) scale(1.05);
@@ -339,15 +347,19 @@
             box-shadow: 0 12px 35px rgba(43, 108, 176, 0.5);
             background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
         }
+        
         .tab.drag-over {
             border-left: 4px solid #60a5fa;
             background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
             transform: translateX(3px);
             box-shadow: 0 6px 20px rgba(96, 165, 250, 0.4);
         }
+        
+        /* Animações para abertura e fechamento das abas */
         .tab {
             animation: tabSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
         @keyframes tabSlideIn {
             from {
                 opacity: 0;
@@ -358,9 +370,11 @@
                 transform: translateY(0) scale(1);
             }
         }
+        
         .tab.closing {
             animation: tabSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
+        
         @keyframes tabSlideOut {
             from {
                 opacity: 1;
@@ -371,12 +385,15 @@
                 transform: translateY(-20px) scale(0.8);
             }
         }
+        
+        /* Efeito de destaque para aba ativa */
         .tab.active {
             background: linear-gradient(135deg, #102877 0%, #1554db 100%);
             border-color: #4a78dd;
             box-shadow: 0 6px 20px rgba(48, 79, 184, 0.5);
             transform: translateY(-1px);
         }
+        
         .tab.active::after {
             content: '';
             position: absolute;
@@ -389,6 +406,7 @@
             border-radius: 2px;
             animation: activeIndicator 0.3s ease;
         }
+        
         @keyframes activeIndicator {
             from {
                 width: 0;
@@ -399,6 +417,8 @@
                 opacity: 1;
             }
         }
+        
+        /* Animações adicionais para drag and drop */
         @keyframes pulse {
             0%, 100% {
                 transform: scale(1);
@@ -407,6 +427,7 @@
                 transform: scale(1.05);
             }
         }
+        
         @keyframes dropConfirm {
             0% {
                 transform: scale(1);
@@ -418,10 +439,13 @@
                 transform: scale(1);
             }
         }
+        
+        /* Efeito de hover mais suave para as abas */
         .tab:hover {
             transform: translateY(-3px) scale(1.03);
             box-shadow: 0 10px 30px rgba(43, 108, 176, 0.5);
         }
+        
         .tab-close {
             margin-left: 10px;
             cursor: pointer;
@@ -437,6 +461,7 @@
             opacity: 0.7;
             background: rgba(255, 255, 255, 0.1);
         }
+        
         .tab-close:hover {
             opacity: 1;
             background: rgba(239, 68, 68, 0.8);
@@ -459,17 +484,18 @@
             border: 2px solid transparent;
             transform: translateY(0);
         }
+        
         .tab-back:hover {
             background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
             transform: translateY(-2px) scale(1.05);
             box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
             border-color: #93c5fd;
         }
+        
         .tab-back:active {
             transform: translateY(0) scale(0.95);
         }
         .content-frame {
-            display: none;
             position: fixed;
             top: 60px;
             left: 0;
@@ -478,9 +504,6 @@
             z-index: 50;
             border: none;
             overflow-y: auto;
-        }
-        .content-frame.active {
-            display: block;
         }
         main {
             margin-top: 60px;
@@ -499,8 +522,9 @@
             min-height: 0;
             box-sizing: border-box;
             width: 100%;
-            display: grid;
+            display: grid; /* Adicionado para manter o layout de grid consistente */
         }
+        /* Estilização da barra de rolagem para os cards */
         #spreadsheetList::-webkit-scrollbar {
             width: 12px;
         }
@@ -515,6 +539,7 @@
         #spreadsheetList::-webkit-scrollbar-thumb:hover {
             background: #a8a8a8;
         }
+        /* Para Firefox */
         #spreadsheetList {
             scrollbar-width: thin;
             scrollbar-color: #c1c1c1 #f1f1f1;
@@ -530,8 +555,6 @@
         </div>
         <div id="tabs" class="flex"></div>
     </div>
-
-    <iframe id="contentFrame" class="content-frame" title="Conteúdo da aba"></iframe>
 
     <main id="mainContent" class="container mx-auto py-8 flex-grow">
         <div class="mb-8 flex flex-col md:flex-row gap-4 items-center justify-center">
@@ -673,14 +696,14 @@
         ];
 
         const FAVORITES_KEY = `favorites:${location.host}${location.pathname}`;
-        const TABS_KEY = `openTabs:${location.host}${location.pathname}`;
         let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
         let selectedSector = '';
         let showFavorites = false;
         let openTabs = [];
+        const TABS_KEY = `openTabs:${location.host}${location.pathname}`;
+        // Variáveis para drag and drop das abas
         let draggedTab = null;
         let draggedTabIndex = -1;
-        const MAX_HIDDEN_IFRAMES = 3;
 
         // Sort spreadsheets
         spreadsheets.sort((a, b) => {
@@ -829,13 +852,21 @@
                 title = titleParts[1].trim();
             }
             const tabsContainer = document.getElementById('tabs');
-            const contentFrame = document.getElementById('contentFrame');
             const mainContent = document.getElementById('mainContent');
 
-            // Check if tab already exists
             const existingTab = openTabs.find(tab => tab.url === url);
             if (!existingTab) {
-                openTabs.push({ url, title, index, type });
+                const iframe = document.createElement('iframe');
+                iframe.src = url;
+                iframe.className = 'content-frame';
+                iframe.style.display = 'none';
+                iframe.setAttribute('title', `Conteúdo da aba: ${title}`);
+                iframe.addEventListener('error', () => {
+                    alert('Erro ao carregar o conteúdo. Verifique a conexão ou a URL.');
+                });
+                document.body.appendChild(iframe);
+
+                openTabs.push({ url, title, index, type, iframe });
                 const tab = document.createElement('div');
                 tab.className = 'tab';
                 tab.dataset.url = url;
@@ -856,51 +887,31 @@
                 tab.addEventListener('dragover', handleDragOver);
                 tab.addEventListener('drop', handleDrop);
                 tab.addEventListener('dragend', handleDragEnd);
-                tab.addEventListener('mouseover', () => {
-                    const hiddenFrame = document.querySelector(`iframe[data-url="${url}"]`);
-                    if (!hiddenFrame && document.querySelectorAll('iframe[data-url]').length < MAX_HIDDEN_IFRAMES) {
-                        const hiddenFramesContainer = document.querySelector('div[style="display: none"]') || document.createElement('div');
-                        if (!hiddenFramesContainer.parentNode) {
-                            hiddenFramesContainer.style.display = 'none';
-                            document.body.appendChild(hiddenFramesContainer);
-                        }
-                        const newFrame = document.createElement('iframe');
-                        newFrame.src = url;
-                        newFrame.dataset.url = url;
-                        newFrame.style.display = 'none';
-                        newFrame.setAttribute('title', `Pré-carregamento: ${title}`);
-                        hiddenFramesContainer.appendChild(newFrame);
-                    }
-                });
                 tabsContainer.appendChild(tab);
-                localStorage.setItem(TABS_KEY, JSON.stringify(openTabs));
-                if (contentFrame.src !== url) {
-                    contentFrame.src = url;
-                    contentFrame.setAttribute('title', `Conteúdo da aba: ${title}`);
-                }
+
+                // Salvar abas no localStorage
+                localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest))); // Não salvar o iframe no localStorage
             }
+
             switchTab(url);
-            mainContent.style.display = 'none';
-            contentFrame.classList.add('active');
         }
 
         function closeTab(url) {
             const tabsContainer = document.getElementById('tabs');
-            const tab = tabsContainer.querySelector(`[data-url="${url}"]`);
-            const hiddenFrame = document.querySelector(`iframe[data-url="${url}"]`);
-            if (tab) {
-                tab.classList.add('closing');
+            const tabElement = tabsContainer.querySelector(`[data-url="${url}"]`);
+            const tabIndex = openTabs.findIndex(tab => tab.url === url);
+
+            if (tabElement && tabIndex !== -1) {
+                tabElement.classList.add('closing');
                 setTimeout(() => {
-                    tab.remove();
-                    openTabs = openTabs.filter(tab => tab.url !== url);
-                    localStorage.setItem(TABS_KEY, JSON.stringify(openTabs));
-                    if (hiddenFrame) {
-                        hiddenFrame.remove();
-                    }
+                    tabElement.remove();
+                    const tab = openTabs[tabIndex];
+                    tab.iframe.remove();
+                    openTabs.splice(tabIndex, 1);
+                    localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest)));
+
                     if (openTabs.length === 0) {
-                        const contentFrame = document.getElementById('contentFrame');
                         const mainContent = document.getElementById('mainContent');
-                        contentFrame.classList.remove('active');
                         mainContent.style.display = 'flex';
                         mainContent.style.height = 'calc(100vh - 60px)';
                     } else {
@@ -911,18 +922,11 @@
         }
 
         function switchTab(url) {
-            const contentFrame = document.getElementById('contentFrame');
             const mainContent = document.getElementById('mainContent');
-            const hiddenFrame = document.querySelector(`iframe[data-url="${url}"]`);
-            const title = openTabs.find(tab => tab.url === url)?.title || 'Conteúdo da aba';
-            if (hiddenFrame) {
-                contentFrame.src = hiddenFrame.src;
-            } else if (contentFrame.src !== url) {
-                contentFrame.src = url;
-            }
-            contentFrame.setAttribute('title', `Conteúdo da aba: ${title}`);
-            contentFrame.classList.add('active');
             mainContent.style.display = 'none';
+            openTabs.forEach(tab => {
+                tab.iframe.style.display = (tab.url === url) ? 'block' : 'none';
+            });
             updateActiveTab(url);
         }
 
@@ -938,12 +942,15 @@
 
         // Back button behavior
         document.getElementById('backButton').onclick = () => {
-            document.getElementById('contentFrame').classList.remove('active');
-            document.getElementById('mainContent').style.display = 'flex';
-            document.getElementById('mainContent').style.height = 'calc(100vh - 60px)';
+            const mainContent = document.getElementById('mainContent');
+            mainContent.style.display = 'flex';
+            mainContent.style.height = 'calc(100vh - 60px)';
+            openTabs.forEach(tab => {
+                tab.iframe.style.display = 'none';
+            });
         };
 
-        // Adjust dropdown positioning
+        // Function to adjust dropdown positioning
         function adjustDropdownPosition() {
             const dropdowns = document.querySelectorAll('.form-dropdown, .link-dropdown');
             dropdowns.forEach(dropdown => {
@@ -952,7 +959,9 @@
                     const rect = dropdown.getBoundingClientRect();
                     const viewportHeight = window.innerHeight;
                     const spaceBelow = viewportHeight - rect.bottom;
-                    const contentHeight = Math.min(content.scrollHeight, 220);
+                    const contentHeight = Math.min(content.scrollHeight, 220); // max 220px (5 items)
+                    
+                    // If not enough space below, show above
                     if (spaceBelow < contentHeight && rect.top > contentHeight) {
                         content.classList.add('upward');
                     } else {
@@ -962,23 +971,31 @@
             });
         }
 
-        // Drag and drop functions
+        // Funções para drag and drop das abas
         function handleDragStart(e) {
             draggedTab = e.target;
             draggedTabIndex = Array.from(draggedTab.parentNode.children).indexOf(draggedTab);
             e.target.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/html', e.target.outerHTML);
+            
+            // Adicionar efeito de elevação
             e.target.style.zIndex = '1000';
         }
 
         function handleDragOver(e) {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
+            
+            // Adicionar feedback visual
             const targetTab = e.target.closest('.tab');
             if (targetTab && targetTab !== draggedTab) {
+                // Remover classe de todos os tabs
                 document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('drag-over'));
+                // Adicionar classe ao tab de destino
                 targetTab.classList.add('drag-over');
+                
+                // Efeito de pulsação no tab de destino
                 targetTab.style.animation = 'pulse 0.6s ease-in-out';
             }
         }
@@ -986,23 +1003,35 @@
         function handleDrop(e) {
             e.preventDefault();
             if (draggedTab === null) return;
+            
+            // Remover todas as classes de drag
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('drag-over');
                 tab.classList.remove('dragging');
                 tab.style.animation = '';
                 tab.style.zIndex = '';
             });
+            
             const targetTab = e.target.closest('.tab');
             if (!targetTab || targetTab === draggedTab) return;
+            
             const targetIndex = Array.from(targetTab.parentNode.children).indexOf(targetTab);
+            
+            // Reorganizar o array openTabs
             const [movedTab] = openTabs.splice(draggedTabIndex, 1);
             openTabs.splice(targetIndex, 0, movedTab);
+            
+            // Reorganizar os elementos DOM com animação
             if (draggedTabIndex < targetIndex) {
                 targetTab.parentNode.insertBefore(draggedTab, targetTab.nextSibling);
             } else {
                 targetTab.parentNode.insertBefore(draggedTab, targetTab);
             }
+            
+            // Atualizar índices
             updateTabIndices();
+            
+            // Efeito de confirmação
             draggedTab.style.animation = 'dropConfirm 0.4s ease-out';
             setTimeout(() => {
                 draggedTab.style.animation = '';
@@ -1010,12 +1039,14 @@
         }
 
         function handleDragEnd(e) {
+            // Remover todas as classes de drag
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('drag-over');
                 tab.classList.remove('dragging');
                 tab.style.animation = '';
                 tab.style.zIndex = '';
             });
+            
             draggedTab = null;
             draggedTabIndex = -1;
         }
@@ -1028,48 +1059,29 @@
         }
 
         function restoreTabs() {
-            const savedTabs = JSON.parse(localStorage.getItem(TABS_KEY) || '[]').slice(0, MAX_HIDDEN_IFRAMES);
-            const tabsContainer = document.getElementById('tabs');
-            const contentFrame = document.getElementById('contentFrame');
-            const mainContent = document.getElementById('mainContent');
-            const hiddenFramesContainer = document.createElement('div');
-            hiddenFramesContainer.style.display = 'none';
-            document.body.appendChild(hiddenFramesContainer);
-
-            savedTabs.forEach(tab => {
-                if (spreadsheets[tab.index] && isValidUrl(tab.url)) {
-                    openTab(tab.url, tab.index, tab.type);
-                    if (!document.querySelector(`.tab.active[data-url="${tab.url}"]`) && document.querySelectorAll('iframe[data-url]').length < MAX_HIDDEN_IFRAMES) {
-                        const hiddenFrame = document.createElement('iframe');
-                        hiddenFrame.src = tab.url;
-                        hiddenFrame.dataset.url = tab.url;
-                        hiddenFrame.style.display = 'none';
-                        hiddenFrame.setAttribute('title', `Pré-carregamento: ${tab.title}`);
-                        hiddenFramesContainer.appendChild(hiddenFrame);
-                    }
+            const savedTabs = JSON.parse(localStorage.getItem(TABS_KEY) || '[]');
+            savedTabs.forEach(tabData => {
+                if (spreadsheets[tabData.index]) {
+                    openTab(tabData.url, tabData.index, tabData.type);
                 }
             });
         }
 
-        // Error handling for iframe
-        document.getElementById('contentFrame').addEventListener('error', () => {
-            alert('Erro ao carregar o conteúdo. Verifique a conexão ou a URL.');
-        });
-
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            const hiddenFramesContainer = document.querySelector('div[style="display: none"]');
-            if (hiddenFramesContainer) {
-                hiddenFramesContainer.remove();
-            }
-        });
-
         renderCards();
         restoreTabs();
-
+        
         // Adjust dropdown positions on scroll and resize
         window.addEventListener('scroll', adjustDropdownPosition);
         window.addEventListener('resize', adjustDropdownPosition);
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            openTabs.forEach(tab => {
+                if (tab.iframe) {
+                    tab.iframe.remove();
+                }
+            });
+        });
     </script>
 </body>
 </html>
