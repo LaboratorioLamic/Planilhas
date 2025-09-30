@@ -574,518 +574,399 @@
     </main>
 
     <script type="text/javascript">
-        let spreadsheets = [
-        { title: "Dados - Filtro de Pacientes recorrentes", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1I7BFJSkW_ybeEO-_vr-PXQrBycjn1RolRzy3aayUz-o/edit?gid=0#gid=0", forms: [] },
-            { title: "Dados - Lista de Pacientes recorrentes", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1oRzVVCQjem6ToaA-McCjO9RqG50kpoFjh2a7Dy9JfAY/edit?gid=596538824#gid=596538824", forms: [] },
-            { title: "Protocolo - Registro de Anexos e Evidências", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1v7dSyxAMNHdCmk7mb1Q_CzI_rYRKdc-F4uV7VTsDluA/edit?usp=drive_link", forms: [{ title: "", link: "https://forms.gle/r2cy7S5Rry2cWvZG6" }] },
-            { title: "Protocolo - Registro de ATA's", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/140PEhKMHFFTr5lvICTP2-zAiH-A18SCQHxtiz3KAuXU/edit?resourcekey=&gid=1333293977#gid=1333293977", forms: [
-                { title: "Declarações e Certificados", link: "https://forms.gle/VCSJpGojQTWAR9oP9" },
-                { title: "Capacitação Individual", link: "https://forms.gle/mKn4bdwvQPWZALFE9" },
-                { title: "Educação Continuada", link: "https://forms.gle/ZmhKpt3DYfQN46sLA" },
-                { title: "Atas de Treinamento", link: "https://forms.gle/K4TJMaTPPTfLK4UX9" }
-            ] },
-            { title: "Relatório - Auditoria e B.I Hermes Pardini", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1I7nCv9CcS40Bf0LGgl02qyJz3YGWcav1lqyM3bt4qNc/edit?gid=1652334335#gid=1652334335", forms: [] },
-            { title: "Relatório - Volume de pedidos por horário", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1wvno8nwxcBemciobKlNJL4wgJeD4LsptBIN-uoI90wE/edit?gid=825914528#gid=825914528", forms: [] },
-            { title: "Dados - Documentos e Notas Fiscais", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1fhaAWoXz2ebQTK0vhlzZYMMlDEx1iF9QWaFZYttWgrc/edit?gid=2051075321#gid=2051075321", forms: [{ title: "", link: "https://forms.gle/15M5Xe32icGLYQJH8" }] },
-            { title: "Dados - Solicitação de insumos do Almoxarifado", sector: "Almoxarifado", link: "https://docs.google.com/spreadsheets/d/1zsK0nw73_muEHA7MXDVN5hSy6SbGh9wtx55z68vzq3s/edit?gid=1401504443#gid=1401504443", forms: [{ title: "", link: "https://forms.gle/4VP3kfnRMztAh1Nz7" }] },
-            { title: "Almoxarifado - Estoque", sector: "Almoxarifado", links: [
-                { title: "Almoxarifado Geral", link: "https://docs.google.com/spreadsheets/d/11oRTb6e0Ekq2ti7liEjif2XWvHRSIpp_fwfPkD9Q-JA/edit#gid=814613652" },
-                { title: "Estoque - 01 - Unidade NTO", link: "https://docs.google.com/spreadsheets/d/1bmOo_Y57TpyC24qbPJXcEumABN9zOpIljs2vb6T2f2c/edit?usp=drive_link" },
-                { title: "Estoque - 03 - Unidade Crato", link: "https://docs.google.com/spreadsheets/d/11vJU7svPWmq72SwRyXNntZqWFmI0AirpGuRhOklLFAE/edit?usp=drive_link" },
-                { title: "Estoque - 05 - Unidade Novo Juazeiro", link: "https://docs.google.com/spreadsheets/d/1dAwzxk2M3Af2Ijz8Jdnz5C_0noCTL3RjGWMxxGw4Q2Q/edit?usp=drive_link" },
-                { title: "Estoque - 06 - Unidade Milagres", link: "https://docs.google.com/spreadsheets/d/10SD88BH1pAUoX1Iu9oiVUxWuqaUK2AiXzfVAj2eYQ9E/edit?usp=drive_link" },
-                { title: "Estoque - 09 - Unidade Barro", link: "https://docs.google.com/spreadsheets/d/14ZrSFMDDXCnyQx5h2S3LIoiXnvhkgLK8ujsTLOuVsDQ/edit?usp=drive_link" },
-                { title: "Estoque - 10 - Unidade Office Cariri", link: "https://docs.google.com/spreadsheets/d/1DR-B4MV5bQ8eNANECC-36PI12DDQxI7O9Li2L48uhig/edit?usp=drive_link" },
-                { title: "Estoque - 12 - Unidade Caririaçu", link: "https://docs.google.com/spreadsheets/d/10BrlDJutwNEy5gmAXutf3Dstx6JRkv2pSgRR8987e90/edit?usp=drive_link" },
-                { title: "Estoque - 13 - Unidade Campos Sales", link: "https://docs.google.com/spreadsheets/d/1ZdSLLJp_d5oUlP3v4TySNjKLnk0vYrjrav3ZAQh2Ndo/edit?usp=drive_link" },
-                { title: "Estoque - 14 - Unidade Nova Olinda", link: "https://docs.google.com/spreadsheets/d/15WxKpSmmcaUcc53XDwD2QT2oa-02OINkB7cGwBg-W9I/edit?usp=drive_link" },
-                { title: "Estoque - 16 - Unidade Araripe", link: "https://docs.google.com/spreadsheets/d/19loLlqBSWCb8tOW5saZNQlFJ-paIQPpDzXzuOMnqIP4/edit?usp=drive_link" },
-                { title: "Estoque - 23 - Unidade Salesianos", link: "https://docs.google.com/spreadsheets/d/1d7UV1zqDxM0gazFS06hqWBfCxz8X1XJzr_KHWbIe3rM/edit?usp=drive_link" },
-                { title: "Estoque - 62 - Unidade Clemir Arrais", link: "https://docs.google.com/spreadsheets/d/1a0LLKkOV4eOykISH0pDpPQzjv3vcoABcxBw1W_xpWZk/edit?usp=drive_link" },
-                { title: "Estoque - 88 - Unidade Unicardio", link: "https://docs.google.com/spreadsheets/d/1pz66wZwtkn0Zwz6IQNSkvlQP3jN5LAPLlY757gERnG8/edit?usp=drive_link" },
-                { title: "Estoque - 97 - Unidade Endoclinic", link: "https://docs.google.com/spreadsheets/d/1tMlBgzmEBr8lphBw86Y2ncOVmJDaoLjlRQYP5grBfVk/edit?usp=drive_link" },
-                { title: "Estoque - Coleta Domiciliar", link: "https://docs.google.com/spreadsheets/d/1mHi65SBo8monTloEKk1TKG3R80pWVDDqOWlGQ7CubQw/edit?usp=drive_link" }
-            ], forms: [] },
-            { title: "Checklist - Acreditação, Normas e RDC's", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/18d5tNwqoMaR-ogMIH6jzlqzl_sCc2x-IMimX4ann-eI/edit?gid=0#gid=0", forms: [] },
-            { title: "Checklist - Roteiros de Inspensão", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/u/0/d/1eZn37jD2fxNUuwBtjDEOvt5KhIPPaKdpMdwScrV8Stg/edit", forms: [] },
-            { title: "Checklist - Limpeza - Urianálise/Parasito", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1z8VOJr4c08I3bN-IbFTTrtYWHG8teOCMHgwJ19kXu0U/edit?gid=1737538825#gid=1737538825", forms: [] },
-            { title: "Checklist - Manutenção - Imuno-Hormônios", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1WGTpxvNGZYU8DJLPyaPje7UXGfL6_QITQKMbG57-wPU/edit#gid=1737538825", forms: [] },
-            { title: "Dados - Controle de Qualidade - Imuno-Hormônios", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1qphC62x9hv3lAItWonJT7sINC7sBiUUPSpLESMICns8/edit?gid=1737538825#gid=1737538825", forms: [] },
-            { title: "Dados - Controle de Temperatura", sector: "Pré-Analítico", links: [
-                { title: "📂Acessar o Drive", link: "https://drive.google.com/drive/folders/1NucEAGX4vV3S09Q2fRKUMsJJXOSFMpUe" },
-                { title: "Unidade 01 - NTO", link: "https://docs.google.com/spreadsheets/d/166alUaAYFxVBJwrydD9X93SmLcFtpIaVC7Vh1Oi6Lk0/edit?usp=drive_link" },
-                { title: "Unidade 03 - Crato", link: "https://docs.google.com/spreadsheets/d/1R77y-Nbzaqh4hId_SLZ108morK7tBlygnkLH4MphS9I/edit?usp=drive_link" },
-                { title: "Unidade 05 - Novo Juazeiro", link: "https://docs.google.com/spreadsheets/d/1p2xQMPP6A-CcOTdpDz4ESXUrtyYpww6aB9b_H3IGyow/edit?usp=drive_link" },
-                { title: "Unidade 06 - Milagres", link: "https://docs.google.com/spreadsheets/d/138scPlWUMtnAysFto6UxjWhQLyL1_CPgvh0D01Y7Dw4/edit?usp=drive_link" },
-                { title: "Unidade 09 - Barro", link: "https://docs.google.com/spreadsheets/d/1ioCF9oE3D_SD7BQb3WqUtxpYwfaSE7eBDr-QOW7z7nI/edit?usp=drive_link" },
-                { title: "Unidade 10 - Office Cariri", link: "https://docs.google.com/spreadsheets/d/18NxQdcofQr6dA_jUJE6eXlVXcnk5cN2GmX5ASJS7hbw/edit?usp=drive_link" },
-                { title: "Unidade 12 - Caririaçu", link: "https://docs.google.com/spreadsheets/d/1NdNE9EkXkr5E0_Vnx7Rec7w9wi8UpYBztaf5skVN6vY/edit?usp=drive_link" },
-                { title: "Unidade 13 - Campos Sales", link: "https://docs.google.com/spreadsheets/d/1WmOP_1KjxCU_nkgfGeHytmgQ1RGDWskqcsoksjh7QB4/edit?usp=drive_link" },
-                { title: "Unidade 16 - Araripe", link: "https://docs.google.com/spreadsheets/d/13tHQAOnaPH5XKkcwpQXfs7eSZSqQtSzN3tgkbAYOLis/edit?usp=drive_link" },
-                { title: "Unidade 23 - Salesianos", link: "https://docs.google.com/spreadsheets/d/1FdFDDWNcTDf0of73Q566u-MbGc8FlVpdmeBBtkelNWI/edit?usp=drive_link" },
-                { title: "Unidade 62 - Clemir arrais", link: "https://docs.google.com/spreadsheets/d/1UsI9PxonCGCyf1DoQL988rOHHsndXzszDbvVUj0V-3Y/edit?usp=drive_link" },
-                { title: "Unidade 88 - Unicardio", link: "https://docs.google.com/spreadsheets/d/1gFjOMg_uKeENmZHEULMOVuIt9Amp6XPEcRrmdz-eWho/edit?usp=drive_link" },
-                { title: "Caixa de Transporte - Vacinas", link: "https://docs.google.com/spreadsheets/d/1tLSXyJ0ZFjtGtUTSjf29IAqvP0h_kONvvqIfP4S5AOk/edit?usp=drive_link" }
-            ], forms: [] },
-            { title: "Protocolo - Registro de Manutenção", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1qTmqBp6W4l4Uvbb9JpmeHKHL93CuEXIow52QfpuPPZA/edit", forms: [] },
-            { title: "Estatística - Exames Atrasados", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1sBe0p-jpPrzs8n7MWgg19mti1HVGVqYi6d2NizEiEyI/edit#gid=2061615513", forms: [] },
-            { title: "Estatística - Produtividade dos Reagentes/Equipamentos", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1bnAxgE4KzIHP6MgIBoZwJsfp6od39k9WQ2TueHE_XHo/edit?gid=1969031502#gid=1969031502", forms: [] },
-            { title: "Estatística - Recoleta, Repetição e Revisões", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1vPq2pPbLFfdcr0Jh_j2poRQuyIE0Ju_1Hhgkq58G0dE/edit?gid=1052390470#gid=1052390470", forms: [] },
-            { title: "Estoque - Insumos e Reagentes da Área Técnica", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1xMj-GdvyYsnfrsL6ZIPfMkMo833R_NO9232gidhJNUU/edit?gid=814613652#gid=814613652", forms: [] },
-            { title: "Relatório - Ocorrências da Área Técnica", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1jPfVxsulCT0j9l29EFSvYumGTVFJ9LuERyeXD1nWKzg/edit?gid=1064389815#gid=1064389815", forms: [] },
-            { title: "Relatório - TRESP TSBAC", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1IKH_7JvCtkzWX_1wWj529ASRVcAxZkXSUkxZc5R_LDE/edit?gid=1680206567#gid=1680206567", forms: [] },
-            { title: "Relatório - Contador de Pacientes - CAC", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/1TB_pbcItAqdfRNSArS3-8vOaa8rp9WvMKtBoCdDj9cs/edit?gid=1738995548#gid=1738995548", forms: [] },
-            { title: "Relatório - Contador de Pacientes - Lojas", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/14zAiniqAyxoXf9yynVUjym6JG1BpsvVuV_7bOFVZyTE/edit?gid=1543462215#gid=1543462215", forms: [] },
-            { title: "Relatório - Conversão de Orçamentos", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/161PaxSjQh-3N0LcGw_42M3J1IfLRAeQowyrhAf03a7M/edit?gid=441841903#gid=441841903", forms: [] },
-            { title: "Relatório - Mensagens Recebidas - CAC", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/10i3C8LxP-y2SET-kWr-lVdeDmQTXT0Ay6Yx0cBP8dTY/edit?gid=2140964014#gid=2140964014", forms: [] },
-            { title: "Relatório - Motivos de Perda", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/1oP_ywSj8M2K1PWMvyBU_lSRPN7ysMQ5fS3iYHanoW1o/edit?resourcekey=&gid=441841903#gid=441841903", forms: [{ title: "", link: "https://forms.gle/8CrMjPWrH1ZKP9Uq8" }] },
-            { title: "Relatório - Ocorrências dos Colaboradores (Convênios)", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/1OUQYZBOjtnffeKwgqtHw-Ybn-UI-G5JogVqySr_NDdE/edit?gid=1064389815#gid=1064389815", forms: [] },
-            { title: "Relatório - Proeficiência dos Atendentes", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/1hqIoKnYIpkAkkE0Ki27gPzeujwooC3vEcTwRMxLUAfI/edit?gid=1913731350#gid=1913731350", forms: [] },
-            { title: "Relatório - Produtividade do CAC", sector: "Atendimento", link: "https://docs.google.com/spreadsheets/d/19uAqg3f8YWWC0lXMLMn4wLQBkSR0b4I6H_0tQKQ0s54/edit?gid=34344753#gid=34344753", forms: [] },
-            { title: "Dados - Compras do Laboratório", sector: "Compras", link: "https://docs.google.com/spreadsheets/d/1uj9rk-5A1U5MhtNUXCpRO5X_q5ML1htJfKLEblYuiWE/edit?gid=1969031502#gid=1969031502", forms: [] },
-            { title: "Gestão - LAMIC VIVA+ (LCE)", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1cjErHBw_P-FZTRMp4ZUdWw5NxYIprPr7A3OP0sIocWs/edit?gid=175422876#gid=175422876", forms: [{ title: "", link: "https://forms.gle/spr96UHYyYYNRWj1A" }] },
-            { title: "Relatório - Campanhas Promocionais", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1DHdKMF-LY2C9e7b6Pmn-ldoCMqpKgRdrrq4L-2FmcGs/edit?gid=441841903#gid=441841903", forms: [] },
-            { title: "Relatório - Curva ABC das Citologias", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1Zh-J6O-fjWb6xV_P4hcKP0rQNgHRmMOQ_Emk1TB-yAQ/edit?gid=1680206567#gid=1680206567", forms: [] },
-            { title: "Relatório - Produtividade dos Apoiados", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1eDCXceWnY40XdhQqbpAHtNAoNLEfwBxvPBfjXU1vTcI/edit?resourcekey=&gid=1044862462#gid=1044862462", forms: [{ title: "", link: "https://forms.gle/KTrtESWzkQ26g3Sk6" }] },
-            { title: "Relatório - Ranking de Exames por Médico", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1wb104xUyryKPLeoReQeHBdSDFEd-5G5SZyksrbo6hos/edit?gid=1680206567#gid=1680206567", forms: [] },
-            { title: "Dados - Tabela de Preços Lamic to Lab", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1jVtSxbP-RmzefsDpPutWCPDazxBupc496kFqqtA_gHA/edit?gid=1332757965#gid=1332757965", forms: [] },
-            { title: "Dados - Tabela de Preços Particular e Cartões de Desconto", sector: "Comercial", link: "https://docs.google.com/spreadsheets/d/1X6HlB6rZ9U5Y32new95fpd5zxM_Y0U9Q6jAN9-va2ZY/edit?gid=1332757965#gid=1332757965", forms: [] },
-            { title: "Dados - Preço de Exames Setor/Convênios", sector: "Convênios", link: "https://docs.google.com/spreadsheets/d/1bLN3r2ETcPYz0pRAiYP2NjQMxRkeTdj0Sj-5pH08gqM/edit?gid=316794600#gid=316794600", forms: [] },
-            { title: "Relatório - Faturamento dos Convênios", sector: "Convênios", link: "https://docs.google.com/spreadsheets/d/14g5t9x7FfEy-CAmxL_Wm5Jj1b__8xMRNsZ8YI2IdOvs/edit?gid=1064389815#gid=1064389815", forms: [] },
-            { title: "Relatório - Metas dos Atendentes", sector: "Coordenação", link: "https://docs.google.com/spreadsheets/d/1fCNRyVrYWB5v4BvBv69x0BLlu4mEzpDXNskCUY33UnA/edit?gid=1064389815#gid=1064389815", forms: [] },
-            { title: "Relatório - Pesquisa de Satisfação dos Pacientes", sector: "Coordenação", link: "https://docs.google.com/spreadsheets/d/1KwY0z_M4VXZXZMSfngJe71rXkRbJhx7_xxBRsCy4LPw/edit?resourcekey#gid=2085666969", forms: [
-                { title: "01 - Unidade NTO", link: "https://forms.gle/zsCoopVRRj6XcWMR9" },
-                { title: "03 - Unidade Crato", link: "https://forms.gle/pGCiHm5w2LfQY4tB8" },
-                { title: "04 - Unidade Vacinas", link: "https://forms.gle/gVBHJLZUaUxHqSmg7" },
-                { title: "05 - Unidade Novo Juazeiro", link: "https://forms.gle/Ps2VhMPtr5GJ5vDM8" },
-                { title: "06 - Unidade Milagres", link: "https://forms.gle/aP2ZcMvj6pDUjmfJ7" },
-                { title: "09 - Unidade Barro", link: "https://forms.gle/xjicYdfHfwzFrmXd8" },
-                { title: "10 - Unidade Office Cariri", link: "https://forms.gle/wfHZpWDZNCY9HsBq7" },
-                { title: "11 - Unidade Canal do Cliente", link: "https://forms.gle/cRAF5F2XyD8VtPt38" },
-                { title: "12 - Unidade Caririaçu", link: "https://forms.gle/5SRoUbVC6U61e2dFA" },
-                { title: "13 - Unidade Campos Sales", link: "https://forms.gle/nyAKEcE6Z74vJMUa9" },
-                { title: "14 - Unidade Nova Olinda", link: "https://forms.gle/5aphHhYFsVdU2ZUa6" },
-                { title: "16 - Unidade Araripe", link: "https://forms.gle/uDmSjct3qQpWVtiM8" },
-                { title: "23 - Unidade Salesianos", link: "https://forms.gle/w61MXrUbzErcS9Da8" },
-                { title: "62 - Unidade Clemir Arrais", link: "https://forms.gle/V69YkenZhaXTuNdNA" },
-                { title: "88 - Unidade Unicardio", link: "https://forms.gle/DNeQiFUBqMCZ2QgRA" },
-                { title: "97 - Unidade Endoclinic", link: "https://forms.gle/DPhy3iUtT6oqBTdS9" }
-            ] },
-            { title: "Relatório - Dados e Resultados de Campanhas do Marketing", sector: "Marketing", link: "https://docs.google.com/spreadsheets/d/1birVjwMVWPcnatJqJBtEdxEC7qPPKDQOC6WJqcaMka8/edit?gid=441841903#gid=441841903", forms: [] },
-            { title: "Estoque - Insumos dos Apoios", sector: "Pré-Analítico", link: "https://docs.google.com/spreadsheets/d/15xQGbkdJkjYFU0P8fnlg3l4jnDx0WAVV9iACuPLYti8/edit?gid=814613652#gid=814613652", forms: [] },
-            { title: "Relatório - Ocorrência dos Colaboradores", sector: "Pré-Analítico", link: "https://docs.google.com/spreadsheets/d/1lnVcRz4P1TM4HjbYt30fdW5MvSWNZVUZ8eOBinDi0dA/edit?gid=1064389815#gid=1064389815", forms: [] },
-            { title: "Relatório - Produtividade dos Coletadores", sector: "Pré-Analítico", link: "https://docs.google.com/spreadsheets/d/1dXmUFFIfcGOmwCQ_mSs-ArAi_GGUouOlWxYDSfgB-oo/edit#gid=320891293", forms: [] },
-            { title: "Protocolo - Registro de Atestado", sector: "RH", link: "https://docs.google.com/spreadsheets/d/1fsQd5UHohQil-sVFrMNkKh275PG3wAIKqeITMTsQPgI/edit", forms: [{ title: "", link: "https://forms.gle/fa2GpM5J3EQGRcZi6" }] },
-            { title: "Dados - Registro de Ponto (Colaboradores)", sector: "RH", link: "https://docs.google.com/spreadsheets/d/1vTxY45YZitpfrKxytaggczHasq4J4iNgWVoC1P8em4I/edit?resourcekey=&gid=817033391#gid=817033391", forms: [{ title: "", link: "https://forms.gle/qW9A2RZYiwUy5jKn9" }] },
-            { title: "Dados - Registro de Ponto (Estagiários)", sector: "RH", link: "https://docs.google.com/spreadsheets/d/18KE2POQXNN2DnRsuyzYx5JVoLteIqeOon_6QO_JRq8s/edit?resourcekey=&gid=817033391#gid=817033391", forms: [{ title: "", link: "https://docs.google.com/forms/d/e/1FAIpQLSesVzrk416wfgqXD47r4znD0kS_QB0m9olq3ndv814_QbYNoQ/viewform" }] },
-            { title: "Dados - Registro de Ponto (Externo)", sector: "RH", link: "https://docs.google.com/spreadsheets/d/17dNVutUQmpNKQDo-3J6ZUu1yKJXqYV4TlWrEHautmPo/edit?gid=817033391#gid=817033391", forms: [{ title: "", link: "https://forms.gle/LfgBAhFN4kuqeG3u9" }] },
-            { title: "Formulário - Plano de Segurança do Paciente (Coleta)", sector: "Pré-Analítico", link: "https://docs.google.com/spreadsheets/d/1JTSx9tMIBG55GAnOtLaz2iMvzHvcU-YvPvHXk7tRBQs/edit", forms: [{ title: "", link: "https://forms.gle/sEaa2TwPYBqWocmE6" }] },
-            { title: "Formulário - Plano de Segurança do Paciente (EAPV)", sector: "Vacinas", link: "https://docs.google.com/spreadsheets/d/1jA8ae7AzwYcSvAldxsve8wzX4onRAmIokaJD3oqaA4g/edit", forms: [{ title: "", link: "https://forms.gle/cEiCt9NxENcoXWCW7" }] },
-            { title: "Relatório - Banco de Horas - Ponto Digital", sector: "RH", link: "https://docs.google.com/spreadsheets/d/1SQa3BaoMcV8d0KgzPlMfKLAGoD5BMkiJsGgIj-4BN0M/edit?gid=441841903#gid=441841903", forms: [] },
-            { title: "Dados - Controle de Compras do T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1SdgmZnuNL45Sym1K_QPLHRsKC3YP8J2o-XoG0x8XIRg/edit?gid=1923083969#gid=1923083969", forms: [] },
-            { title: "Dados - Solicitação de Compras ao T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1FtFX3o0_ua37P2TmuJFNK7NNHgRa6rFfY5DaLxLYADo/edit?gid=2000886603#gid=2000886603", forms: [{ title: "", link: "https://forms.gle/JFr1Kt3BmAG7Dgn37" }] },
-            { title: "Gestão - Rotina de Vacinas", sector: "Vacinas", link: "https://docs.google.com/spreadsheets/d/1n1DIWxLz-gPATm8gdO0mZEzuwOVDgykTkn2iKJ8TWfg/edit", forms: [] },
-            { title: "Relatório - Faturamento das Vacinas", sector: "Vacinas", link: "https://docs.google.com/spreadsheets/d/1HaunPIYM_AN0ZIZCUT1QD52FKuObXXotOWCvPDzCLZ8/edit?gid=441841903#gid=441841903", forms: [] },
-            { title: "Dados - Manutenção dos Arcondicionados", sector: "Adminstrativo", link: "https://docs.google.com/spreadsheets/d/1JCisM4o7OVZbZByzC41jrdnsCp3l7xZRAKwFeX6HBqQ/edit?gid=1737538825#gid=1737538825", forms: [{ title: "", link: "https://forms.gle/HvT8rFk4mvacrx1v9" }] },
-            { title: "Dados - Demandas de Sistemas", sector: "Sistemas", link: "https://docs.google.com/spreadsheets/d/1baLtm2Toh_HDx-BUAodxG5yY15KBiITagor_fJ8nI8U/edit?pli=1&gid=0#gid=0", forms: [] },
-            { title: "Dados - Demandas T.I", sector: "Tecnologia da Informação", link: "https://docs.google.com/spreadsheets/d/1OnjE0XD-oBBxzFykeEOtI009o0uaUEMu9F9p9czzIS4/edit?gid=0#gid=0", forms: [] },
-            { title: "Dados - Demandas T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1OnjE0XD-oBBxzFykeEOtI009o0uaUEMu9F9p9czzIS4/edit?gid=0#gid=0", forms: [] },
-            { title: "Dados - Bioquimica - Lista de preços dos insumos", sector: "Analítico", link: "https://docs.google.com/spreadsheets/d/1_wO7YvVhxLeAATfC-fti_2F7g4KONSpx/edit?gid=2135079923#gid=2135079923 ", forms: [] },
-            { title: "Dados - Demandas T.I", sector: "T.I", link: "https://docs.google.com/spreadsheets/d/1OnjE0XD-oBBxzFykeEOtI009o0uaUEMu9F9p9czzIS4/edit?gid=0#gid=0", forms: [] },
-            { title: "Auditoria - Médicos repetidos", sector: "Coordenação", link: "https://docs.google.com/spreadsheets/d/1JxyBaPgo_8Qkn39xfQYKVktcl1-cnQukVfcOc2tmcbA/edit?gid=0#gid=0", forms: [] },
-            { title: "Dados - Notas das avaliações (Provas)", sector: "Adminstrativo", links: [
-                { title: "Treinamentos", link: "https://docs.google.com/spreadsheets/d/1ZZ3z_QXVQ18Q1D8uChsk5Fif0sVzNmqq5wzufuwogM8/edit?gid=0#gid=0" },
-                { title: "Educação Continuada", link: "https://docs.google.com/spreadsheets/d/1Yf8i3ULB2IGmeNIvapKJaVd6EuT9SM-xcLmDl7Adm3M/edit?gid=0#gid=0" }
-            ], forms: [] }
-        ];
-
         const FAVORITES_KEY = `favorites:${location.host}${location.pathname}`;
         let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
         let selectedSector = '';
         let showFavorites = false;
         let openTabs = [];
         const TABS_KEY = `openTabs:${location.host}${location.pathname}`;
-        // Variáveis para drag and drop das abas
         let draggedTab = null;
         let draggedTabIndex = -1;
-
-        // Sort spreadsheets
-        spreadsheets.sort((a, b) => {
-            if (a.sector < b.sector) return -1;
-            if (a.sector > b.sector) return 1;
-            if (a.title < b.title) return -1;
-            if (a.title > b.title) return 1;
-            return 0;
-        });
-
-        // Populate sector dropdown
-        const uniqueSectors = [...new Set(spreadsheets.map(sheet => sheet.sector))].sort();
-        const sectorDropdown = document.getElementById('sectorDropdown');
-        sectorDropdown.innerHTML = `<a href="#" class="block px-4 py-2 bg-blue-100 hover:bg-blue-200" onclick="filterBySector(''); event.preventDefault();">Todos</a>`;
-        uniqueSectors.forEach(sector => {
-            const a = document.createElement('a');
-            a.href = '#';
-            a.className = 'block px-4 py-2 hover:bg-gray-100';
-            a.textContent = sector;
-            a.onclick = (e) => {
-                e.preventDefault();
-                filterBySector(sector);
-            };
-            sectorDropdown.appendChild(a);
-        });
-
-        // Render cards
-        const spreadsheetList = document.getElementById('spreadsheetList');
-        function renderCards() {
-            spreadsheetList.innerHTML = '';
-            spreadsheets.forEach((sheet, index) => {
-                const card = document.createElement('div');
-                card.className = 'card bg-white p-6 rounded-lg shadow-md';
-                card.dataset.sector = sheet.sector;
-                card.dataset.index = index;
-                const isFavorited = favorites.includes(index);
-                let formHtml = '';
-                let planilhaHtml = '';
-                if (sheet.link) {
-                    planilhaHtml = `<a href="#" onclick="openTab('${sheet.link}', ${index}, 'spreadsheet'); event.preventDefault();" class="mt-4 modern-button">Acessar Planilha</a>`;
-                } else if (sheet.links && sheet.links.length > 0) {
-                    planilhaHtml = `<div class="link-dropdown inline-block">
-                        <a href="#" class="mt-4 modern-button">Acessar Planilha</a>
-                        <div class="link-dropdown-content rounded-lg">
-                            ${sheet.links.map(link => {
-                                if (link.link.includes('drive.google.com')) {
-                                    return `<a href="${link.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100">${link.title}</a>`;
-                                } else {
-                                    return `<a href="#" onclick="openTab('${link.link}', ${index}, 'spreadsheet'); event.preventDefault();" class="block px-4 py-2 hover:bg-gray-100">${link.title}</a>`;
-                                }
-                            }).join('')}
-                        </div>
-                    </div>`;
+    
+        // Fetch data from JSONBin
+        async function fetchSpreadsheets() {
+            const binId = '68dbb13eae596e708f010391';
+            const masterKey = '$2a$10$2elKW8TT6o.K3V176efqwu7kOfD1PnS3D/F0s4Tczc3MYmaU.N1bi';
+            try {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
+                    headers: {
+                        'X-Master-Key': masterKey
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data from JSONBin');
                 }
-                if (sheet.forms && sheet.forms.length > 0) {
-                    if (sheet.forms.length === 1) {
-                        formHtml = `<a href="${sheet.forms[0].link}" target="_blank" class="mt-4 form-button ml-4">Acessar Formulário</a>`;
-                    } else {
-                        formHtml = `<div class="form-dropdown inline-block ml-4">
-                            <a href="#" class="mt-4 form-button">Acessar Formulário</a>
-                            <div class="form-dropdown-content rounded-lg">
-                                ${sheet.forms.map(form => `<a href="${form.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100">${form.title || 'Formulário'}</a>`).join('')}
+                const data = await response.json();
+                return data.record;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                alert('Erro ao carregar os dados do JSONBin. Verifique a conexão ou as credenciais.');
+                return [];
+            }
+        }
+    
+        // Initialize application
+        async function init() {
+            const spreadsheets = await fetchSpreadsheets();
+            
+            // Sort spreadsheets
+            spreadsheets.sort((a, b) => {
+                if (a.sector < b.sector) return -1;
+                if (a.sector > b.sector) return 1;
+                if (a.title < b.title) return -1;
+                if (a.title > b.title) return 1;
+                return 0;
+            });
+    
+            // Populate sector dropdown
+            const uniqueSectors = [...new Set(spreadsheets.map(sheet => sheet.sector))].sort();
+            const sectorDropdown = document.getElementById('sectorDropdown');
+            sectorDropdown.innerHTML = `<a href="#" class="block px-4 py-2 bg-blue-100 hover:bg-blue-200" onclick="filterBySector(''); event.preventDefault();">Todos</a>`;
+            uniqueSectors.forEach(sector => {
+                const a = document.createElement('a');
+                a.href = '#';
+                a.className = 'block px-4 py-2 hover:bg-gray-100';
+                a.textContent = sector;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    filterBySector(sector);
+                };
+                sectorDropdown.appendChild(a);
+            });
+    
+            // Render cards
+            const spreadsheetList = document.getElementById('spreadsheetList');
+            function renderCards() {
+                spreadsheetList.innerHTML = '';
+                spreadsheets.forEach((sheet, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'card bg-white p-6 rounded-lg shadow-md';
+                    card.dataset.sector = sheet.sector;
+                    card.dataset.index = index;
+                    const isFavorited = favorites.includes(index);
+                    let formHtml = '';
+                    let planilhaHtml = '';
+                    if (sheet.link) {
+                        planilhaHtml = `<a href="#" onclick="openTab('${sheet.link}', ${index}, 'spreadsheet'); event.preventDefault();" class="mt-4 modern-button">Acessar Planilha</a>`;
+                    } else if (sheet.links && sheet.links.length > 0) {
+                        planilhaHtml = `<div class="link-dropdown inline-block">
+                            <a href="#" class="mt-4 modern-button">Acessar Planilha</a>
+                            <div class="link-dropdown-content rounded-lg">
+                                ${sheet.links.map(link => {
+                                    if (link.link.includes('drive.google.com')) {
+                                        return `<a href="${link.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100">${link.title}</a>`;
+                                    } else {
+                                        return `<a href="#" onclick="openTab('${link.link}', ${index}, 'spreadsheet'); event.preventDefault();" class="block px-4 py-2 hover:bg-gray-100">${link.title}</a>`;
+                                    }
+                                }).join('')}
                             </div>
                         </div>`;
                     }
+                    if (sheet.forms && sheet.forms.length > 0) {
+                        if (sheet.forms.length === 1) {
+                            formHtml = `<a href="${sheet.forms[0].link}" target="_blank" class="mt-4 form-button ml-4">Acessar Formulário</a>`;
+                        } else {
+                            formHtml = `<div class="form-dropdown inline-block ml-4">
+                                <a href="#" class="mt-4 form-button">Acessar Formulário</a>
+                                <div class="form-dropdown-content rounded-lg">
+                                    ${sheet.forms.map(form => `<a href="${form.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100">${form.title || 'Formulário'}</a>`).join('')}
+                                </div>
+                            </div>`;
+                        }
+                    }
+                    card.innerHTML = `
+                        <span class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite(${index})">&#9733;</span>
+                        <h2 class="text-lg font-semibold text-blue-900">${sheet.title}</h2>
+                        <p class="text-gray-600">Setor: ${sheet.sector}</p>
+                        ${planilhaHtml}
+                        ${formHtml}
+                    `;
+                    spreadsheetList.appendChild(card);
+                });
+                updateCards();
+            }
+    
+            // Toggle favorite status
+            function toggleFavorite(index) {
+                if (favorites.includes(index)) {
+                    favorites = favorites.filter(fav => fav !== index);
+                } else {
+                    favorites.push(index);
                 }
-                card.innerHTML = `
-                    <span class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite(${index})">&#9733;</span>
-                    <h2 class="text-lg font-semibold text-blue-900">${sheet.title}</h2>
-                    <p class="text-gray-600">Setor: ${sheet.sector}</p>
-                    ${planilhaHtml}
-                    ${formHtml}
-                `;
-                spreadsheetList.appendChild(card);
-            });
-            updateCards();
-        }
-
-        // Toggle favorite status
-        function toggleFavorite(index) {
-            if (favorites.includes(index)) {
-                favorites = favorites.filter(fav => fav !== index);
-            } else {
-                favorites.push(index);
+                localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+                renderCards();
             }
-            localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
-            renderCards();
-        }
-
-        // Update card display based on filters
-        function updateCards() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.getElementsByClassName('card');
-            Array.from(cards).forEach(card => {
-                const title = card.querySelector('h2').textContent.toLowerCase();
-                const cardSector = card.getAttribute('data-sector');
-                const cardIndex = parseInt(card.getAttribute('data-index'));
-                const matchesSearch = title.includes(searchTerm);
-                const matchesSector = selectedSector === '' || cardSector === selectedSector;
-                const matchesFavorites = !showFavorites || favorites.includes(cardIndex);
-                card.style.display = matchesSearch && matchesSector && matchesFavorites ? '' : 'none';
-            });
-        }
-
-        // Search input handler
-        document.getElementById('searchInput').addEventListener('input', updateCards);
-
-        // Sector filter handler
-        function filterBySector(sector) {
-            selectedSector = sector;
-            showFavorites = false;
-            document.getElementById('selectedSector').textContent = sector || 'Filtrar por Setor';
-            document.getElementById('favoriteFilter').classList.remove('active');
-            updateCards();
-        }
-
-        // Favorites filter handler
-        function filterByFavorites() {
-            showFavorites = !showFavorites;
-            selectedSector = '';
-            document.getElementById('selectedSector').textContent = 'Filtrar por Setor';
-            const favoriteButton = document.getElementById('favoriteFilter');
-            favoriteButton.classList.toggle('active', showFavorites);
-            updateCards();
-        }
-
-        // URL validation
-        function isValidUrl(url) {
-            try {
-                new URL(url);
-                return true;
-            } catch {
-                return false;
-            }
-        }
-
-        // Tab management
-        function openTab(url, index, type) {
-            if (!isValidUrl(url)) {
-                alert('URL inválida. Não foi possível abrir a aba.');
-                return;
-            }
-            let title = spreadsheets[index].title;
-            const titleParts = title.split(' - ');
-            if (titleParts.length > 1) {
-                title = titleParts[1].trim();
-            }
-            const tabsContainer = document.getElementById('tabs');
-            const mainContent = document.getElementById('mainContent');
-
-            const existingTab = openTabs.find(tab => tab.url === url);
-            if (!existingTab) {
-                const iframe = document.createElement('iframe');
-                iframe.src = url;
-                iframe.className = 'content-frame';
-                iframe.style.display = 'none';
-                iframe.setAttribute('title', `Conteúdo da aba: ${title}`);
-                iframe.addEventListener('error', () => {
-                    alert('Erro ao carregar o conteúdo. Verifique a conexão ou a URL.');
+    
+            // Update card display based on filters
+            function updateCards() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const cards = document.getElementsByClassName('card');
+                Array.from(cards).forEach(card => {
+                    const title = card.querySelector('h2').textContent.toLowerCase();
+                    const cardSector = card.getAttribute('data-sector');
+                    const cardIndex = parseInt(card.getAttribute('data-index'));
+                    const matchesSearch = title.includes(searchTerm);
+                    const matchesSector = selectedSector === '' || cardSector === selectedSector;
+                    const matchesFavorites = !showFavorites || favorites.includes(cardIndex);
+                    card.style.display = matchesSearch && matchesSector && matchesFavorites ? '' : 'none';
                 });
-                document.body.appendChild(iframe);
-
-                openTabs.push({ url, title, index, type, iframe });
-                const tab = document.createElement('div');
-                tab.className = 'tab';
-                tab.dataset.url = url;
-                tab.draggable = true;
-                tab.setAttribute('tabindex', '0');
-                tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
-                tab.onclick = (e) => {
-                    if (e.target.className !== 'tab-close') {
-                        switchTab(url);
-                    }
-                };
-                tab.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && e.target.className !== 'tab-close') {
-                        switchTab(url);
-                    }
-                });
-                tab.addEventListener('dragstart', handleDragStart);
-                tab.addEventListener('dragover', handleDragOver);
-                tab.addEventListener('drop', handleDrop);
-                tab.addEventListener('dragend', handleDragEnd);
-                tabsContainer.appendChild(tab);
-
-                // Salvar abas no localStorage
-                localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest))); // Não salvar o iframe no localStorage
             }
-
-            switchTab(url);
-        }
-
-        function closeTab(url) {
-            const tabsContainer = document.getElementById('tabs');
-            const tabElement = tabsContainer.querySelector(`[data-url="${url}"]`);
-            const tabIndex = openTabs.findIndex(tab => tab.url === url);
-
-            if (tabElement && tabIndex !== -1) {
-                tabElement.classList.add('closing');
-                setTimeout(() => {
-                    tabElement.remove();
-                    const tab = openTabs[tabIndex];
-                    tab.iframe.remove();
-                    openTabs.splice(tabIndex, 1);
+    
+            // Search input handler
+            document.getElementById('searchInput').addEventListener('input', updateCards);
+    
+            // Sector filter handler
+            function filterBySector(sector) {
+                selectedSector = sector;
+                showFavorites = false;
+                document.getElementById('selectedSector').textContent = sector || 'Filtrar por Setor';
+                document.getElementById('favoriteFilter').classList.remove('active');
+                updateCards();
+            }
+    
+            // Favorites filter handler
+            function filterByFavorites() {
+                showFavorites = !showFavorites;
+                selectedSector = '';
+                document.getElementById('selectedSector').textContent = 'Filtrar por Setor';
+                const favoriteButton = document.getElementById('favoriteFilter');
+                favoriteButton.classList.toggle('active', showFavorites);
+                updateCards();
+            }
+    
+            // URL validation
+            function isValidUrl(url) {
+                try {
+                    new URL(url);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }
+    
+            // Tab management
+            function openTab(url, index, type) {
+                if (!isValidUrl(url)) {
+                    alert('URL inválida. Não foi possível abrir a aba.');
+                    return;
+                }
+                let title = spreadsheets[index].title;
+                const titleParts = title.split(' - ');
+                if (titleParts.length > 1) {
+                    title = titleParts[1].trim();
+                }
+                const tabsContainer = document.getElementById('tabs');
+                const mainContent = document.getElementById('mainContent');
+    
+                const existingTab = openTabs.find(tab => tab.url === url);
+                if (!existingTab) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = url;
+                    iframe.className = 'content-frame';
+                    iframe.style.display = 'none';
+                    iframe.setAttribute('title', `Conteúdo da aba: ${title}`);
+                    iframe.addEventListener('error', () => {
+                        alert('Erro ao carregar o conteúdo. Verifique a conexão ou a URL.');
+                    });
+                    document.body.appendChild(iframe);
+    
+                    openTabs.push({ url, title, index, type, iframe });
+                    const tab = document.createElement('div');
+                    tab.className = 'tab';
+                    tab.dataset.url = url;
+                    tab.draggable = true;
+                    tab.setAttribute('tabindex', '0');
+                    tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
+                    tab.onclick = (e) => {
+                        if (e.target.className !== 'tab-close') {
+                            switchTab(url);
+                        }
+                    };
+                    tab.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' && e.target.className !== 'tab-close') {
+                            switchTab(url);
+                        }
+                    });
+                    tab.addEventListener('dragstart', handleDragStart);
+                    tab.addEventListener('dragover', handleDragOver);
+                    tab.addEventListener('drop', handleDrop);
+                    tab.addEventListener('dragend', handleDragEnd);
+                    tabsContainer.appendChild(tab);
+    
                     localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest)));
-
-                    if (openTabs.length === 0) {
-                        const mainContent = document.getElementById('mainContent');
-                        mainContent.style.display = 'flex';
-                        mainContent.style.height = 'calc(100vh - 60px)';
-                    } else {
-                        switchTab(openTabs[openTabs.length - 1].url);
-                    }
-                }, 300);
-            }
-        }
-
-        function switchTab(url) {
-            const mainContent = document.getElementById('mainContent');
-            mainContent.style.display = 'none';
-            openTabs.forEach(tab => {
-                tab.iframe.style.display = (tab.url === url) ? 'block' : 'none';
-            });
-            updateActiveTab(url);
-        }
-
-        function updateActiveTab(url) {
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            const activeTab = document.querySelector(`[data-url="${url}"]`);
-            if (activeTab) {
-                activeTab.classList.add('active');
-            }
-        }
-
-        // Back button behavior
-        document.getElementById('backButton').onclick = () => {
-            const mainContent = document.getElementById('mainContent');
-            mainContent.style.display = 'flex';
-            mainContent.style.height = 'calc(100vh - 60px)';
-            openTabs.forEach(tab => {
-                tab.iframe.style.display = 'none';
-            });
-        };
-
-        // Function to adjust dropdown positioning
-        function adjustDropdownPosition() {
-            const dropdowns = document.querySelectorAll('.form-dropdown, .link-dropdown');
-            dropdowns.forEach(dropdown => {
-                const content = dropdown.querySelector('.form-dropdown-content, .link-dropdown-content');
-                if (content) {
-                    const rect = dropdown.getBoundingClientRect();
-                    const viewportHeight = window.innerHeight;
-                    const spaceBelow = viewportHeight - rect.bottom;
-                    const contentHeight = Math.min(content.scrollHeight, 220); // max 220px (5 items)
-                    
-                    // If not enough space below, show above
-                    if (spaceBelow < contentHeight && rect.top > contentHeight) {
-                        content.classList.add('upward');
-                    } else {
-                        content.classList.remove('upward');
-                    }
                 }
-            });
-        }
-
-        // Funções para drag and drop das abas
-        function handleDragStart(e) {
-            draggedTab = e.target;
-            draggedTabIndex = Array.from(draggedTab.parentNode.children).indexOf(draggedTab);
-            e.target.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', e.target.outerHTML);
-            
-            // Adicionar efeito de elevação
-            e.target.style.zIndex = '1000';
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            
-            // Adicionar feedback visual
-            const targetTab = e.target.closest('.tab');
-            if (targetTab && targetTab !== draggedTab) {
-                // Remover classe de todos os tabs
-                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('drag-over'));
-                // Adicionar classe ao tab de destino
-                targetTab.classList.add('drag-over');
+    
+                switchTab(url);
+            }
+    
+            function closeTab(url) {
+                const tabsContainer = document.getElementById('tabs');
+                const tabElement = tabsContainer.querySelector(`[data-url="${url}"]`);
+                const tabIndex = openTabs.findIndex(tab => tab.url === url);
+    
+                if (tabElement && tabIndex !== -1) {
+                    tabElement.classList.add('closing');
+                    setTimeout(() => {
+                        tabElement.remove();
+                        const tab = openTabs[tabIndex];
+                        tab.iframe.remove();
+                        openTabs.splice(tabIndex, 1);
+                        localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest)));
+    
+                        if (openTabs.length === 0) {
+                            const mainContent = document.getElementById('mainContent');
+                            mainContent.style.display = 'flex';
+                            mainContent.style.height = 'calc(100vh - 60px)';
+                        } else {
+                            switchTab(openTabs[openTabs.length - 1].url);
+                        }
+                    }, 300);
+                }
+            }
+    
+            function switchTab(url) {
+                const mainContent = document.getElementById('mainContent');
+                mainContent.style.display = 'none';
+                openTabs.forEach(tab => {
+                    tab.iframe.style.display = (tab.url === url) ? 'block' : 'none';
+                });
+                updateActiveTab(url);
+            }
+    
+            function updateActiveTab(url) {
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                const activeTab = document.querySelector(`[data-url="${url}"]`);
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                }
+            }
+    
+            document.getElementById('backButton').onclick = () => {
+                const mainContent = document.getElementById('mainContent');
+                mainContent.style.display = 'flex';
+                mainContent.style.height = 'calc(100vh - 60px)';
+                openTabs.forEach(tab => {
+                    tab.iframe.style.display = 'none';
+                });
+            };
+    
+            function adjustDropdownPosition() {
+                const dropdowns = document.querySelectorAll('.form-dropdown, .link-dropdown');
+                dropdowns.forEach(dropdown => {
+                    const content = dropdown.querySelector('.form-dropdown-content, .link-dropdown-content');
+                    if (content) {
+                        const rect = dropdown.getBoundingClientRect();
+                        const viewportHeight = window.innerHeight;
+                        const spaceBelow = viewportHeight - rect.bottom;
+                        const contentHeight = Math.min(content.scrollHeight, 220);
+                        
+                        if (spaceBelow < contentHeight && rect.top > contentHeight) {
+                            content.classList.add('upward');
+                        } else {
+                            content.classList.remove('upward');
+                        }
+                    }
+                });
+            }
+    
+            function handleDragStart(e) {
+                draggedTab = e.target;
+                draggedTabIndex = Array.from(draggedTab.parentNode.children).indexOf(draggedTab);
+                e.target.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', e.target.outerHTML);
+                e.target.style.zIndex = '1000';
+            }
+    
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                const targetTab = e.target.closest('.tab');
+                if (targetTab && targetTab !== draggedTab) {
+                    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('drag-over'));
+                    targetTab.classList.add('drag-over');
+                    targetTab.style.animation = 'pulse 0.6s ease-in-out';
+                }
+            }
+    
+            function handleDrop(e) {
+                e.preventDefault();
+                if (draggedTab === null) return;
                 
-                // Efeito de pulsação no tab de destino
-                targetTab.style.animation = 'pulse 0.6s ease-in-out';
-            }
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            if (draggedTab === null) return;
-            
-            // Remover todas as classes de drag
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('drag-over');
-                tab.classList.remove('dragging');
-                tab.style.animation = '';
-                tab.style.zIndex = '';
-            });
-            
-            const targetTab = e.target.closest('.tab');
-            if (!targetTab || targetTab === draggedTab) return;
-            
-            const targetIndex = Array.from(targetTab.parentNode.children).indexOf(targetTab);
-            
-            // Reorganizar o array openTabs
-            const [movedTab] = openTabs.splice(draggedTabIndex, 1);
-            openTabs.splice(targetIndex, 0, movedTab);
-            
-            // Reorganizar os elementos DOM com animação
-            if (draggedTabIndex < targetIndex) {
-                targetTab.parentNode.insertBefore(draggedTab, targetTab.nextSibling);
-            } else {
-                targetTab.parentNode.insertBefore(draggedTab, targetTab);
-            }
-            
-            // Atualizar índices
-            updateTabIndices();
-            
-            // Efeito de confirmação
-            draggedTab.style.animation = 'dropConfirm 0.4s ease-out';
-            setTimeout(() => {
-                draggedTab.style.animation = '';
-            }, 400);
-        }
-
-        function handleDragEnd(e) {
-            // Remover todas as classes de drag
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('drag-over');
-                tab.classList.remove('dragging');
-                tab.style.animation = '';
-                tab.style.zIndex = '';
-            });
-            
-            draggedTab = null;
-            draggedTabIndex = -1;
-        }
-
-        function updateTabIndices() {
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach((tab, index) => {
-                tab.dataset.index = index;
-            });
-        }
-
-        function restoreTabs() {
-            const savedTabs = JSON.parse(localStorage.getItem(TABS_KEY) || '[]');
-            savedTabs.forEach(tabData => {
-                if (spreadsheets[tabData.index]) {
-                    openTab(tabData.url, tabData.index, tabData.type);
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.classList.remove('drag-over');
+                    tab.classList.remove('dragging');
+                    tab.style.animation = '';
+                    tab.style.zIndex = '';
+                });
+                
+                const targetTab = e.target.closest('.tab');
+                if (!targetTab || targetTab === draggedTab) return;
+                
+                const targetIndex = Array.from(targetTab.parentNode.children).indexOf(targetTab);
+                const [movedTab] = openTabs.splice(draggedTabIndex, 1);
+                openTabs.splice(targetIndex, 0, movedTab);
+                
+                if (draggedTabIndex < targetIndex) {
+                    targetTab.parentNode.insertBefore(draggedTab, targetTab.nextSibling);
+                } else {
+                    targetTab.parentNode.insertBefore(draggedTab, targetTab);
                 }
+                
+                updateTabIndices();
+                draggedTab.style.animation = 'dropConfirm 0.4s ease-out';
+                setTimeout(() => {
+                    draggedTab.style.animation = '';
+                }, 400);
+            }
+    
+            function handleDragEnd(e) {
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.classList.remove('drag-over');
+                    tab.classList.remove('dragging');
+                    tab.style.animation = '';
+                    tab.style.zIndex = '';
+                });
+                
+                draggedTab = null;
+                draggedTabIndex = -1;
+            }
+    
+            function updateTabIndices() {
+                const tabs = document.querySelectorAll('.tab');
+                tabs.forEach((tab, index) => {
+                    tab.dataset.index = index;
+                });
+            }
+    
+            function restoreTabs() {
+                const savedTabs = JSON.parse(localStorage.getItem(TABS_KEY) || '[]');
+                savedTabs.forEach(tabData => {
+                    if (spreadsheets[tabData.index]) {
+                        openTab(tabData.url, tabData.index, tabData.type);
+                    }
+                });
+            }
+    
+            renderCards();
+            restoreTabs();
+            
+            window.addEventListener('scroll', adjustDropdownPosition);
+            window.addEventListener('resize', adjustDropdownPosition);
+    
+            window.addEventListener('beforeunload', () => {
+                openTabs.forEach(tab => {
+                    if (tab.iframe) {
+                        tab.iframe.remove();
+                    }
+                });
             });
         }
-
-        renderCards();
-        restoreTabs();
-        
-        // Adjust dropdown positions on scroll and resize
-        window.addEventListener('scroll', adjustDropdownPosition);
-        window.addEventListener('resize', adjustDropdownPosition);
-
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            openTabs.forEach(tab => {
-                if (tab.iframe) {
-                    tab.iframe.remove();
-                }
-            });
-        });
+    
+        // Start the application
+        init();
     </script>
 </body>
 </html>
