@@ -501,9 +501,52 @@
             scrollbar-width: thin;
             scrollbar-color: #c1c1c1 #f1f1f1;
         }
+        .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.spinner {
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #1e3a8a;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-icon {
+    font-size: 2rem;
+    color: #1e3a8a;
+    animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="flex flex-col items-center">
+            <div class="spinner mb-4"></div>
+        </div>
+    </div>
     <div id="tabBar" class="tab-bar">
         <div id="backButton" class="tab-back" title="Voltar ao Início" onclick="goToHome()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -540,7 +583,7 @@
         let draggedTab = null;
         let draggedTabIndex = -1;
         let spreadsheets = [];
-
+    
         async function fetchSpreadsheets() {
             const binId = '68dbb13eae596e708f010391';
             const masterKey = '$2a$10$2elKW8TT6o.K3V176efqwu7kOfD1PnS3D/F0s4Tczc3MYmaU.N1bi';
@@ -555,7 +598,7 @@
                 }
                 const data = await response.json();
                 const spreadsheets = data.record;
-
+    
                 // Validar links e forms
                 spreadsheets.forEach((sheet, index) => {
                     if (sheet.link && !isValidUrl(sheet.link)) {
@@ -576,7 +619,7 @@
                         });
                     }
                 });
-
+    
                 return spreadsheets;
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -584,7 +627,7 @@
                 return [];
             }
         }
-
+    
         function isValidUrl(url) {
             try {
                 if (!/^https?:\/\//i.test(url)) {
@@ -597,7 +640,7 @@
                 return false;
             }
         }
-
+    
         function openTab(url, index, type) {
             console.log(`Tentando abrir aba: URL=${url}, Index=${index}, Type=${type}`);
             if (!isValidUrl(url)) {
@@ -612,7 +655,7 @@
             }
             const tabsContainer = document.getElementById('tabs');
             const mainContent = document.getElementById('mainContent');
-
+    
             const existingTab = openTabs.find(tab => tab.url === url);
             if (!existingTab) {
                 const iframe = document.createElement('iframe');
@@ -628,7 +671,7 @@
                     console.log(`Iframe carregado com sucesso: ${url}`);
                 };
                 document.body.appendChild(iframe);
-
+    
                 openTabs.push({ url, title, index, type, iframe });
                 const tab = document.createElement('div');
                 tab.className = 'tab';
@@ -653,18 +696,18 @@
                 tab.addEventListener('drop', handleDrop);
                 tab.addEventListener('dragend', handleDragEnd);
                 tabsContainer.appendChild(tab);
-
+    
                 localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest)));
             }
-
+    
             switchTab(url);
         }
-
+    
         function closeTab(url) {
             const tabsContainer = document.getElementById('tabs');
             const tabElement = tabsContainer.querySelector(`[data-url="${url}"]`);
             const tabIndex = openTabs.findIndex(tab => tab.url === url);
-
+    
             if (tabElement && tabIndex !== -1) {
                 tabElement.classList.add('closing');
                 setTimeout(() => {
@@ -673,7 +716,7 @@
                     tab.iframe.remove();
                     openTabs.splice(tabIndex, 1);
                     localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest)));
-
+    
                     if (openTabs.length === 0) {
                         const mainContent = document.getElementById('mainContent');
                         mainContent.style.display = 'flex';
@@ -684,7 +727,7 @@
                 }, 300);
             }
         }
-
+    
         function switchTab(url) {
             const mainContent = document.getElementById('mainContent');
             mainContent.style.display = 'none';
@@ -693,7 +736,7 @@
             });
             updateActiveTab(url);
         }
-
+    
         function updateActiveTab(url) {
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
@@ -703,7 +746,7 @@
                 activeTab.classList.add('active');
             }
         }
-
+    
         function goToHome() {
             console.log('Clicou no botão Home');
             const mainContent = document.getElementById('mainContent');
@@ -718,7 +761,7 @@
                 tab.classList.remove('active');
             });
         }
-
+    
         function handleDragStart(e) {
             draggedTab = e.target;
             draggedTabIndex = Array.from(draggedTab.parentNode.children).indexOf(draggedTab);
@@ -727,7 +770,7 @@
             e.dataTransfer.setData('text/html', e.target.outerHTML);
             e.target.style.zIndex = '1000';
         }
-
+    
         function handleDragOver(e) {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
@@ -738,38 +781,38 @@
                 targetTab.style.animation = 'pulse 0.6s ease-in-out';
             }
         }
-
+    
         function handleDrop(e) {
             e.preventDefault();
             if (draggedTab === null) return;
-
+    
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('drag-over');
                 tab.classList.remove('dragging');
                 tab.style.animation = '';
                 tab.style.zIndex = '';
             });
-
+    
             const targetTab = e.target.closest('.tab');
             if (!targetTab || targetTab === draggedTab) return;
-
+    
             const targetIndex = Array.from(targetTab.parentNode.children).indexOf(targetTab);
             const [movedTab] = openTabs.splice(draggedTabIndex, 1);
             openTabs.splice(targetIndex, 0, movedTab);
-
+    
             if (draggedTabIndex < targetIndex) {
                 targetTab.parentNode.insertBefore(draggedTab, targetTab.nextSibling);
             } else {
                 targetTab.parentNode.insertBefore(draggedTab, targetTab);
             }
-
+    
             updateTabIndices();
             draggedTab.style.animation = 'dropConfirm 0.4s ease-out';
             setTimeout(() => {
                 draggedTab.style.animation = '';
             }, 400);
         }
-
+    
         function handleDragEnd(e) {
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('drag-over');
@@ -777,21 +820,161 @@
                 tab.style.animation = '';
                 tab.style.zIndex = '';
             });
-
+    
             draggedTab = null;
             draggedTabIndex = -1;
         }
-
+    
         function updateTabIndices() {
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach((tab, index) => {
                 tab.dataset.index = index;
             });
         }
+    
+        function toggleFavorite(index) {
+    index = parseInt(index); // Garante que é um número
+    const starElement = event.target; // Pega o span da estrela clicada
+    const card = starElement.closest('.card'); // Encontra o card pai
+    const cardIndex = parseInt(card.dataset.index); // Confirma o índice do card
 
+    if (favorites.includes(cardIndex)) {
+        favorites = favorites.filter(fav => fav !== cardIndex);
+        starElement.classList.remove('favorited'); // Remove a classe imediatamente
+    } else {
+        favorites.push(cardIndex);
+        starElement.classList.add('favorited'); // Adiciona a classe imediatamente (vira amarelo!)
+    }
+    
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites)); // Salva no localStorage
+    
+    // Opcional: Chama updateCards() só se precisar atualizar filtros (ex: se showFavorites=true)
+    if (showFavorites) {
+        updateCards();
+    }
+}
+        function updateCards() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.getElementsByClassName('card');
+            Array.from(cards).forEach(card => {
+                const title = card.querySelector('h2').textContent.toLowerCase();
+                const cardSector = card.getAttribute('data-sector');
+                const cardIndex = parseInt(card.getAttribute('data-index'));
+                const matchesSearch = title.includes(searchTerm);
+                const matchesSector = selectedSector === '' || cardSector === selectedSector;
+                const matchesFavorites = !showFavorites || favorites.includes(cardIndex);
+                card.style.display = matchesSearch && matchesSector && matchesFavorites ? '' : 'none';
+            });
+        }
+    
+        function filterBySector(sector) {
+            selectedSector = sector;
+            showFavorites = false; // Resetar favoritos ao filtrar setor
+            document.getElementById('selectedSector').textContent = sector || 'Filtrar por Setor';
+            document.getElementById('favoriteFilter').classList.remove('active');
+            updateCards(); // Forçar atualização
+        }
+    
+        function filterByFavorites() {
+            showFavorites = !showFavorites;
+            selectedSector = ''; // Resetar filtro de setor ao togglar favoritos
+            document.getElementById('selectedSector').textContent = 'Filtrar por Setor';
+            const favoriteButton = document.getElementById('favoriteFilter');
+            favoriteButton.classList.toggle('active', showFavorites);
+            updateCards(); // Forçar atualização imediata
+        }
+    
+        function adjustDropdownPosition() {
+            const dropdowns = document.querySelectorAll('.form-dropdown, .link-dropdown');
+            dropdowns.forEach(dropdown => {
+                const content = dropdown.querySelector('.form-dropdown-content, .link-dropdown-content');
+                if (content) {
+                    const rect = dropdown.getBoundingClientRect();
+                    const viewportHeight = window.innerHeight;
+                    const spaceBelow = viewportHeight - rect.bottom;
+                    const contentHeight = Math.min(content.scrollHeight, 220);
+                    
+                    if (spaceBelow < contentHeight && rect.top > contentHeight) {
+                        content.classList.add('upward');
+                    } else {
+                        content.classList.remove('upward');
+                    }
+                }
+            });
+        }
+    
+        function restoreTabs() {
+            const savedTabs = JSON.parse(localStorage.getItem(TABS_KEY) || '[]');
+            savedTabs.forEach(tabData => {
+                if (spreadsheets[tabData.index]) {
+                    const url = tabData.url;
+                    const index = tabData.index;
+                    const type = tabData.type;
+                    let title = spreadsheets[index].title;
+                    const titleParts = title.split(' - ');
+                    if (titleParts.length > 1) {
+                        title = titleParts[1].trim();
+                    }
+                    const tabsContainer = document.getElementById('tabs');
+                    const iframe = document.createElement('iframe');
+                    iframe.src = url;
+                    iframe.className = 'content-frame';
+                    iframe.style.display = 'none';
+                    iframe.setAttribute('title', `Conteúdo da aba: ${title}`);
+                    iframe.onerror = () => {
+                        console.error(`Erro ao carregar iframe para URL: ${url}`);
+                        alert('Erro ao carregar o conteúdo. Verifique a conexão ou a URL.');
+                    };
+                    iframe.onload = () => {
+                        console.log(`Iframe carregado com sucesso: ${url}`);
+                    };
+                    document.body.appendChild(iframe);
+    
+                    openTabs.push({ url, title, index, type, iframe });
+                    const tab = document.createElement('div');
+                    tab.className = 'tab';
+                    tab.dataset.url = url;
+                    tab.draggable = true;
+                    tab.setAttribute('tabindex', '0');
+                    tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
+                    tab.onclick = (e) => {
+                        if (e.target.className !== 'tab-close') {
+                            console.log(`Switching to tab: ${url}`);
+                            switchTab(url);
+                        }
+                    };
+                    tab.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' && e.target.className !== 'tab-close') {
+                            console.log(`Switching to tab via Enter: ${url}`);
+                            switchTab(url);
+                        }
+                    });
+                    tab.addEventListener('dragstart', handleDragStart);
+                    tab.addEventListener('dragover', handleDragOver);
+                    tab.addEventListener('drop', handleDrop);
+                    tab.addEventListener('dragend', handleDragEnd);
+                    tabsContainer.appendChild(tab);
+    
+                    localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest)));
+                }
+            });
+            // Não chama switchTab para manter o menu principal visível
+        }
+    
         async function init() {
+            // Mostrar loading
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.display = 'flex';
+            }
+    
             spreadsheets = await fetchSpreadsheets();
-
+    
+            // Esconder loading após fetch
+            if (loadingOverlay) {
+                loadingOverlay.style.display = 'none';
+            }
+    
             spreadsheets.sort((a, b) => {
                 if (a.sector < b.sector) return -1;
                 if (a.sector > b.sector) return 1;
@@ -799,22 +982,33 @@
                 if (a.title > b.title) return 1;
                 return 0;
             });
-
+    
             const uniqueSectors = [...new Set(spreadsheets.map(sheet => sheet.sector))].sort();
             const sectorDropdown = document.getElementById('sectorDropdown');
-            sectorDropdown.innerHTML = `<a href="#" class="block px-4 py-2 bg-blue-100 hover:bg-blue-200" onclick="filterBySector(''); event.preventDefault();">Todos</a>`;
+            sectorDropdown.innerHTML = ''; // Limpar conteúdo anterior
+            // Adicionar "Todos" com addEventListener para melhor controle
+            const todosLink = document.createElement('a');
+            todosLink.href = '#';
+            todosLink.className = 'block px-4 py-2 bg-blue-100 hover:bg-blue-200';
+            todosLink.textContent = 'Todos';
+            todosLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                filterBySector('');
+            });
+            sectorDropdown.appendChild(todosLink);
+    
             uniqueSectors.forEach(sector => {
                 const a = document.createElement('a');
                 a.href = '#';
                 a.className = 'block px-4 py-2 hover:bg-gray-100';
                 a.textContent = sector;
-                a.onclick = (e) => {
+                a.addEventListener('click', (e) => {
                     e.preventDefault();
                     filterBySector(sector);
-                };
+                });
                 sectorDropdown.appendChild(a);
             });
-
+    
             const spreadsheetList = document.getElementById('spreadsheetList');
             function renderCards() {
                 spreadsheetList.innerHTML = '';
@@ -852,17 +1046,19 @@
                         }
                     }
                     if (sheet.forms && sheet.forms.length > 0) {
-                        if (sheet.forms.length === 1) {
-                            formHtml = `<a href="${sheet.forms[0].link}" target="_blank" class="mt-4 form-button ml-4">Acessar Formulário</a>`;
-                        } else {
-                            formHtml = `<div class="form-dropdown inline-block ml-4">
-                                <a href="#" class="mt-4 form-button">Acessar Formulário</a>
-                                <div class="form-dropdown-content rounded-lg">
-                                    ${sheet.forms.map(form => `<a href="${form.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100">${form.title || 'Formulário'}</a>`).join('')}
-                                </div>
-                            </div>`;
-                        }
-                    }
+    if (sheet.forms.length === 1) {
+        formHtml = `<a href="${sheet.forms[0].link}" target="_blank" rel="noopener noreferrer" class="mt-4 form-button ml-4" onclick="window.open('${sheet.forms[0].link}', '_blank', 'noopener,noreferrer'); return false;">Acessar Formulário</a>`;
+    } else {
+        formHtml = `<div class="form-dropdown inline-block ml-4">
+            <a href="#" class="mt-4 form-button">Acessar Formulário</a>
+            <div class="form-dropdown-content rounded-lg">
+                ${sheet.forms.map(form => 
+                    `<a href="${form.link}" target="_blank" rel="noopener noreferrer" class="block px-4 py-2 hover:bg-gray-100" onclick="window.open('${form.link}', '_blank', 'noopener,noreferrer'); event.preventDefault(); return false;">${form.title || 'Formulário'}</a>`
+                ).join('')}
+            </div>
+        </div>`;
+    }
+}
                     card.innerHTML = `
                         <span class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite(${index})">&#9733;</span>
                         <h2 class="text-lg font-semibold text-blue-900">${sheet.title}</h2>
@@ -874,137 +1070,19 @@
                 });
                 updateCards();
             }
-
-            function toggleFavorite(index) {
-                if (favorites.includes(index)) {
-                    favorites = favorites.filter(fav => fav !== index);
-                } else {
-                    favorites.push(index);
-                }
-                localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
-                renderCards();
-            }
-
-            function updateCards() {
-                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-                const cards = document.getElementsByClassName('card');
-                Array.from(cards).forEach(card => {
-                    const title = card.querySelector('h2').textContent.toLowerCase();
-                    const cardSector = card.getAttribute('data-sector');
-                    const cardIndex = parseInt(card.getAttribute('data-index'));
-                    const matchesSearch = title.includes(searchTerm);
-                    const matchesSector = selectedSector === '' || cardSector === selectedSector;
-                    const matchesFavorites = !showFavorites || favorites.includes(cardIndex);
-                    card.style.display = matchesSearch && matchesSector && matchesFavorites ? '' : 'none';
-                });
-            }
-
+    
             document.getElementById('searchInput').addEventListener('input', updateCards);
-
-            function filterBySector(sector) {
-                selectedSector = sector;
-                showFavorites = false;
-                document.getElementById('selectedSector').textContent = sector || 'Filtrar por Setor';
-                document.getElementById('favoriteFilter').classList.remove('active');
-                updateCards();
-            }
-
-            function filterByFavorites() {
-                showFavorites = !showFavorites;
-                selectedSector = '';
-                document.getElementById('selectedSector').textContent = 'Filtrar por Setor';
-                const favoriteButton = document.getElementById('favoriteFilter');
-                favoriteButton.classList.toggle('active', showFavorites);
-                updateCards();
-            }
-
-            function adjustDropdownPosition() {
-                const dropdowns = document.querySelectorAll('.form-dropdown, .link-dropdown');
-                dropdowns.forEach(dropdown => {
-                    const content = dropdown.querySelector('.form-dropdown-content, .link-dropdown-content');
-                    if (content) {
-                        const rect = dropdown.getBoundingClientRect();
-                        const viewportHeight = window.innerHeight;
-                        const spaceBelow = viewportHeight - rect.bottom;
-                        const contentHeight = Math.min(content.scrollHeight, 220);
-                        
-                        if (spaceBelow < contentHeight && rect.top > contentHeight) {
-                            content.classList.add('upward');
-                        } else {
-                            content.classList.remove('upward');
-                        }
-                    }
-                });
-            }
-
-            function restoreTabs() {
-                const savedTabs = JSON.parse(localStorage.getItem(TABS_KEY) || '[]');
-                savedTabs.forEach(tabData => {
-                    if (spreadsheets[tabData.index]) {
-                        const url = tabData.url;
-                        const index = tabData.index;
-                        const type = tabData.type;
-                        let title = spreadsheets[index].title;
-                        const titleParts = title.split(' - ');
-                        if (titleParts.length > 1) {
-                            title = titleParts[1].trim();
-                        }
-                        const tabsContainer = document.getElementById('tabs');
-                        const iframe = document.createElement('iframe');
-                        iframe.src = url;
-                        iframe.className = 'content-frame';
-                        iframe.style.display = 'none';
-                        iframe.setAttribute('title', `Conteúdo da aba: ${title}`);
-                        iframe.onerror = () => {
-                            console.error(`Erro ao carregar iframe para URL: ${url}`);
-                            alert('Erro ao carregar o conteúdo. Verifique a conexão ou a URL.');
-                        };
-                        iframe.onload = () => {
-                            console.log(`Iframe carregado com sucesso: ${url}`);
-                        };
-                        document.body.appendChild(iframe);
-
-                        openTabs.push({ url, title, index, type, iframe });
-                        const tab = document.createElement('div');
-                        tab.className = 'tab';
-                        tab.dataset.url = url;
-                        tab.draggable = true;
-                        tab.setAttribute('tabindex', '0');
-                        tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
-                        tab.onclick = (e) => {
-                            if (e.target.className !== 'tab-close') {
-                                console.log(`Switching to tab: ${url}`);
-                                switchTab(url);
-                            }
-                        };
-                        tab.addEventListener('keydown', (e) => {
-                            if (e.key === 'Enter' && e.target.className !== 'tab-close') {
-                                console.log(`Switching to tab via Enter: ${url}`);
-                                switchTab(url);
-                            }
-                        });
-                        tab.addEventListener('dragstart', handleDragStart);
-                        tab.addEventListener('dragover', handleDragOver);
-                        tab.addEventListener('drop', handleDrop);
-                        tab.addEventListener('dragend', handleDragEnd);
-                        tabsContainer.appendChild(tab);
-
-                        localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest)));
-                    }
-                });
-                // Não chama switchTab para manter o menu principal visível
-            }
-
+    
             // Inicializar com o menu principal visível
             document.getElementById('mainContent').style.display = 'flex';
             document.getElementById('mainContent').style.height = 'calc(100vh - 60px)';
-
+    
             renderCards();
             restoreTabs();
-
+    
             window.addEventListener('scroll', adjustDropdownPosition);
             window.addEventListener('resize', adjustDropdownPosition);
-
+    
             window.addEventListener('beforeunload', () => {
                 openTabs.forEach(tab => {
                     if (tab.iframe) {
@@ -1013,7 +1091,7 @@
                 });
             });
         }
-
+    
         init();
     </script>
 </body>
