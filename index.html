@@ -843,11 +843,19 @@
         updateCards();
     }
 }
+        function normalizeText(text) {
+            return text
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-zA-Z0-9\s]/g, '')
+                .toLowerCase()
+                .trim();
+        }
         function updateCards() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const searchTerm = normalizeText(document.getElementById('searchInput').value);
             const cards = document.getElementsByClassName('card');
             Array.from(cards).forEach(card => {
-                const title = card.querySelector('h2').textContent.toLowerCase();
+                const title = normalizeText(card.querySelector('h2').textContent);
                 const cardSector = card.getAttribute('data-sector');
                 const cardIndex = parseInt(card.getAttribute('data-index'));
                 const matchesSearch = title.includes(searchTerm);
