@@ -682,6 +682,7 @@
             localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe: _, ...r}) => r)));
             if (openTabs.length === 0) {
                 document.getElementById('mainContent').style.display = 'flex';
+                document.querySelector('.sidebar').classList.remove('hidden');
             } else {
                 switchTab(openTabs[openTabs.length - 1].url);
             }
