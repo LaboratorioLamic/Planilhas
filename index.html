@@ -4,1102 +4,994 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acervo de Planilhas LAMIC</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --sidebar-w: 256px;
+            --tabbar-h: 64px;
+            --topbar-h: 60px;
+            --navy: #1e3a8a;
+            --blue: #2563eb;
+            --blue-light: #3b82f6;
+            --purple: #7c3aed;
+            --gold: #f59e0b;
+            --bg: #f1f5f9;
+            --text-1: #0f172a;
+            --text-2: #64748b;
+            --border: #e2e8f0;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            background-color: #f9fafb;
-            margin: 0;
-            overflow-x: hidden;
-        }
-        .navy-blue {
-            background-color: #1e3a8a;
-        }
-        .title-font {
-            font-family: 'Playfair Display', serif;
-        }
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
-            z-index: 2;
-        }
-        .search-bar {
-            max-width: 600px;
-        }
-        .dropdown {
-            position: relative;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #ffffff;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-            z-index: 50;
-            top: 100%;
-            left: 0;
-            border-radius: 6px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .form-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .form-dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #ffffff;
-            min-width: 200px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-            z-index: 50;
-            top: 100%;
-            left: 0;
-            padding-top: 4px;
-            border-radius: 6px;
-            max-height: 220px;
-            overflow-y: scroll;
-            scrollbar-width: thin;
-            scrollbar-color: #c1c1c1 #f1f1f1;
-        }
-        .form-dropdown:hover .form-dropdown-content {
-            display: block;
-        }
-        .form-dropdown-content a {
-            display: block;
-            padding: 8px 16px;
-            color: #1f2937;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-        .form-dropdown-content::-webkit-scrollbar {
-            width: 8px;
-        }
-        .form-dropdown-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-        .form-dropdown-content::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-        .form-dropdown-content::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-        .form-dropdown-content a:hover {
-            background-color: #f3f4f6;
-        }
-        .link-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .link-dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #ffffff;
-            min-width: 200px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-            z-index: 50;
-            top: 100%;
-            left: 0;
-            padding-top: 4px;
-            border-radius: 6px;
-            max-height: 220px;
-            overflow-y: scroll;
-            scrollbar-width: thin;
-            scrollbar-color: #c1c1c1 #f1f1f1;
-        }
-        .link-dropdown:hover .link-dropdown-content {
-            display: block;
-        }
-        .link-dropdown-content a {
-            display: block;
-            padding: 8px 16px;
-            color: #1f2937;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-        .link-dropdown-content::-webkit-scrollbar {
-            width: 8px;
-        }
-        .link-dropdown-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-        .link-dropdown-content::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-        .link-dropdown-content::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-        .link-dropdown-content a:hover {
-            background-color: #f3f4f6;
-        }
-        .modern-button {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #1e3a8a;
-            color: white;
-            border-radius: 6px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        .modern-button:hover {
-            background-color: #2b6cb0;
-            transform: scale(1.05);
-        }
-        .form-button {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #6b21a8;
-            color: white;
-            border-radius: 6px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        .form-button:hover {
-            background-color: #7e22ce;
-            transform: scale(1.05);
-        }
-        .favorite-button {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #d4af37;
-            color: white;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            position: relative;
+            background: var(--bg);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-1);
             overflow: hidden;
         }
-        .favorite-button.active {
-            background-color: #fef3c7;
-            color: #1f2937;
-            border: 2px solid #d4af37;
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+        /* ── LOADING ── */
+        .loading-overlay {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 16px; z-index: 9999;
         }
-        .favorite-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
+        .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid rgba(255,255,255,.1);
+            border-top-color: var(--blue-light);
             border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-            z-index: 0;
+            animation: spin .85s linear infinite;
         }
-        .favorite-button:hover::before {
-            width: 200px;
-            height: 200px;
+        .loading-text {
+            color: rgba(255,255,255,.4);
+            font-size: .72rem; font-weight: 500;
+            letter-spacing: 2.5px; text-transform: uppercase;
         }
-        .favorite-button:hover {
-            background-color: #b8972e;
-            transform: scale(1.05);
-        }
-        .favorite-button.active:hover {
-            background-color: #f7e5a3;
-        }
-        .nav-item {
-            padding: 8px 16px;
-            border-radius: 6px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            font-weight: 500;
-        }
-        .nav-item:hover {
-            background-color: #2b6cb0;
-            transform: scale(1.05);
-        }
-        .star {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 1.5rem;
-        }
-        .star.favorited {
-            color: #d4af37;
-        }
-        .star:not(.favorited) {
-            color: #d1d5db;
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── TAB BAR ── */
         .tab-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-            z-index: 100;
-            padding: 12px 16px;
-            box-shadow: 0 4px 20px rgba(30, 58, 138, 0.3);
-            display: flex;
-            align-items: flex-start;
-            overflow-x: hidden;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        #tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            width: 90%;
-            transition: all 0.3s ease;
-        }
-        .tab {
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, #2b6cb0 0%, #3b82f6 100%);
-            color: white;
-            padding: 10px 18px;
-            border-radius: 12px;
-            cursor: grab;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            max-width: 220px;
-            min-width: 120px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 4px 12px rgba(43, 108, 176, 0.3);
-            border: 2px solid transparent;
-            transform: translateY(0);
-        }
-        .tab:active {
-            cursor: grabbing;
-        }
-        .tab::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border-radius: 10px;
-            z-index: -1;
-        }
-        .tab:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(43, 108, 176, 0.4);
-            border-color: #60a5fa;
-        }
-        .tab:hover::before {
-            opacity: 1;
-        }
-        .tab span.tab-title {
-            flex-grow: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-weight: 500;
-            transition: transform 0.2s ease;
-        }
-        .tab:hover span.tab-title {
-            transform: translateX(2px);
-        }
-        .tab.dragging {
-            opacity: 0.8;
-            transform: rotate(3deg) scale(1.05);
-            z-index: 1000;
-            box-shadow: 0 12px 35px rgba(43, 108, 176, 0.5);
-            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
-        }
-        .tab.drag-over {
-            border-left: 4px solid #60a5fa;
-            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
-            transform: translateX(3px);
-            box-shadow: 0 6px 20px rgba(96, 165, 250, 0.4);
-        }
-        .tab {
-            animation: tabSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        @keyframes tabSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px) scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        .tab.closing {
-            animation: tabSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-        @keyframes tabSlideOut {
-            from {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-20px) scale(0.8);
-            }
-        }
-        .tab.active {
-            background: linear-gradient(135deg, #102877 0%, #1554db 100%);
-            border-color: #4a78dd;
-            box-shadow: 0 6px 20px rgba(48, 79, 184, 0.5);
-            transform: translateY(-1px);
-        }
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 3px;
-            background: #4a79dd00;
-            border-radius: 2px;
-            animation: activeIndicator 0.3s ease;
-        }
-        @keyframes activeIndicator {
-            from {
-                width: 0;
-                opacity: 0;
-            }
-            to {
-                width: 20px;
-                opacity: 1;
-            }
-        }
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-        @keyframes dropConfirm {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-        .tab:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 10px 30px rgba(43, 108, 176, 0.5);
-        }
-        .tab-close {
-            margin-left: 10px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s ease;
-            opacity: 0.7;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .tab-close:hover {
-            opacity: 1;
-            background: rgba(239, 68, 68, 0.8);
-            transform: scale(1.1);
+            position: fixed; top: 0; left: 0; right: 0;
+            height: var(--tabbar-h);
+            background: #0f172a;
+            display: flex; align-items: center;
+            gap: 8px; padding: 0 16px;
+            z-index: 400;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            box-shadow: 0 2px 12px rgba(0,0,0,.3);
         }
         .tab-back {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
-            color: white;
-            padding: 8px;
-            border-radius: 10px;
-            margin-right: 12px;
-            width: 40px;
-            height: 40px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-            border: 2px solid transparent;
-            transform: translateY(0);
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 12px; border-radius: 8px;
+            color: rgba(255,255,255,.8); cursor: pointer;
+            border: 1px solid rgba(255,255,255,.08);
+            background: transparent;
+            transition: all .18s; flex-shrink: 0; user-select: none;
         }
-        .tab-back:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-            border-color: #93c5fd;
+        .tab-back:hover { background: rgba(255,255,255,.08); color: white; }
+        .tab-back-logo { font-size: .9rem; font-weight: 700; letter-spacing: 1px; }
+        .tab-divider { width: 1px; height: 24px; background: rgba(255,255,255,.08); flex-shrink: 0; margin: 0 4px; }
+
+        #tabs {
+            display: flex; align-items: center;
+            gap: 4px; flex: 1; overflow-x: auto; padding: 2px 0;
+            scrollbar-width: none;
         }
-        .tab-back:active {
-            transform: translateY(0) scale(0.95);
+        #tabs::-webkit-scrollbar { display: none; }
+
+        .tab {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,.06);
+            color: rgba(255,255,255,.68);
+            padding: 6px 12px; border-radius: 7px;
+            cursor: pointer; transition: all .18s;
+            max-width: 180px; min-width: 90px; flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,.07);
+            font-size: .785rem; font-weight: 500;
+            animation: tabIn .25s ease; user-select: none;
         }
+        .tab:hover { background: rgba(255,255,255,.1); color: white; }
+        .tab.active { background: rgba(59,130,246,.18); color: #93c5fd; border-color: rgba(59,130,246,.35); }
+        .tab.dragging { opacity: .6; transform: rotate(1.5deg) scale(1.03); cursor: grabbing; }
+        .tab.drag-over { border-left: 3px solid var(--blue-light); background: rgba(59,130,246,.1); }
+        @keyframes tabIn {
+            from { opacity: 0; transform: translateY(-8px) scale(.92); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .tab.closing { animation: tabOut .2s ease forwards; }
+        @keyframes tabOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to   { opacity: 0; transform: translateY(-6px) scale(.9); }
+        }
+        .tab span.tab-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .tab-close {
+            width: 15px; height: 15px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; opacity: .4; font-size: .6rem;
+            flex-shrink: 0; transition: all .15s;
+        }
+        .tab-close:hover { opacity: 1; background: rgba(239,68,68,.6); }
+
+        /* ── IFRAME ── */
         .content-frame {
             position: fixed;
-            top: 60px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 60px);
-            z-index: 50;
-            border: none;
-            overflow-y: auto;
+            top: var(--tabbar-h); left: 0;
+            width: 100%; height: calc(100% - var(--tabbar-h));
+            z-index: 50; border: none;
         }
-        main {
-            margin-top: 60px;
-            height: calc(100vh - 60px);
-            overflow-y: hidden;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            position: fixed;
+            top: var(--tabbar-h); left: 0;
+            width: var(--sidebar-w);
+            height: calc(100vh - var(--tabbar-h));
+            background: #0f172a;
+            display: flex; flex-direction: column;
+            z-index: 200;
+            border-right: 1px solid rgba(255,255,255,.05);
+            transform: translateX(0);
+            transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .35s ease;
+            opacity: 1;
         }
-        #spreadsheetList {
-            flex: 1 1 auto;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding-bottom: 20px;
-            min-height: 0;
-            box-sizing: border-box;
-            width: 100%;
-            display: grid;
+        .sidebar.hidden {
+            transform: translateX(-100%);
+            opacity: 0;
+            pointer-events: none;
         }
-        #spreadsheetList::-webkit-scrollbar {
-            width: 12px;
+        .sidebar-header {
+            padding: 20px 18px 18px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            flex-shrink: 0;
         }
-        #spreadsheetList::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 6px;
+        .sidebar-brand { display: flex; align-items: center; gap: 11px; }
+        .sidebar-logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
         }
-        #spreadsheetList::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 6px;
+        .sidebar-brand-name { font-size: .93rem; font-weight: 700; color: white; letter-spacing: .4px; }
+        .sidebar-brand-sub { font-size: .68rem; color: rgba(255,255,255,.32); margin-top: 1px; }
+
+        .sidebar-section { padding: 16px 12px 8px; flex-shrink: 0; }
+        .sidebar-section-label {
+            display: block;
+            font-size: .62rem; font-weight: 700;
+            letter-spacing: 1.8px; text-transform: uppercase;
+            color: rgba(255,255,255,.26);
+            padding: 0 6px; margin-bottom: 5px;
         }
-        #spreadsheetList::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
+        .sidebar-nav-item {
+            display: flex; align-items: center; gap: 9px;
+            padding: 9px 10px; border-radius: 8px;
+            color: rgba(255,255,255,.65);
+            cursor: pointer; transition: all .15s;
+            font-size: .84rem; font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid transparent;
+            width: 100%; text-align: left; background: transparent;
+            user-select: none;
         }
-        #spreadsheetList {
+        .sidebar-nav-item:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.92); }
+        .sidebar-nav-item.active {
+            background: rgba(59,130,246,.14);
+            color: #93c5fd;
+            border-color: rgba(59,130,246,.22);
+        }
+        .nav-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: .7; }
+        .sidebar-nav-item.active .nav-icon { opacity: 1; }
+        .nav-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .nav-badge {
+            margin-left: auto; flex-shrink: 0;
+            font-size: .67rem; font-weight: 600;
+            color: rgba(255,255,255,.32);
+            background: rgba(255,255,255,.07);
+            padding: 1px 7px; border-radius: 10px;
+            min-width: 22px; text-align: center;
+        }
+        .sidebar-nav-item.active .nav-badge { background: rgba(59,130,246,.2); color: #93c5fd; }
+
+        .sidebar-scroll {
+            flex: 1; overflow-y: auto;
+            padding: 8px 12px 16px;
             scrollbar-width: thin;
-            scrollbar-color: #c1c1c1 #f1f1f1;
+            scrollbar-color: rgba(255,255,255,.08) transparent;
         }
-        .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(4px);
-}
+        .sidebar-scroll::-webkit-scrollbar { width: 3px; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
 
-.spinner {
-    border: 4px solid #f3f4f6;
-    border-top: 4px solid #1e3a8a;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-}
+        /* ── MAIN ── */
+        #mainContent {
+            margin-left: var(--sidebar-w);
+            margin-top: var(--tabbar-h);
+            height: calc(100vh - var(--tabbar-h));
+            display: flex; flex-direction: column;
+            overflow: hidden;
+        }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+        /* ── TOPBAR ── */
+        .topbar {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            height: var(--topbar-h);
+            padding: 0 24px;
+            display: flex; align-items: center; gap: 12px;
+            flex-shrink: 0;
+            box-shadow: 0 1px 6px rgba(0,0,0,.04);
+        }
+        .topbar-title { font-size: .95rem; font-weight: 600; color: var(--text-1); white-space: nowrap; }
+        .topbar-count {
+            font-size: .74rem; font-weight: 500;
+            color: var(--text-2);
+            background: var(--bg);
+            padding: 2px 9px; border-radius: 20px;
+            white-space: nowrap;
+        }
+        .topbar-sep { flex: 1; }
 
-.loading-icon {
-    font-size: 2rem;
-    color: #1e3a8a;
-    animation: pulse 1.5s ease-in-out infinite alternate;
-}
+        .search-wrapper { position: relative; width: 280px; }
+        .search-icon {
+            position: absolute; left: 11px;
+            top: 50%; transform: translateY(-50%);
+            color: #94a3b8; pointer-events: none;
+            width: 15px; height: 15px;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 8px 14px 8px 34px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: .845rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-1);
+            background: #f8fafc;
+            outline: none;
+            transition: all .18s;
+        }
+        #searchInput::placeholder { color: #94a3b8; }
+        #searchInput:focus {
+            border-color: var(--blue-light);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.1);
+        }
 
-@keyframes pulse {
-    from { opacity: 0.5; }
-    to { opacity: 1; }
-}
+        .topbar-fav-btn {
+            display: flex; align-items: center; gap: 7px;
+            padding: 7px 14px;
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-2);
+            font-size: .83rem; font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer; transition: all .18s;
+            white-space: nowrap;
+        }
+        .topbar-fav-btn:hover { border-color: var(--gold); color: #92400e; background: #fffbeb; }
+        .topbar-fav-btn.active { background: #fffbeb; border-color: var(--gold); color: #92400e; font-weight: 600; }
+
+        /* ── STATS BAR ── */
+        .stats-bar {
+            padding: 16px 24px 12px;
+            display: flex; gap: 14px;
+            flex-shrink: 0;
+        }
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            flex: 1; min-width: 0;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .stat-icon {
+            width: 36px; height: 36px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .stat-icon.blue   { background: #eff6ff; color: var(--blue); }
+        .stat-icon.purple { background: #f5f3ff; color: var(--purple); }
+        .stat-icon.amber  { background: #fffbeb; color: #d97706; }
+        .stat-value { font-size: 1.45rem; font-weight: 700; color: var(--text-1); line-height: 1; }
+        .stat-label { font-size: .74rem; color: var(--text-2); margin-top: 3px; }
+
+        /* ── CARDS WRAPPER ── */
+        .cards-wrapper {
+            flex: 1; overflow-y: auto;
+            padding: 0 24px 32px; min-height: 0;
+            scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent;
+        }
+        .cards-wrapper::-webkit-scrollbar { width: 6px; }
+        .cards-wrapper::-webkit-scrollbar-track { background: transparent; }
+        .cards-wrapper::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+        #spreadsheetList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+            gap: 16px;
+        }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            grid-column: 1/-1;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 72px 24px;
+            text-align: center; color: var(--text-2);
+        }
+        .empty-icon {
+            width: 52px; height: 52px;
+            background: #e2e8f0; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 14px; color: #94a3b8;
+        }
+        .empty-state h3 { font-size: 1rem; font-weight: 600; color: var(--text-1); margin-bottom: 5px; }
+        .empty-state p { font-size: .845rem; }
+
+        /* ── CARD ── */
+        .card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e4eaf1;
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(15,23,42,.09);
+            border-color: #bfdbfe;
+        }
+        .card-header {
+            padding: 16px 16px 0;
+            display: flex; align-items: flex-start;
+            justify-content: space-between;
+        }
+        .card-icon {
+            width: 38px; height: 38px; border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .star {
+            cursor: pointer; font-size: 1.05rem; line-height: 1;
+            transition: transform .18s, color .18s;
+            flex-shrink: 0; padding: 2px;
+        }
+        .star:hover { transform: scale(1.3); }
+        .star.favorited { color: var(--gold); }
+        .star:not(.favorited) { color: #d1dae6; }
+
+        .card-body {
+            padding: 12px 16px 14px;
+            flex: 1; display: flex; flex-direction: column; gap: 8px;
+        }
+        .card-title { font-size: .9rem; font-weight: 600; color: var(--text-1); line-height: 1.5; flex: 1; }
+
+        .sector-badge {
+            display: inline-block;
+            font-size: .67rem; font-weight: 600;
+            letter-spacing: .5px; text-transform: uppercase;
+            color: #1d4ed8;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 5px;
+            padding: 3px 8px;
+            max-width: 100%; overflow: hidden;
+            text-overflow: ellipsis; white-space: nowrap;
+            align-self: flex-start;
+        }
+        .card-footer {
+            border-top: 1px solid #f1f5f9;
+            padding: 11px 16px;
+            display: flex; gap: 8px;
+            flex-wrap: wrap; align-items: center;
+        }
+
+        /* ── BUTTONS ── */
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 7px 14px;
+            background: #1e3a8a; color: white;
+            border-radius: 7px;
+            font-size: .78rem; font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none; cursor: pointer; border: none;
+            transition: all .18s; white-space: nowrap;
+        }
+        .btn-primary:hover { background: #1e40af; box-shadow: 0 4px 12px rgba(30,58,138,.3); }
+
+        .btn-form {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 6px 13px;
+            background: transparent; color: var(--purple);
+            border: 1.5px solid rgba(124,58,237,.3);
+            border-radius: 7px;
+            font-size: .78rem; font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none; cursor: pointer;
+            transition: all .18s; white-space: nowrap;
+        }
+        .btn-form:hover { background: var(--purple); color: white; border-color: var(--purple); box-shadow: 0 4px 12px rgba(124,58,237,.25); }
+
+        /* ── INLINE DROPDOWNS ── */
+        .link-dropdown, .form-dropdown { position: relative; display: inline-block; }
+        .link-dropdown-content, .form-dropdown-content {
+            display: none;
+            position: absolute; top: calc(100% + 4px); left: 0;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.1);
+            z-index: 300; min-width: 190px; max-height: 200px;
+            overflow-y: auto;
+            scrollbar-width: thin; scrollbar-color: #cbd5e1 #f8fafc;
+        }
+        .link-dropdown:hover .link-dropdown-content,
+        .form-dropdown:hover .form-dropdown-content { display: block; }
+        .link-dropdown-content.upward, .form-dropdown-content.upward { top: auto; bottom: calc(100% + 4px); }
+        .link-dropdown-content a, .form-dropdown-content a {
+            display: block; padding: 9px 14px;
+            font-size: .82rem; font-family: 'Inter', sans-serif;
+            color: var(--text-1); text-decoration: none;
+            transition: background .1s; white-space: nowrap;
+        }
+        .link-dropdown-content a:first-child, .form-dropdown-content a:first-child { border-radius: 9px 9px 0 0; }
+        .link-dropdown-content a:last-child,  .form-dropdown-content a:last-child  { border-radius: 0 0 9px 9px; }
+        .link-dropdown-content a:hover, .form-dropdown-content a:hover { background: #f1f5f9; color: var(--blue); }
+
+        @keyframes dropConfirm { 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.55} }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
-    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
-        <div class="flex flex-col items-center">
-            <div class="spinner mb-4"></div>
-        </div>
-    </div>
-    <div id="tabBar" class="tab-bar">
-        <div id="backButton" class="tab-back" title="Voltar ao Início" onclick="goToHome()">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-        </div>
-        <div id="tabs" class="flex"></div>
-    </div>
+<body>
 
-    <main id="mainContent" class="container mx-auto py-8 flex-grow">
-        <div class="mb-8 flex flex-col md:flex-row gap-4 items-center justify-center">
-            <input type="text" id="searchInput" placeholder="Buscar por título..." class="search-bar p-3 border rounded-lg w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-900">
-            <div class="dropdown">
-                <button class="p-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800">
-                    <span id="selectedSector">Filtrar por Setor</span>
-                </button>
-                <div id="sectorDropdown" class="dropdown-content rounded-lg">
-                    <a href="#" class="block px-4 py-2 bg-blue-100 hover:bg-blue-200" onclick="filterBySector(''); event.preventDefault();">Todos</a>
-                </div>
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="spinner"></div>
+    <span class="loading-text">Carregando acervo</span>
+</div>
+
+<!-- TAB BAR -->
+<div id="tabBar" class="tab-bar">
+    <div id="backButton" class="tab-back" title="Voltar ao Início" onclick="goToHome()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        <span class="tab-back-logo">LAMIC</span>
+    </div>
+    <div class="tab-divider"></div>
+    <div id="tabs"></div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <line x1="3" y1="9" x2="21" y2="9"/>
+                    <line x1="3" y1="15" x2="21" y2="15"/>
+                    <line x1="9" y1="9" x2="9" y2="21"/>
+                </svg>
             </div>
-            <button id="favoriteFilter" class="p-3 favorite-button" onclick="filterByFavorites()">Favoritos</button>
+            <div>
+                <div class="sidebar-brand-name">LAMIC</div>
+                <div class="sidebar-brand-sub">Acervo de Planilhas</div>
+            </div>
         </div>
+    </div>
 
-        <div id="spreadsheetList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </main>
+    <div class="sidebar-section">
+        <span class="sidebar-section-label">Navegação</span>
+        <button class="sidebar-nav-item active" id="navAll" onclick="filterBySector('')">
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+            </svg>
+            <span class="nav-label">Todas as Planilhas</span>
+            <span class="nav-badge" id="navAllBadge">0</span>
+        </button>
+        <button class="sidebar-nav-item" id="navFavorites" onclick="filterByFavorites()">
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span class="nav-label">Favoritos</span>
+            <span class="nav-badge" id="navFavBadge">0</span>
+        </button>
+    </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database-compat.js"></script>
-    <script type="text/javascript">
-        const firebaseConfig = {
-            apiKey: "AIzaSyCKf_VEpXXAhcyuqmcFGdR7Q7hi7a5jOto",
-            authDomain: "docadmin-f5ae2.firebaseapp.com",
-            projectId: "docadmin-f5ae2",
-            storageBucket: "docadmin-f5ae2.firebasestorage.app",
-            messagingSenderId: "972462326550",
-            appId: "1:972462326550:web:1b56a26ed610b408638637"
-        };
+    <div class="sidebar-scroll">
+        <span class="sidebar-section-label">Categorias</span>
+        <div id="sectorNav"></div>
+    </div>
+</aside>
 
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+<!-- MAIN CONTENT -->
+<main id="mainContent">
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <span class="topbar-title">Planilhas</span>
+        <span class="topbar-count" id="topbarCount">—</span>
+        <div class="topbar-sep"></div>
+        <div class="search-wrapper">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Buscar por título...">
+        </div>
+        <button id="favoriteFilter" class="topbar-fav-btn" onclick="filterByFavorites()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Favoritos
+        </button>
+    </div>
 
-        const FAVORITES_KEY = `favorites:${location.host}${location.pathname}`;
-        let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
-        let selectedSector = '';
-        let showFavorites = false;
-        let openTabs = [];
-        const TABS_KEY = `openTabs:${location.host}${location.pathname}`;
-        let draggedTab = null;
-        let draggedTabIndex = -1;
-        let spreadsheets = [];
-    
-        async function fetchSpreadsheets() {
-            try {
-                const snapshot = await database.ref('categories/Planilhas').once('value');
-                if (!snapshot.exists()) {
-                    console.warn('Nenhum dado encontrado em categories/Planilhas');
-                    return [];
-                }
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <line x1="3" y1="9" x2="21" y2="9"/>
+                    <line x1="3" y1="15" x2="21" y2="15"/>
+                    <line x1="9" y1="9" x2="9" y2="21"/>
+                </svg>
+            </div>
+            <div>
+                <div class="stat-value" id="statTotal">—</div>
+                <div class="stat-label">Planilhas</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                </svg>
+            </div>
+            <div>
+                <div class="stat-value" id="statCategories">—</div>
+                <div class="stat-label">Categorias</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon amber">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+            </div>
+            <div>
+                <div class="stat-value" id="statFavorites">—</div>
+                <div class="stat-label">Favoritos</div>
+            </div>
+        </div>
+    </div>
 
-                const data = snapshot.val();
-                const spreadsheets = Array.isArray(data) ? data : Object.values(data);
+    <!-- CARDS GRID -->
+    <div class="cards-wrapper">
+        <div id="spreadsheetList"></div>
+    </div>
+</main>
 
-                spreadsheets.forEach((sheet, index) => {
-                    if (sheet.link && !isValidUrl(sheet.link)) {
-                        console.warn(`Link inválido na planilha ${index}: ${sheet.link}`);
-                    }
-                    if (sheet.links) {
-                        sheet.links.forEach((link, i) => {
-                            if (!isValidUrl(link.link)) {
-                                console.warn(`Link inválido na planilha ${index}, link ${i}: ${link.link}`);
-                            }
-                        });
-                    }
-                    if (sheet.forms) {
-                        sheet.forms.forEach((form, i) => {
-                            if (!isValidUrl(form.link)) {
-                                console.warn(`Formulário inválido na planilha ${index}, form ${i}: ${form.link}`);
-                            }
-                        });
-                    }
-                });
-    
-                return spreadsheets;
-            } catch (error) {
-                console.error('Error fetching data from Firebase:', error);
-                alert('Erro ao carregar os dados do Firebase. Verifique a conexão ou a configuração do banco de dados.');
-                return [];
-            }
-        }
-    
-        function isValidUrl(url) {
-            try {
-                if (!/^https?:\/\//i.test(url)) {
-                    url = 'https://' + url;
-                }
-                new URL(url);
-                return true;
-            } catch (error) {
-                console.error(`URL inválida: ${url}`, error);
-                return false;
-            }
-        }
-    
-        function openTab(url, index, type) {
-            console.log(`Tentando abrir aba: URL=${url}, Index=${index}, Type=${type}`);
-            if (!isValidUrl(url)) {
-                console.error(`URL inválida: ${url}`);
-                alert('URL inválida. Não foi possível abrir a aba.');
-                return;
-            }
-            let title = spreadsheets[index].title;
-            const titleParts = title.split(' - ');
-            if (titleParts.length > 1) {
-                title = titleParts[1].trim();
-            }
-            const tabsContainer = document.getElementById('tabs');
-            const mainContent = document.getElementById('mainContent');
-    
-            const existingTab = openTabs.find(tab => tab.url === url);
-            if (!existingTab) {
-                const iframe = document.createElement('iframe');
-                iframe.src = url;
-                iframe.className = 'content-frame';
-                iframe.style.display = 'none';
-                iframe.setAttribute('title', `Conteúdo da aba: ${title}`);
-                iframe.onerror = () => {
-                    console.error(`Erro ao carregar iframe para URL: ${url}`);
-                    alert('Erro ao carregar o conteúdo. Verifique a conexão ou a URL.');
-                };
-                iframe.onload = () => {
-                    console.log(`Iframe carregado com sucesso: ${url}`);
-                };
-                document.body.appendChild(iframe);
-    
-                openTabs.push({ url, title, index, type, iframe });
-                const tab = document.createElement('div');
-                tab.className = 'tab';
-                tab.dataset.url = url;
-                tab.draggable = true;
-                tab.setAttribute('tabindex', '0');
-                tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
-                tab.onclick = (e) => {
-                    if (e.target.className !== 'tab-close') {
-                        console.log(`Switching to tab: ${url}`);
-                        switchTab(url);
-                    }
-                };
-                tab.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && e.target.className !== 'tab-close') {
-                        console.log(`Switching to tab via Enter: ${url}`);
-                        switchTab(url);
-                    }
-                });
-                tab.addEventListener('dragstart', handleDragStart);
-                tab.addEventListener('dragover', handleDragOver);
-                tab.addEventListener('drop', handleDrop);
-                tab.addEventListener('dragend', handleDragEnd);
-                tabsContainer.appendChild(tab);
-    
-                localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest)));
-            }
-    
-            switchTab(url);
-        }
-    
-        function closeTab(url) {
-            const tabsContainer = document.getElementById('tabs');
-            const tabElement = tabsContainer.querySelector(`[data-url="${url}"]`);
-            const tabIndex = openTabs.findIndex(tab => tab.url === url);
-    
-            if (tabElement && tabIndex !== -1) {
-                tabElement.classList.add('closing');
-                setTimeout(() => {
-                    tabElement.remove();
-                    const tab = openTabs[tabIndex];
-                    tab.iframe.remove();
-                    openTabs.splice(tabIndex, 1);
-                    localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest)));
-    
-                    if (openTabs.length === 0) {
-                        const mainContent = document.getElementById('mainContent');
-                        mainContent.style.display = 'flex';
-                        mainContent.style.height = 'calc(100vh - 60px)';
-                    } else {
-                        switchTab(openTabs[openTabs.length - 1].url);
-                    }
-                }, 300);
-            }
-        }
-    
-        function switchTab(url) {
-            const mainContent = document.getElementById('mainContent');
-            mainContent.style.display = 'none';
-            openTabs.forEach(tab => {
-                tab.iframe.style.display = (tab.url === url) ? 'block' : 'none';
-            });
-            updateActiveTab(url);
-        }
-    
-        function updateActiveTab(url) {
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            const activeTab = document.querySelector(`[data-url="${url}"]`);
-            if (activeTab) {
-                activeTab.classList.add('active');
-            }
-        }
-    
-        function goToHome() {
-            console.log('Clicou no botão Home');
-            const mainContent = document.getElementById('mainContent');
-            mainContent.style.display = 'flex';
-            mainContent.style.height = 'calc(100vh - 60px)';
-            openTabs.forEach(tab => {
-                if (tab.iframe) {
-                    tab.iframe.style.display = 'none';
-                }
-            });
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-        }
-    
-        function handleDragStart(e) {
-            draggedTab = e.target;
-            draggedTabIndex = Array.from(draggedTab.parentNode.children).indexOf(draggedTab);
-            e.target.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', e.target.outerHTML);
-            e.target.style.zIndex = '1000';
-        }
-    
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            const targetTab = e.target.closest('.tab');
-            if (targetTab && targetTab !== draggedTab) {
-                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('drag-over'));
-                targetTab.classList.add('drag-over');
-                targetTab.style.animation = 'pulse 0.6s ease-in-out';
-            }
-        }
-    
-        function handleDrop(e) {
-            e.preventDefault();
-            if (draggedTab === null) return;
-    
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('drag-over');
-                tab.classList.remove('dragging');
-                tab.style.animation = '';
-                tab.style.zIndex = '';
-            });
-    
-            const targetTab = e.target.closest('.tab');
-            if (!targetTab || targetTab === draggedTab) return;
-    
-            const targetIndex = Array.from(targetTab.parentNode.children).indexOf(targetTab);
-            const [movedTab] = openTabs.splice(draggedTabIndex, 1);
-            openTabs.splice(targetIndex, 0, movedTab);
-    
-            if (draggedTabIndex < targetIndex) {
-                targetTab.parentNode.insertBefore(draggedTab, targetTab.nextSibling);
-            } else {
-                targetTab.parentNode.insertBefore(draggedTab, targetTab);
-            }
-    
-            updateTabIndices();
-            draggedTab.style.animation = 'dropConfirm 0.4s ease-out';
-            setTimeout(() => {
-                draggedTab.style.animation = '';
-            }, 400);
-        }
-    
-        function handleDragEnd(e) {
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('drag-over');
-                tab.classList.remove('dragging');
-                tab.style.animation = '';
-                tab.style.zIndex = '';
-            });
-    
-            draggedTab = null;
-            draggedTabIndex = -1;
-        }
-    
-        function updateTabIndices() {
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach((tab, index) => {
-                tab.dataset.index = index;
-            });
-        }
-    
-        function toggleFavorite(index) {
-    index = parseInt(index); // Garante que é um número
-    const starElement = event.target; // Pega o span da estrela clicada
-    const card = starElement.closest('.card'); // Encontra o card pai
-    const cardIndex = parseInt(card.dataset.index); // Confirma o índice do card
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database-compat.js"></script>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCKf_VEpXXAhcyuqmcFGdR7Q7hi7a5jOto",
+        authDomain: "docadmin-f5ae2.firebaseapp.com",
+        projectId: "docadmin-f5ae2",
+        storageBucket: "docadmin-f5ae2.firebasestorage.app",
+        messagingSenderId: "972462326550",
+        appId: "1:972462326550:web:1b56a26ed610b408638637"
+    };
 
-    if (favorites.includes(cardIndex)) {
-        favorites = favorites.filter(fav => fav !== cardIndex);
-        starElement.classList.remove('favorited'); // Remove a classe imediatamente
-    } else {
-        favorites.push(cardIndex);
-        starElement.classList.add('favorited'); // Adiciona a classe imediatamente (vira amarelo!)
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    const FAVORITES_KEY = `favorites:${location.host}${location.pathname}`;
+    const TABS_KEY      = `openTabs:${location.host}${location.pathname}`;
+
+    let favorites       = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
+    let selectedSector  = '';
+    let showFavorites   = false;
+    let openTabs        = [];
+    let draggedTab      = null;
+    let draggedTabIndex = -1;
+    let spreadsheets    = [];
+
+    const colorPalette = [
+        { from: '#1e40af', to: '#3b82f6' },
+        { from: '#7c3aed', to: '#a78bfa' },
+        { from: '#047857', to: '#10b981' },
+        { from: '#b45309', to: '#f59e0b' },
+        { from: '#be123c', to: '#f43f5e' },
+        { from: '#0e7490', to: '#06b6d4' },
+        { from: '#4338ca', to: '#818cf8' },
+        { from: '#15803d', to: '#4ade80' },
+    ];
+    const sectorColors = {};
+
+    /* ── FIREBASE ── */
+    async function fetchSpreadsheets() {
+        try {
+            const snapshot = await database.ref('categories/Planilhas').once('value');
+            if (!snapshot.exists()) return [];
+            const data = snapshot.val();
+            const list = Array.isArray(data) ? data : Object.values(data);
+            list.forEach((s, i) => {
+                if (s.link && !isValidUrl(s.link)) console.warn(`Link inválido #${i}`);
+                (s.links || []).forEach((l, j) => { if (!isValidUrl(l.link)) console.warn(`links[${j}] inválido #${i}`); });
+                (s.forms || []).forEach((f, j) => { if (!isValidUrl(f.link)) console.warn(`forms[${j}] inválido #${i}`); });
+            });
+            return list;
+        } catch (e) {
+            console.error('Firebase error:', e);
+            alert('Erro ao carregar os dados. Verifique a conexão.');
+            return [];
+        }
     }
-    
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites)); // Salva no localStorage
-    
-    // Opcional: Chama updateCards() só se precisar atualizar filtros (ex: se showFavorites=true)
-    if (showFavorites) {
+
+    function isValidUrl(url) {
+        try {
+            if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+            new URL(url); return true;
+        } catch { return false; }
+    }
+
+    /* ── TABS ── */
+    function openTab(url, index, type) {
+        if (!isValidUrl(url)) { alert('URL inválida.'); return; }
+        let title = spreadsheets[index].title;
+        const parts = title.split(' - ');
+        if (parts.length > 1) title = parts[1].trim();
+
+        if (!openTabs.find(t => t.url === url)) {
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.className = 'content-frame';
+            iframe.style.display = 'none';
+            iframe.setAttribute('title', `Conteúdo: ${title}`);
+            iframe.onerror = () => alert('Erro ao carregar o conteúdo.');
+            document.body.appendChild(iframe);
+            openTabs.push({ url, title, index, type, iframe });
+
+            const tab = document.createElement('div');
+            tab.className = 'tab';
+            tab.dataset.url = url;
+            tab.draggable = true;
+            tab.setAttribute('tabindex', '0');
+            tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
+            tab.onclick = e => { if (!e.target.classList.contains('tab-close')) switchTab(url); };
+            tab.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.target.classList.contains('tab-close')) switchTab(url); });
+            tab.addEventListener('dragstart', handleDragStart);
+            tab.addEventListener('dragover',  handleDragOver);
+            tab.addEventListener('drop',      handleDrop);
+            tab.addEventListener('dragend',   handleDragEnd);
+            document.getElementById('tabs').appendChild(tab);
+            localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe: _, ...r}) => r)));
+        }
+        switchTab(url);
+    }
+
+    function closeTab(url) {
+        const tabEl = document.querySelector(`.tab[data-url="${url}"]`);
+        const idx   = openTabs.findIndex(t => t.url === url);
+        if (!tabEl || idx === -1) return;
+        tabEl.classList.add('closing');
+        setTimeout(() => {
+            tabEl.remove();
+            openTabs[idx].iframe.remove();
+            openTabs.splice(idx, 1);
+            localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe: _, ...r}) => r)));
+            if (openTabs.length === 0) {
+                document.getElementById('mainContent').style.display = 'flex';
+            } else {
+                switchTab(openTabs[openTabs.length - 1].url);
+            }
+        }, 220);
+    }
+
+    function switchTab(url) {
+        document.getElementById('mainContent').style.display = 'none';
+        document.querySelector('.sidebar').classList.add('hidden');
+        openTabs.forEach(t => { t.iframe.style.display = t.url === url ? 'block' : 'none'; });
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        const el = document.querySelector(`.tab[data-url="${url}"]`);
+        if (el) el.classList.add('active');
+    }
+
+    function goToHome() {
+        document.getElementById('mainContent').style.display = 'flex';
+        document.querySelector('.sidebar').classList.remove('hidden');
+        openTabs.forEach(t => { if (t.iframe) t.iframe.style.display = 'none'; });
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    }
+
+    /* ── DRAG & DROP ── */
+    function handleDragStart(e) {
+        draggedTab = e.target;
+        draggedTabIndex = Array.from(draggedTab.parentNode.children).indexOf(draggedTab);
+        e.target.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    }
+    function handleDragOver(e) {
+        e.preventDefault();
+        const target = e.target.closest('.tab');
+        if (target && target !== draggedTab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('drag-over'));
+            target.classList.add('drag-over');
+        }
+    }
+    function handleDrop(e) {
+        e.preventDefault();
+        if (!draggedTab) return;
+        document.querySelectorAll('.tab').forEach(t => { t.classList.remove('drag-over', 'dragging'); t.style.animation = ''; });
+        const target = e.target.closest('.tab');
+        if (!target || target === draggedTab) return;
+        const targetIdx = Array.from(target.parentNode.children).indexOf(target);
+        const [moved] = openTabs.splice(draggedTabIndex, 1);
+        openTabs.splice(targetIdx, 0, moved);
+        target.parentNode.insertBefore(draggedTab, draggedTabIndex < targetIdx ? target.nextSibling : target);
+        draggedTab.style.animation = 'dropConfirm .4s ease-out';
+        setTimeout(() => { if (draggedTab) draggedTab.style.animation = ''; }, 400);
+    }
+    function handleDragEnd() {
+        document.querySelectorAll('.tab').forEach(t => { t.classList.remove('drag-over', 'dragging'); t.style.animation = ''; t.style.zIndex = ''; });
+        draggedTab = null; draggedTabIndex = -1;
+    }
+
+    /* ── FAVORITES ── */
+    function toggleFavorite(index) {
+        index = parseInt(index);
+        const star = event.target;
+        if (favorites.includes(index)) {
+            favorites = favorites.filter(f => f !== index);
+            star.classList.remove('favorited');
+        } else {
+            favorites.push(index);
+            star.classList.add('favorited');
+        }
+        localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+        updateStats();
+        if (showFavorites) updateCards();
+    }
+
+    /* ── SEARCH & FILTER ── */
+    function normalizeText(text) {
+        return text.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9\s]/g, '').toLowerCase().trim();
+    }
+
+    function updateCards() {
+        const term  = normalizeText(document.getElementById('searchInput').value);
+        const cards = document.getElementsByClassName('card');
+        let visible = 0;
+
+        Array.from(cards).forEach(card => {
+            const title  = normalizeText(card.querySelector('h2').textContent);
+            const sector = card.dataset.sector;
+            const idx    = parseInt(card.dataset.index);
+            const show   = title.includes(term)
+                && (selectedSector === '' || sector === selectedSector)
+                && (!showFavorites || favorites.includes(idx));
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        document.getElementById('topbarCount').textContent = `${visible} planilha${visible !== 1 ? 's' : ''}`;
+
+        const existing = document.querySelector('.empty-state');
+        if (existing) existing.remove();
+        if (visible === 0 && cards.length > 0) {
+            const div = document.createElement('div');
+            div.className = 'empty-state';
+            div.innerHTML = `
+                <div class="empty-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3>Nenhuma planilha encontrada</h3>
+                <p>Tente ajustar os filtros ou a busca</p>`;
+            document.getElementById('spreadsheetList').appendChild(div);
+        }
+    }
+
+    function setActiveNav(id) {
+        document.querySelectorAll('.sidebar-nav-item').forEach(el => el.classList.remove('active'));
+        const el = document.getElementById(id);
+        if (el) el.classList.add('active');
+    }
+
+    function filterBySector(sector) {
+        selectedSector = sector;
+        showFavorites  = false;
+        document.getElementById('favoriteFilter').classList.remove('active');
+        if (sector === '') {
+            setActiveNav('navAll');
+        } else {
+            document.querySelectorAll('.sidebar-nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('#sectorNav .sidebar-nav-item').forEach(btn => {
+                if (btn.dataset.sector === sector) btn.classList.add('active');
+            });
+        }
         updateCards();
     }
-}
-        function normalizeText(text) {
-            return text
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .replace(/[^a-zA-Z0-9\s]/g, '')
-                .toLowerCase()
-                .trim();
-        }
-        function updateCards() {
-            const searchTerm = normalizeText(document.getElementById('searchInput').value);
-            const cards = document.getElementsByClassName('card');
-            Array.from(cards).forEach(card => {
-                const title = normalizeText(card.querySelector('h2').textContent);
-                const cardSector = card.getAttribute('data-sector');
-                const cardIndex = parseInt(card.getAttribute('data-index'));
-                const matchesSearch = title.includes(searchTerm);
-                const matchesSector = selectedSector === '' || cardSector === selectedSector;
-                const matchesFavorites = !showFavorites || favorites.includes(cardIndex);
-                card.style.display = matchesSearch && matchesSector && matchesFavorites ? '' : 'none';
-            });
-        }
-    
-        function filterBySector(sector) {
-            selectedSector = sector;
-            showFavorites = false; // Resetar favoritos ao filtrar setor
-            document.getElementById('selectedSector').textContent = sector || 'Filtrar por Setor';
-            document.getElementById('favoriteFilter').classList.remove('active');
-            updateCards(); // Forçar atualização
-        }
-    
-        function filterByFavorites() {
-            showFavorites = !showFavorites;
-            selectedSector = ''; // Resetar filtro de setor ao togglar favoritos
-            document.getElementById('selectedSector').textContent = 'Filtrar por Setor';
-            const favoriteButton = document.getElementById('favoriteFilter');
-            favoriteButton.classList.toggle('active', showFavorites);
-            updateCards(); // Forçar atualização imediata
-        }
-    
-        function adjustDropdownPosition() {
-            const dropdowns = document.querySelectorAll('.form-dropdown, .link-dropdown');
-            dropdowns.forEach(dropdown => {
-                const content = dropdown.querySelector('.form-dropdown-content, .link-dropdown-content');
-                if (content) {
-                    const rect = dropdown.getBoundingClientRect();
-                    const viewportHeight = window.innerHeight;
-                    const spaceBelow = viewportHeight - rect.bottom;
-                    const contentHeight = Math.min(content.scrollHeight, 220);
-                    
-                    if (spaceBelow < contentHeight && rect.top > contentHeight) {
-                        content.classList.add('upward');
-                    } else {
-                        content.classList.remove('upward');
-                    }
-                }
-            });
-        }
-    
-        function restoreTabs() {
-            const savedTabs = JSON.parse(localStorage.getItem(TABS_KEY) || '[]');
-            savedTabs.forEach(tabData => {
-                if (spreadsheets[tabData.index]) {
-                    const url = tabData.url;
-                    const index = tabData.index;
-                    const type = tabData.type;
-                    let title = spreadsheets[index].title;
-                    const titleParts = title.split(' - ');
-                    if (titleParts.length > 1) {
-                        title = titleParts[1].trim();
-                    }
-                    const tabsContainer = document.getElementById('tabs');
-                    const iframe = document.createElement('iframe');
-                    iframe.src = url;
-                    iframe.className = 'content-frame';
-                    iframe.style.display = 'none';
-                    iframe.setAttribute('title', `Conteúdo da aba: ${title}`);
-                    iframe.onerror = () => {
-                        console.error(`Erro ao carregar iframe para URL: ${url}`);
-                        alert('Erro ao carregar o conteúdo. Verifique a conexão ou a URL.');
-                    };
-                    iframe.onload = () => {
-                        console.log(`Iframe carregado com sucesso: ${url}`);
-                    };
-                    document.body.appendChild(iframe);
-    
-                    openTabs.push({ url, title, index, type, iframe });
-                    const tab = document.createElement('div');
-                    tab.className = 'tab';
-                    tab.dataset.url = url;
-                    tab.draggable = true;
-                    tab.setAttribute('tabindex', '0');
-                    tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
-                    tab.onclick = (e) => {
-                        if (e.target.className !== 'tab-close') {
-                            console.log(`Switching to tab: ${url}`);
-                            switchTab(url);
-                        }
-                    };
-                    tab.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' && e.target.className !== 'tab-close') {
-                            console.log(`Switching to tab via Enter: ${url}`);
-                            switchTab(url);
-                        }
-                    });
-                    tab.addEventListener('dragstart', handleDragStart);
-                    tab.addEventListener('dragover', handleDragOver);
-                    tab.addEventListener('drop', handleDrop);
-                    tab.addEventListener('dragend', handleDragEnd);
-                    tabsContainer.appendChild(tab);
-    
-                    localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe, ...rest}) => rest)));
-                }
-            });
-            // Não chama switchTab para manter o menu principal visível
-        }
-    
-        async function init() {
-            // Mostrar loading
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            if (loadingOverlay) {
-                loadingOverlay.style.display = 'flex';
-            }
-    
-            spreadsheets = await fetchSpreadsheets();
-    
-            // Esconder loading após fetch
-            if (loadingOverlay) {
-                loadingOverlay.style.display = 'none';
-            }
-    
-            spreadsheets.sort((a, b) => {
-                if (a.sector < b.sector) return -1;
-                if (a.sector > b.sector) return 1;
-                if (a.title < b.title) return -1;
-                if (a.title > b.title) return 1;
-                return 0;
-            });
-    
-            const uniqueSectors = [...new Set(spreadsheets.map(sheet => sheet.sector))].sort();
-            const sectorDropdown = document.getElementById('sectorDropdown');
-            sectorDropdown.innerHTML = ''; // Limpar conteúdo anterior
-            // Adicionar "Todos" com addEventListener para melhor controle
-            const todosLink = document.createElement('a');
-            todosLink.href = '#';
-            todosLink.className = 'block px-4 py-2 bg-blue-100 hover:bg-blue-200';
-            todosLink.textContent = 'Todos';
-            todosLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                filterBySector('');
-            });
-            sectorDropdown.appendChild(todosLink);
-    
-            uniqueSectors.forEach(sector => {
-                const a = document.createElement('a');
-                a.href = '#';
-                a.className = 'block px-4 py-2 hover:bg-gray-100';
-                a.textContent = sector;
-                a.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    filterBySector(sector);
-                });
-                sectorDropdown.appendChild(a);
-            });
-    
-            const spreadsheetList = document.getElementById('spreadsheetList');
-            function renderCards() {
-                spreadsheetList.innerHTML = '';
-                spreadsheets.forEach((sheet, index) => {
-                    const card = document.createElement('div');
-                    card.className = 'card bg-white p-6 rounded-lg shadow-md';
-                    card.dataset.sector = sheet.sector;
-                    card.dataset.index = index;
-                    const isFavorited = favorites.includes(index);
-                    let formHtml = '';
-                    let planilhaHtml = '';
-                    if (sheet.link) {
-                        planilhaHtml = `<a href="#" onclick="console.log('Clicou em Acessar Planilha: ${sheet.link}'); openTab('${sheet.link}', ${index}, 'spreadsheet'); event.preventDefault();" class="mt-4 modern-button">Acessar Planilha</a>`;
-                    } else if (sheet.links && sheet.links.length > 0) {
-                        if (sheet.links.length === 1 && (!sheet.links[0].title || sheet.links[0].title.trim() === '')) {
-                            const link = sheet.links[0].link;
-                            if (link.includes('drive.google.com')) {
-                                planilhaHtml = `<a href="${link}" target="_blank" class="mt-4 modern-button" onclick="console.log('Clicou em link Google Drive: ${link}')">Acessar Planilha</a>`;
-                            } else {
-                                planilhaHtml = `<a href="#" onclick="console.log('Clicou em link: ${link}'); openTab('${link}', ${index}, 'spreadsheet'); event.preventDefault();" class="mt-4 modern-button">Acessar Planilha</a>`;
-                            }
-                        } else {
-                            planilhaHtml = `<div class="link-dropdown inline-block">
-                                <a href="#" class="mt-4 modern-button">Acessar Planilha</a>
-                                <div class="link-dropdown-content rounded-lg">
-                                    ${sheet.links.map(link => {
-                                        if (link.link.includes('drive.google.com')) {
-                                            return `<a href="${link.link}" target="_blank" class="block px-4 py-2 hover:bg-gray-100" onclick="console.log('Clicou em link Google Drive: ${link.link}')">${link.title || 'Planilha'}</a>`;
-                                        } else {
-                                            return `<a href="#" onclick="console.log('Clicou em link: ${link.link}'); openTab('${link.link}', ${index}, 'spreadsheet'); event.preventDefault();" class="block px-4 py-2 hover:bg-gray-100">${link.title || 'Planilha'}</a>`;
-                                        }
-                                    }).join('')}
-                                </div>
-                            </div>`;
-                        }
-                    }
-                    if (sheet.forms && sheet.forms.length > 0) {
-    if (sheet.forms.length === 1) {
-        formHtml = `<a href="${sheet.forms[0].link}" target="_blank" rel="noopener noreferrer" class="mt-4 form-button ml-4" onclick="window.open('${sheet.forms[0].link}', '_blank', 'noopener,noreferrer'); return false;">Acessar Formulário</a>`;
-    } else {
-        formHtml = `<div class="form-dropdown inline-block ml-4">
-            <a href="#" class="mt-4 form-button">Acessar Formulário</a>
-            <div class="form-dropdown-content rounded-lg">
-                ${sheet.forms.map(form => 
-                    `<a href="${form.link}" target="_blank" rel="noopener noreferrer" class="block px-4 py-2 hover:bg-gray-100" onclick="window.open('${form.link}', '_blank', 'noopener,noreferrer'); event.preventDefault(); return false;">${form.title || 'Formulário'}</a>`
-                ).join('')}
-            </div>
-        </div>`;
+
+    function filterByFavorites() {
+        showFavorites  = !showFavorites;
+        selectedSector = '';
+        document.getElementById('favoriteFilter').classList.toggle('active', showFavorites);
+        setActiveNav(showFavorites ? 'navFavorites' : 'navAll');
+        updateCards();
     }
-}
-                    card.innerHTML = `
-                        <span class="star ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite(${index})">&#9733;</span>
-                        <h2 class="text-lg font-semibold text-blue-900">${sheet.title}</h2>
-                        <p class="text-gray-600">Setor: ${sheet.sector}</p>
-                        ${planilhaHtml}
-                        ${formHtml}
-                    `;
-                    spreadsheetList.appendChild(card);
-                });
-                updateCards();
+
+    function updateStats() {
+        const uniqueSectors = [...new Set(spreadsheets.map(s => s.sector))];
+        document.getElementById('statTotal').textContent      = spreadsheets.length;
+        document.getElementById('statCategories').textContent = uniqueSectors.length;
+        document.getElementById('statFavorites').textContent  = favorites.length;
+        document.getElementById('navAllBadge').textContent    = spreadsheets.length;
+        document.getElementById('navFavBadge').textContent    = favorites.length;
+    }
+
+    function populateSectorNav() {
+        const nav = document.getElementById('sectorNav');
+        nav.innerHTML = '';
+        const sectors = [...new Set(spreadsheets.map(s => s.sector))].sort();
+        sectors.forEach(sector => {
+            const count = spreadsheets.filter(s => s.sector === sector).length;
+            const btn = document.createElement('button');
+            btn.className = 'sidebar-nav-item';
+            btn.dataset.sector = sector;
+            btn.innerHTML = `
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                </svg>
+                <span class="nav-label">${sector}</span>
+                <span class="nav-badge">${count}</span>`;
+            btn.addEventListener('click', () => filterBySector(sector));
+            nav.appendChild(btn);
+        });
+    }
+
+    function adjustDropdownPosition() {
+        document.querySelectorAll('.form-dropdown, .link-dropdown').forEach(dropdown => {
+            const content = dropdown.querySelector('.form-dropdown-content, .link-dropdown-content');
+            if (!content) return;
+            const rect  = dropdown.getBoundingClientRect();
+            const space = window.innerHeight - rect.bottom;
+            const h     = Math.min(content.scrollHeight, 200);
+            content.classList.toggle('upward', space < h && rect.top > h);
+        });
+    }
+
+    function restoreTabs() {
+        const saved = JSON.parse(localStorage.getItem(TABS_KEY) || '[]');
+        saved.forEach(({ url, index, type }) => {
+            if (!spreadsheets[index]) return;
+            let title = spreadsheets[index].title;
+            const parts = title.split(' - ');
+            if (parts.length > 1) title = parts[1].trim();
+
+            const iframe = document.createElement('iframe');
+            iframe.src = url; iframe.className = 'content-frame';
+            iframe.style.display = 'none';
+            iframe.setAttribute('title', `Conteúdo: ${title}`);
+            iframe.onerror = () => alert('Erro ao recarregar aba.');
+            document.body.appendChild(iframe);
+            openTabs.push({ url, title, index, type, iframe });
+
+            const tab = document.createElement('div');
+            tab.className = 'tab'; tab.dataset.url = url;
+            tab.draggable = true; tab.setAttribute('tabindex', '0');
+            tab.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${url}')">✕</span>`;
+            tab.onclick = e => { if (!e.target.classList.contains('tab-close')) switchTab(url); };
+            tab.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.target.classList.contains('tab-close')) switchTab(url); });
+            tab.addEventListener('dragstart', handleDragStart);
+            tab.addEventListener('dragover',  handleDragOver);
+            tab.addEventListener('drop',      handleDrop);
+            tab.addEventListener('dragend',   handleDragEnd);
+            document.getElementById('tabs').appendChild(tab);
+        });
+        localStorage.setItem(TABS_KEY, JSON.stringify(openTabs.map(({iframe: _, ...r}) => r)));
+    }
+
+    /* ── INIT ── */
+    async function init() {
+        const overlay = document.getElementById('loadingOverlay');
+        overlay.style.display = 'flex';
+        spreadsheets = await fetchSpreadsheets();
+        overlay.style.display = 'none';
+
+        spreadsheets.sort((a, b) =>
+            a.sector < b.sector ? -1 : a.sector > b.sector ? 1 :
+            a.title  < b.title  ? -1 : a.title  > b.title  ? 1 : 0
+        );
+
+        const uniqueSectors = [...new Set(spreadsheets.map(s => s.sector))].sort();
+        uniqueSectors.forEach((sector, i) => { sectorColors[sector] = colorPalette[i % colorPalette.length]; });
+
+        populateSectorNav();
+        updateStats();
+
+        const list     = document.getElementById('spreadsheetList');
+        const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></svg>`;
+
+        spreadsheets.forEach((sheet, index) => {
+            const card       = document.createElement('div');
+            card.className   = 'card';
+            card.dataset.sector = sheet.sector;
+            card.dataset.index  = index;
+
+            const isFav   = favorites.includes(index);
+            const colors  = sectorColors[sheet.sector] || colorPalette[0];
+
+            let planilhaHtml = '';
+            if (sheet.link) {
+                planilhaHtml = `<a href="#" onclick="openTab('${sheet.link}',${index},'spreadsheet');event.preventDefault();" class="btn-primary">➜] Planilha</a>`;
+            } else if (sheet.links?.length) {
+                if (sheet.links.length === 1 && !sheet.links[0].title?.trim()) {
+                    const l = sheet.links[0].link;
+                    planilhaHtml = l.includes('drive.google.com')
+                        ? `<a href="${l}" target="_blank" class="btn-primary">➜] Planilha</a>`
+                        : `<a href="#" onclick="openTab('${l}',${index},'spreadsheet');event.preventDefault();" class="btn-primary">➜] Planilha</a>`;
+                } else {
+                    planilhaHtml = `<div class="link-dropdown">
+                        <a href="#" class="btn-primary">➜] Planilha</a>
+                        <div class="link-dropdown-content">
+                            ${sheet.links.map(l => l.link.includes('drive.google.com')
+                                ? `<a href="${l.link}" target="_blank">${l.title || 'Planilha'}</a>`
+                                : `<a href="#" onclick="openTab('${l.link}',${index},'spreadsheet');event.preventDefault();">${l.title || 'Planilha'}</a>`
+                            ).join('')}
+                        </div>
+                    </div>`;
+                }
             }
-    
-            document.getElementById('searchInput').addEventListener('input', updateCards);
-    
-            // Inicializar com o menu principal visível
-            document.getElementById('mainContent').style.display = 'flex';
-            document.getElementById('mainContent').style.height = 'calc(100vh - 60px)';
-    
-            renderCards();
-            restoreTabs();
-    
-            window.addEventListener('scroll', adjustDropdownPosition);
-            window.addEventListener('resize', adjustDropdownPosition);
-    
-            window.addEventListener('beforeunload', () => {
-                openTabs.forEach(tab => {
-                    if (tab.iframe) {
-                        tab.iframe.remove();
-                    }
-                });
-            });
-        }
-    
-        init();
-    </script>
+
+            let formHtml = '';
+            if (sheet.forms?.length) {
+                if (sheet.forms.length === 1) {
+                    formHtml = `<a href="${sheet.forms[0].link}" target="_blank" rel="noopener noreferrer" class="btn-form" onclick="window.open('${sheet.forms[0].link}','_blank','noopener,noreferrer');return false;">➜] Formulário</a>`;
+                } else {
+                    formHtml = `<div class="form-dropdown">
+                        <a href="#" class="btn-form">➜] Formulário</a>
+                        <div class="form-dropdown-content">
+                            ${sheet.forms.map(f => `<a href="${f.link}" target="_blank" rel="noopener noreferrer" onclick="window.open('${f.link}','_blank','noopener,noreferrer');event.preventDefault();return false;">${f.title || 'Formulário'}</a>`).join('')}
+                        </div>
+                    </div>`;
+                }
+            }
+
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="card-icon" style="background:linear-gradient(135deg,${colors.from},${colors.to})">${ICON_SVG}</div>
+                    <span class="star ${isFav ? 'favorited' : ''}" onclick="toggleFavorite(${index})">&#9733;</span>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title">${sheet.title}</h2>
+                    <span class="sector-badge">${sheet.sector}</span>
+                </div>
+                <div class="card-footer">
+                    ${planilhaHtml}
+                    ${formHtml}
+                </div>`;
+            list.appendChild(card);
+        });
+
+        updateCards();
+        restoreTabs();
+
+        document.getElementById('searchInput').addEventListener('input', updateCards);
+        window.addEventListener('scroll',  adjustDropdownPosition, true);
+        window.addEventListener('resize',  adjustDropdownPosition);
+        window.addEventListener('beforeunload', () => openTabs.forEach(t => { if (t.iframe) t.iframe.remove(); }));
+    }
+
+    init();
+</script>
 </body>
 </html>
