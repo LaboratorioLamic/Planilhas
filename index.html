@@ -339,7 +339,6 @@
             border-radius: 12px;
             border: 1px solid #e4eaf1;
             display: flex; flex-direction: column;
-            overflow: hidden;
             transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
         }
         .card:hover {
@@ -418,31 +417,27 @@
         }
         .btn-form:hover { background: var(--purple); color: white; border-color: var(--purple); box-shadow: 0 4px 12px rgba(124,58,237,.25); }
 
-        /* ── INLINE DROPDOWNS ── */
-        .link-dropdown, .form-dropdown { position: relative; display: inline-block; }
-        .link-dropdown-content, .form-dropdown-content {
+        /* ── DROPDOWN PANEL (global, lives in <body> to escape transforms) ── */
+        #drop-panel {
             display: none;
-            position: absolute; top: calc(100% + 4px); left: 0;
+            position: fixed;
             background: white;
             border: 1px solid var(--border);
             border-radius: 9px;
-            box-shadow: 0 8px 24px rgba(0,0,0,.1);
-            z-index: 300; min-width: 190px; max-height: 200px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.12);
+            z-index: 9999; min-width: 190px; max-height: 200px;
             overflow-y: auto;
             scrollbar-width: thin; scrollbar-color: #cbd5e1 #f8fafc;
         }
-        .link-dropdown:hover .link-dropdown-content,
-        .form-dropdown:hover .form-dropdown-content { display: block; }
-        .link-dropdown-content.upward, .form-dropdown-content.upward { top: auto; bottom: calc(100% + 4px); }
-        .link-dropdown-content a, .form-dropdown-content a {
+        #drop-panel a {
             display: block; padding: 9px 14px;
             font-size: .82rem; font-family: 'Inter', sans-serif;
             color: var(--text-1); text-decoration: none;
             transition: background .1s; white-space: nowrap;
         }
-        .link-dropdown-content a:first-child, .form-dropdown-content a:first-child { border-radius: 9px 9px 0 0; }
-        .link-dropdown-content a:last-child,  .form-dropdown-content a:last-child  { border-radius: 0 0 9px 9px; }
-        .link-dropdown-content a:hover, .form-dropdown-content a:hover { background: #f1f5f9; color: var(--blue); }
+        #drop-panel a:first-child { border-radius: 9px 9px 0 0; }
+        #drop-panel a:last-child  { border-radius: 0 0 9px 9px; }
+        #drop-panel a:hover { background: #f1f5f9; color: var(--blue); }
 
         @keyframes dropConfirm { 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.55} }
@@ -857,16 +852,72 @@
         });
     }
 
-    function adjustDropdownPosition() {
-        document.querySelectorAll('.form-dropdown, .link-dropdown').forEach(dropdown => {
-            const content = dropdown.querySelector('.form-dropdown-content, .link-dropdown-content');
-            if (!content) return;
-            const rect  = dropdown.getBoundingClientRect();
-            const space = window.innerHeight - rect.bottom;
-            const h     = Math.min(content.scrollHeight, 200);
-            content.classList.toggle('upward', space < h && rect.top > h);
-        });
+    /* ── DROP PANEL ── */
+    const dropPanel = document.createElement('div');
+    dropPanel.id = 'drop-panel';
+    document.body.appendChild(dropPanel);
+    let dropActiveBtn = null;
+
+    function placePanel(btn) {
+        const rect = btn.getBoundingClientRect();
+        dropPanel.style.left = rect.left + 'px';
+        dropPanel.style.top  = (rect.bottom + 4) + 'px';
+        // Measure after placing (panel is visible at this point)
+        const panelH    = dropPanel.offsetHeight;
+        const spaceBelow = window.innerHeight - rect.bottom - 8;
+        if (spaceBelow < panelH && rect.top > panelH + 8) {
+            dropPanel.style.top = (rect.top - panelH - 4) + 'px';
+        }
     }
+
+    function openDropPanel(btn) {
+        const isSame = dropActiveBtn === btn && dropPanel.style.display !== 'none';
+        dropPanel.style.display = 'none';
+        dropActiveBtn = null;
+        if (isSame) return;
+
+        const items = JSON.parse(btn.dataset.dropdown);
+        const index = parseInt(btn.dataset.index);
+        const dtype = btn.dataset.dtype;
+
+        dropPanel.innerHTML = items.map(item => {
+            const isDrive    = item.link.includes('drive.google.com');
+            const isExternal = isDrive || dtype === 'form';
+            return isExternal
+                ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a>`
+                : `<a href="#" data-link="${item.link}" data-index="${index}">${item.title}</a>`;
+        }).join('');
+
+        dropPanel.style.display = 'block';
+        dropActiveBtn = btn;
+        placePanel(btn);
+    }
+
+    dropPanel.addEventListener('click', function(e) {
+        const a = e.target.closest('a[data-link]');
+        if (a) {
+            e.preventDefault();
+            openTab(a.dataset.link, parseInt(a.dataset.index), 'spreadsheet');
+        }
+        // External links open on their own; close panel after brief delay
+        setTimeout(() => { dropPanel.style.display = 'none'; dropActiveBtn = null; }, 60);
+    });
+
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('[data-dropdown]') || dropPanel.contains(e.target)) return;
+        dropPanel.style.display = 'none';
+        dropActiveBtn = null;
+    });
+
+    window.addEventListener('scroll', function() {
+        if (dropPanel.style.display === 'none' || !dropActiveBtn) return;
+        placePanel(dropActiveBtn);
+    }, true);
+
+    window.addEventListener('resize', function() {
+        dropPanel.style.display = 'none';
+        dropActiveBtn = null;
+    });
 
     function restoreTabs() {
         const saved = JSON.parse(localStorage.getItem(TABS_KEY) || '[]');
@@ -939,29 +990,22 @@
                         ? `<a href="${l}" target="_blank" class="btn-primary">➜] Planilha</a>`
                         : `<a href="#" onclick="openTab('${l}',${index},'spreadsheet');event.preventDefault();" class="btn-primary">➜] Planilha</a>`;
                 } else {
-                    planilhaHtml = `<div class="link-dropdown">
-                        <a href="#" class="btn-primary">➜] Planilha</a>
-                        <div class="link-dropdown-content">
-                            ${sheet.links.map(l => l.link.includes('drive.google.com')
-                                ? `<a href="${l.link}" target="_blank">${l.title || 'Planilha'}</a>`
-                                : `<a href="#" onclick="openTab('${l.link}',${index},'spreadsheet');event.preventDefault();">${l.title || 'Planilha'}</a>`
-                            ).join('')}
-                        </div>
-                    </div>`;
+                    const linksData = JSON.stringify(sheet.links.map(l => ({
+                        title: l.title || 'Planilha', link: l.link
+                    })));
+                    planilhaHtml = `<button class="btn-primary" data-dropdown='${linksData.replace(/'/g,"&#39;")}' data-dtype="spreadsheet" data-index="${index}">➜] Planilhas ▾</button>`;
                 }
             }
 
             let formHtml = '';
             if (sheet.forms?.length) {
                 if (sheet.forms.length === 1) {
-                    formHtml = `<a href="${sheet.forms[0].link}" target="_blank" rel="noopener noreferrer" class="btn-form" onclick="window.open('${sheet.forms[0].link}','_blank','noopener,noreferrer');return false;">➜] Formulário</a>`;
+                    formHtml = `<a href="${sheet.forms[0].link}" target="_blank" rel="noopener noreferrer" class="btn-form">➜] Formulário</a>`;
                 } else {
-                    formHtml = `<div class="form-dropdown">
-                        <a href="#" class="btn-form">➜] Formulário</a>
-                        <div class="form-dropdown-content">
-                            ${sheet.forms.map(f => `<a href="${f.link}" target="_blank" rel="noopener noreferrer" onclick="window.open('${f.link}','_blank','noopener,noreferrer');event.preventDefault();return false;">${f.title || 'Formulário'}</a>`).join('')}
-                        </div>
-                    </div>`;
+                    const formsData = JSON.stringify(sheet.forms.map(f => ({
+                        title: f.title || 'Formulário', link: f.link
+                    })));
+                    formHtml = `<button class="btn-form" data-dropdown='${formsData.replace(/'/g,"&#39;")}' data-dtype="form" data-index="${index}">➜] Formulário ▾</button>`;
                 }
             }
 
@@ -985,8 +1029,15 @@
         restoreTabs();
 
         document.getElementById('searchInput').addEventListener('input', updateCards);
-        window.addEventListener('scroll',  adjustDropdownPosition, true);
-        window.addEventListener('resize',  adjustDropdownPosition);
+
+        document.getElementById('spreadsheetList').addEventListener('click', function(e) {
+            const btn = e.target.closest('[data-dropdown]');
+            if (!btn) return;
+            e.preventDefault();
+            e.stopPropagation();
+            openDropPanel(btn);
+        });
+
         window.addEventListener('beforeunload', () => openTabs.forEach(t => { if (t.iframe) t.iframe.remove(); }));
     }
 
