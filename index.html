@@ -766,13 +766,17 @@
             const visible = t.url === url;
             t.iframe.style.visibility = visible ? 'visible' : 'hidden';
             t.iframe.style.pointerEvents = visible ? 'auto' : 'none';
-            t.iframe.style.display = 'block';
+            t.iframe.style.display = visible ? 'block' : 'none';
         });
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         const el = document.querySelector(`.tab[data-url="${url}"]`);
         if (el) el.classList.add('active');
         // Force Google Sheets to recalculate its layout after becoming visible
-        requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+        requestAnimationFrame(() => {
+            window.dispatchEvent(new Event('resize'));
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 150);
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 400);
+        });
     }
 
     function goToHome() {
