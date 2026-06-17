@@ -715,7 +715,8 @@
             const iframe = document.createElement('iframe');
             iframe.src = url;
             iframe.className = 'content-frame';
-            iframe.style.display = 'none';
+            iframe.style.visibility = 'hidden';
+            iframe.style.pointerEvents = 'none';
             iframe.setAttribute('title', `Conteúdo: ${title}`);
             iframe.onerror = () => alert('Erro ao carregar o conteúdo.');
             document.body.appendChild(iframe);
@@ -761,16 +762,28 @@
     function switchTab(url) {
         document.getElementById('mainContent').style.display = 'none';
         document.querySelector('.sidebar').classList.add('hidden');
-        openTabs.forEach(t => { t.iframe.style.display = t.url === url ? 'block' : 'none'; });
+        openTabs.forEach(t => {
+            const visible = t.url === url;
+            t.iframe.style.visibility = visible ? 'visible' : 'hidden';
+            t.iframe.style.pointerEvents = visible ? 'auto' : 'none';
+            t.iframe.style.display = 'block';
+        });
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         const el = document.querySelector(`.tab[data-url="${url}"]`);
         if (el) el.classList.add('active');
+        // Force Google Sheets to recalculate its layout after becoming visible
+        requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
     }
 
     function goToHome() {
         document.getElementById('mainContent').style.display = 'flex';
         document.querySelector('.sidebar').classList.remove('hidden');
-        openTabs.forEach(t => { if (t.iframe) t.iframe.style.display = 'none'; });
+        openTabs.forEach(t => {
+            if (t.iframe) {
+                t.iframe.style.visibility = 'hidden';
+                t.iframe.style.pointerEvents = 'none';
+            }
+        });
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     }
 
@@ -1019,7 +1032,8 @@
 
             const iframe = document.createElement('iframe');
             iframe.src = url; iframe.className = 'content-frame';
-            iframe.style.display = 'none';
+            iframe.style.visibility = 'hidden';
+            iframe.style.pointerEvents = 'none';
             iframe.setAttribute('title', `Conteúdo: ${title}`);
             iframe.onerror = () => alert('Erro ao recarregar aba.');
             document.body.appendChild(iframe);
