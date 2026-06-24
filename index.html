@@ -1134,7 +1134,7 @@
         });
 
         updateCards();
-        restoreTabs();
+        localStorage.removeItem(TABS_KEY);
 
         document.getElementById('searchInput').addEventListener('input', updateCards);
 
